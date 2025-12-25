@@ -1,0 +1,191 @@
+import { Component, OnInit } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+import { ApiService, DichVu, DayTro, PhongTro } from '../../services/api.service';
+
+@Component({
+  selector: 'app-dich-vu',
+  standalone: true,
+  imports: [CommonModule, FormsModule],
+  template: `
+    <div class="container-fluid">
+      <div class="page-header">
+        <h1><i class='bx bx-list-ul text-gradient'></i> Quản lý Dịch Vụ</h1>
+        <button class="btn btn-primary" (click)="openModal()">
+            <i class='bx bx-plus-circle'></i> Thêm dịch vụ
+        </button>
+      </div>
+
+      <div class="card p-0">
+        <div class="table-wrapper">
+          <table class="table align-middle">
+            <thead>
+              <tr>
+                <th>Tên dịch vụ</th>
+                <th>Đơn vị tính</th>
+                <th>Đơn giá</th>
+                <th>Phạm vi áp dụng</th>
+                <th class="text-right">Hành động</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let dv of dichVus">
+                <td>
+                    <div class="d-flex">
+                        <div class="icon-circle" [ngClass]="{
+                            'bg-warning': dv.tenDichVu === 'Điện',
+                            'bg-info': dv.tenDichVu === 'Nước',
+                            'bg-purple': dv.tenDichVu === 'Internet',
+                            'bg-secondary': !['Điện','Nước','Internet'].includes(dv.tenDichVu)
+                        }">
+                            <i class='bx' [ngClass]="{
+                                'bxs-bolt': dv.tenDichVu === 'Điện',
+                                'bxs-droplet': dv.tenDichVu === 'Nước',
+                                'bx-wifi': dv.tenDichVu === 'Internet',
+                                'bx-trash': dv.tenDichVu === 'Rác',
+                                'bx-cube': !['Điện','Nước','Internet','Rác'].includes(dv.tenDichVu)
+                            }"></i>
+                        </div>
+                        <span style="font-weight: 600; color: var(--text-main);">{{ dv.tenDichVu }}</span>
+                    </div>
+                </td>
+                <td>{{ dv.donViTinh }}</td>
+                <td><strong class="text-success">{{ dv.giaMacDinh | number }} đ</strong></td>
+                <td>
+                  <span *ngIf="dv.loaiGia === 'Chung'" class="badge badge-success">Toàn bộ hệ thống</span>
+                  <span *ngIf="dv.loaiGia === 'Theo dãy'" class="badge badge-info">Dãy: {{ dv.tenDayTro }}</span>
+                  <span *ngIf="dv.loaiGia === 'Theo phòng'" class="badge badge-warning">Phòng: {{ dv.soPhong }}</span>
+                </td>
+                <td class="text-right">
+                  <button class="btn-icon-action edit" (click)="editDichVu(dv)"><i class='bx bx-edit-alt'></i></button>
+                  <button class="btn-icon-action delete" (click)="deleteDichVu(dv.id)"><i class='bx bx-trash'></i></button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- MODAL -->
+    <div class="modal" *ngIf="showModal" (click)="closeModal($event)">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h3 class="modal-title">{{ isEdit ? 'Sửa Dịch Vụ' : 'Thêm Dịch Vụ' }}</h3>
+          <button class="close-btn" (click)="closeModal()"><i class='bx bx-x'></i></button>
+        </div>
+        <form (ngSubmit)="saveDichVu()">
+          <div class="form-group">
+            <label class="form-label">Tên dịch vụ <span class="text-danger">*</span></label>
+            <input type="text" class="form-control" [(ngModel)]="formData.tenDichVu" name="tenDichVu" required list="serviceOptions" placeholder="Vd: Điện, Nước, Internet...">
+            <datalist id="serviceOptions">
+              <option value="Điện"><option value="Nước"><option value="Internet"><option value="Rác"><option value="Vệ sinh">
+            </datalist>
+            <div class="text-muted mt-1" style="font-size: 12px;">* Đặt tên chính xác "Điện" hoặc "Nước" để hệ thống tính tiền tự động.</div>
+          </div>
+          <div class="d-flex gap-3">
+             <div class="form-group w-100">
+                <label class="form-label">Đơn vị tính <span class="text-danger">*</span></label>
+                <input type="text" class="form-control" [(ngModel)]="formData.donViTinh" name="donViTinh" required placeholder="kWh, m3, tháng...">
+             </div>
+             <div class="form-group w-100">
+                <label class="form-label">Đơn giá (VNĐ) <span class="text-danger">*</span></label>
+                <input type="number" class="form-control" [(ngModel)]="formData.giaMacDinh" name="giaMacDinh" required>
+             </div>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Phạm vi áp dụng</label>
+            <select class="form-control" [(ngModel)]="formData.loaiGia" name="loaiGia" required (change)="onLoaiGiaChange()">
+              <option value="Chung">Áp dụng chung tất cả</option>
+              <option value="Theo dãy">Theo Dãy trọ</option>
+              <option value="Theo phòng">Theo Phòng trọ</option>
+            </select>
+          </div>
+          <div class="form-group" *ngIf="formData.loaiGia === 'Theo dãy'">
+            <label class="form-label">Chọn dãy trọ</label>
+            <select class="form-control" [(ngModel)]="formData.dayTroId" name="dayTroId">
+              <option value="">-- Chọn dãy --</option>
+              <option *ngFor="let d of dayTros" [value]="d.id">{{ d.tenDayTro }}</option>
+            </select>
+          </div>
+          <div class="form-group" *ngIf="formData.loaiGia === 'Theo phòng'">
+            <label class="form-label">Chọn phòng trọ</label>
+            <select class="form-control" [(ngModel)]="formData.phongTroId" name="phongTroId">
+              <option value="">-- Chọn phòng --</option>
+              <option *ngFor="let p of phongTros" [value]="p.id">{{ p.soPhong }} - {{ p.tenPhong }}</option>
+            </select>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" (click)="closeModal()">Hủy</button>
+            <button type="submit" class="btn btn-primary"><i class='bx bx-save'></i> Lưu lại</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  `,
+  styles: [`
+    .icon-circle { width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 18px; color: white; margin-right: 10px; }
+    .bg-warning { background: #f59e0b; }
+    .bg-info { background: #0ea5e9; }
+    .bg-purple { background: #8b5cf6; }
+    .bg-secondary { background: #64748b; }
+  `]
+})
+export class DichVuComponent implements OnInit {
+  dichVus: DichVu[] = [];
+  dayTros: DayTro[] = [];
+  phongTros: PhongTro[] = [];
+  showModal = false;
+  isEdit = false;
+  formData: any = { tenDichVu: 'Điện', donViTinh: 'kWh', giaMacDinh: 0, loaiGia: 'Chung', dayTroId: null, phongTroId: null };
+  editingId: number | null = null;
+
+  constructor(private apiService: ApiService) {}
+
+  ngOnInit() {
+    this.loadDichVus();
+    this.loadDayTros();
+    this.loadPhongTros();
+  }
+
+  loadDichVus() { this.apiService.getDichVus().subscribe(data => this.dichVus = data); }
+  loadDayTros() { this.apiService.getDayTros().subscribe(data => this.dayTros = data); }
+  loadPhongTros() { this.apiService.getPhongTros().subscribe(data => this.phongTros = data); }
+
+  openModal() {
+    this.isEdit = false;
+    this.formData = { tenDichVu: 'Điện', donViTinh: 'kWh', giaMacDinh: 0, loaiGia: 'Chung', dayTroId: null, phongTroId: null };
+    this.showModal = true;
+  }
+
+  editDichVu(dv: DichVu) {
+    this.isEdit = true;
+    this.editingId = dv.id;
+    this.formData = { ...dv };
+    this.showModal = true;
+  }
+
+  onLoaiGiaChange() {
+    if (this.formData.loaiGia === 'Chung') { this.formData.dayTroId = null; this.formData.phongTroId = null; }
+    else if (this.formData.loaiGia === 'Theo dãy') this.formData.phongTroId = null;
+    else if (this.formData.loaiGia === 'Theo phòng') this.formData.dayTroId = null;
+  }
+
+  closeModal(event?: any) { if (!event || event.target === event.currentTarget) this.showModal = false; }
+
+  saveDichVu() {
+    const data = {
+      ...this.formData,
+      dayTroId: this.formData.dayTroId ? parseInt(this.formData.dayTroId) : null,
+      phongTroId: this.formData.phongTroId ? parseInt(this.formData.phongTroId) : null
+    };
+    const req = this.isEdit ? this.apiService.updateDichVu(this.editingId!, data) : this.apiService.createDichVu(data);
+    req.subscribe(() => { this.loadDichVus(); this.closeModal(); });
+  }
+
+  deleteDichVu(id: number) {
+    if (confirm('Bạn có chắc chắn muốn xóa dịch vụ này?')) {
+      this.apiService.deleteDichVu(id).subscribe(() => this.loadDichVus());
+    }
+  }
+}
