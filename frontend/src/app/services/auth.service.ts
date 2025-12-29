@@ -133,6 +133,14 @@ export class AuthService {
   confirmChangePassword(otpCode: string, newPassword: string): Observable<any> {
     return this.http.post(`${API_URL}/Auth/confirm-change-password`, { otpCode, newPassword });
   }
+
+  resetPassword(email: string, otpCode: string, newPassword: string): Observable<any> {
+    return this.http.post(`${API_URL}/Auth/reset-password-with-otp`, { 
+      email, 
+      otpCode, 
+      newPassword 
+    });
+  }
   
   updateUserState(user: User): void {
     const storedUser = JSON.parse(localStorage.getItem('user') || '{}');

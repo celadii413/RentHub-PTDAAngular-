@@ -43,6 +43,9 @@ import { OtpService } from '../../services/otp.service';
                 <label class="form-label">Mật khẩu</label>
                 <div class="input-icon"><i class='bx bx-key'></i><input type="password" class="form-control" [(ngModel)]="password" name="password" required placeholder="Nhập mật khẩu"></div>
               </div>
+              <div class="text-right mb-3">
+                <a (click)="switchToForgot()" class="btn-link" style="font-size: 13px; cursor: pointer;">Quên mật khẩu?</a>
+              </div>
               <div class="alert-error" *ngIf="errorMessage"><i class='bx bx-error-circle'></i> {{ errorMessage }}</div>
               <button type="submit" class="btn btn-primary btn-block">Đăng nhập ngay <i class='bx bx-right-arrow-alt'></i></button>
               <div class="auth-footer">
@@ -81,6 +84,50 @@ import { OtpService } from '../../services/otp.service';
                 </form>
               </div>
             </div>
+
+            <!-- Form Quên mật khẩu -->
+            <div *ngIf="loginMethod === 'forgot' && !isLoading">
+              <div class="auth-header">
+                <h2>Đặt lại mật khẩu</h2>
+              </div>
+
+              <!-- Bước 1: Nhập Email -->
+              <div *ngIf="forgotStep === 1">
+                <div class="form-group">
+                  <label class="form-label">Nhập Email tài khoản</label>
+                  <div class="input-icon">
+                    <i class='bx bx-envelope'></i>
+                    <input type="email" class="form-control" [(ngModel)]="forgotEmail" name="forgotEmail" placeholder="email@example.com">
+                  </div>
+                </div>
+                <div class="alert-error" *ngIf="errorMessage">{{ errorMessage }}</div>
+                <button class="btn btn-primary btn-block" (click)="sendForgotOtp()" [disabled]="isSendingForgotOtp">
+                  {{ isSendingForgotOtp ? 'Đang gửi...' : 'Tiếp tục' }}
+                </button>
+              </div>
+
+              <!-- Bước 2: Nhập OTP và Pass mới -->
+              <div *ngIf="forgotStep === 2">
+                <div class="form-group">
+                  <label class="form-label">Mã OTP xác thực</label>
+                  <input type="text" class="form-control text-center font-bold" [(ngModel)]="forgotOtpCode" name="fOtp" maxlength="6" placeholder="000000" style="letter-spacing: 5px; font-size: 20px;">
+                </div>
+                <div class="form-group">
+                  <label class="form-label">Mật khẩu mới</label>
+                  <input type="password" class="form-control" [(ngModel)]="newPassword" name="newP" placeholder="Tối thiểu 6 ký tự">
+                </div>
+                <div class="form-group">
+                  <label class="form-label">Xác nhận mật khẩu</label>
+                  <input type="password" class="form-control" [(ngModel)]="confirmNewPassword" name="cNewP">
+                </div>
+                <div class="alert-error" *ngIf="errorMessage">{{ errorMessage }}</div>
+                <button class="btn btn-primary btn-block" (click)="onResetPassword()" [disabled]="isResettingPassword">
+                  {{ isResettingPassword ? 'Đang xử lý...' : 'Xác nhận thay đổi' }}
+                </button>
+              </div>
+
+              <button class="btn btn-outline btn-block mt-3" (click)="switchLoginMethod('password')">Quay lại đăng nhập</button>
+            </div>
           </div>
       </div>
     </div>
@@ -114,7 +161,7 @@ import { OtpService } from '../../services/otp.service';
   `]
 })
 export class LoginComponent implements OnInit {
-  loginMethod: 'password' | 'otp' = 'password';
+  loginMethod: 'password' | 'otp' | 'forgot' = 'password';
   username = '';
   password = '';
   loginEmail = '';
@@ -127,6 +174,13 @@ export class LoginComponent implements OnInit {
   isVerifyingOtp = false;
   isResendingOtp = false;
   resendCountdown = 0;
+  forgotEmail = '';
+  forgotOtpCode = '';
+  newPassword = '';
+  confirmNewPassword = '';
+  forgotStep = 1; // 1: Nhập email, 2: Nhập OTP & Pass mới
+  isSendingForgotOtp = false;
+  isResettingPassword = false;
 
   constructor(
     private authService: AuthService,
@@ -302,5 +356,62 @@ export class LoginComponent implements OnInit {
     this.loginOtpCode = '';
     this.errorMessage = '';
     this.successMessage = '';
+  }
+
+  // Chuyển sang chế độ quên mật khẩu
+  switchToForgot() {
+    this.loginMethod = 'forgot';
+    this.forgotStep = 1;
+    this.errorMessage = '';
+    this.successMessage = '';
+  }
+
+  // Bước 1: Gửi OTP quên mật khẩu
+  sendForgotOtp() {
+    if (!this.forgotEmail) {
+      this.errorMessage = 'Vui lòng nhập email';
+      return;
+    }
+    this.isSendingForgotOtp = true;
+    this.errorMessage = '';
+    
+    // Dùng OTP với mục đích "ResetPassword" (Backend của bạn đã hỗ trợ loại này)
+    this.otpService.sendOtp(this.forgotEmail, 'ResetPassword' as any).subscribe({
+      next: () => {
+        this.isSendingForgotOtp = false;
+        this.forgotStep = 2;
+        this.successMessage = 'Mã xác thực đã được gửi đến Email của bạn.';
+      },
+      error: (err) => {
+        this.isSendingForgotOtp = false;
+        this.errorMessage = err.error?.message || 'Email không tồn tại trong hệ thống.';
+      }
+    });
+  }
+
+  // Bước 2: Xác nhận OTP và đặt mật khẩu mới
+  onResetPassword() {
+    if (this.newPassword !== this.confirmNewPassword) {
+      this.errorMessage = 'Mật khẩu xác nhận không khớp';
+      return;
+    }
+    if (this.newPassword.length < 6) {
+      this.errorMessage = 'Mật khẩu phải có ít nhất 6 ký tự';
+      return;
+    }
+
+    this.isResettingPassword = true;
+    // Chúng ta sẽ dùng chung logic ChangePasswordWithOtp của bạn nhưng áp dụng cho luồng quên mật khẩu
+    this.authService.confirmChangePassword(this.forgotOtpCode, this.newPassword).subscribe({
+      next: () => {
+        this.isResettingPassword = false;
+        alert('Đặt lại mật khẩu thành công! Vui lòng đăng nhập lại.');
+        this.switchLoginMethod('password');
+      },
+      error: (err) => {
+        this.isResettingPassword = false;
+        this.errorMessage = err.error?.message || 'Mã OTP không đúng hoặc đã hết hạn.';
+      }
+    });
   }
 }

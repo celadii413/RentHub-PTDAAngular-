@@ -57,7 +57,13 @@ import { User } from '../../services/api.service';
                   </div>
                   <div class="form-group mb-4">
                      <label class="form-label">Số điện thoại liên hệ</label>
-                     <input class="form-control" [(ngModel)]="profileForm.soDienThoai" name="sdt">
+                     <input 
+                        class="form-control" 
+                        [(ngModel)]="profileForm.soDienThoai" 
+                        name="sdt"
+                        (keypress)="onlyNumberKey($event)"
+                        maxlength="11"
+                        placeholder="Ví dụ: 0987654321">
                   </div>
 
                   <div *ngIf="currentUser?.vaiTro !== 'Người thuê'" class="banking-box mt-5">
@@ -79,7 +85,12 @@ import { User } from '../../services/api.service';
                         </div>
                         <div class="form-group">
                            <label class="form-label">Số tài khoản</label>
-                           <input class="form-control" [(ngModel)]="profileForm.soTaiKhoan" name="stk">
+                           <input 
+                              class="form-control" 
+                              [(ngModel)]="profileForm.soTaiKhoan" 
+                              name="stk"
+                              (keypress)="onlyNumberKey($event)"
+                              maxlength="20">
                         </div>
                      </div>
                      <div class="form-group mb-0">
@@ -190,26 +201,57 @@ export class ProfileComponent implements OnInit {
   }
 
   updateProfile() {
-    this.loading = true;
-    this.authService.updateProfile(this.profileForm).subscribe({
+   // 1. Ràng buộc Họ tên không được để trống
+   if (!this.profileForm.hoTen || this.profileForm.hoTen.trim().length < 2) {
+      alert('Họ tên không được để trống và phải có ít nhất 2 ký tự');
+      return;
+   }
+
+   // 2. Ràng buộc Số điện thoại (Chỉ chứa số, từ 10-11 chữ số)
+   const phoneRegex = /^[0-9]{10,11}$/;
+   if (!phoneRegex.test(this.profileForm.soDienThoai)) {
+      alert('Số điện thoại không hợp lệ (phải là số và có 10-11 chữ số)');
+      return;
+   }
+
+   // 3. Ràng buộc Số tài khoản ngân hàng (Nếu có nhập thì phải là số)
+   if (this.profileForm.soTaiKhoan) {
+      const accRegex = /^[0-9]+$/;
+      if (!accRegex.test(this.profileForm.soTaiKhoan)) {
+         alert('Số tài khoản ngân hàng chỉ được chứa chữ số');
+         return;
+      }
+   }
+
+   // Nếu vượt qua tất cả kiểm tra thì mới gọi API
+   this.loading = true;
+   this.authService.updateProfile(this.profileForm).subscribe({
       next: () => {
-        this.loading = false;
-        alert('Cập nhật thông tin thành công!');
-        this.loadProfile(); 
+         this.loading = false;
+         alert('Cập nhật thông tin thành công!');
+         this.loadProfile(); 
       },
       error: (err) => {
-        this.loading = false;
-        alert(err.error?.message || 'Lỗi cập nhật');
+         this.loading = false;
+         alert(err.error?.message || 'Lỗi cập nhật');
       }
-    });
-  }
+   });
+   }
 
-  verifyOldPassword() {
-    this.authService.requestChangePasswordOtp(this.passwordForm.oldPassword).subscribe({
-      next: () => this.passwordStep = 2,
-      error: (err) => alert(err.error?.message || 'Mật khẩu cũ không đúng')
-    });
-  }
+   onlyNumberKey(event: any) {
+   const charCode = (event.which) ? event.which : event.keyCode;
+      if (charCode > 31 && (charCode < 48 || charCode > 57)) {
+         return false;
+      }
+      return true;
+   }
+
+   verifyOldPassword() {
+     this.authService.requestChangePasswordOtp(this.passwordForm.oldPassword).subscribe({
+       next: () => this.passwordStep = 2,
+       error: (err) => alert(err.error?.message || 'Mật khẩu cũ không đúng')
+     });
+   }
 
   submitNewPassword() {
     if (this.passwordForm.newPassword !== this.passwordForm.confirmPassword) {

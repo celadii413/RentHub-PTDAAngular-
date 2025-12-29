@@ -33,6 +33,12 @@ public class ResetPasswordDTO
     public string NewPassword { get; set; } = string.Empty;
 }
 
+public class ResetPasswordWithOtpDTO {
+    public string Email { get; set; }
+    public string OtpCode { get; set; }
+    public string NewPassword { get; set; }
+}
+
 public class LoginResponseDTO
 {
     public string Token { get; set; } = string.Empty;

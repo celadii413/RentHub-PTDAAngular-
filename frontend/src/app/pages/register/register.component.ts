@@ -94,6 +94,16 @@ import { OtpService } from '../../services/otp.service';
                  </div>
               </div>
               <div class="form-group">
+                <label class="form-label">Nhập lại mật khẩu <span class="text-danger">*</span></label>
+                <div class="input-icon">
+                    <i class='bx bx-check-shield'></i>
+                    <input type="password" class="form-control" [(ngModel)]="registerData.confirmPassword" name="confPass" required placeholder="******">
+                </div>
+                <small class="text-danger" *ngIf="registerData.password !== registerData.confirmPassword && registerData.confirmPassword">
+                    Mật khẩu nhập lại không khớp
+                </small>
+              </div>
+              <div class="form-group">
                  <label class="form-label">Họ và tên <span class="text-danger">*</span></label>
                  <div class="input-icon">
                     <i class='bx bx-user'></i>
@@ -149,7 +159,7 @@ import { OtpService } from '../../services/otp.service';
   `]
 })
 export class RegisterComponent {
-  step = 1; registerData = { email: '', password: '', hoTen: '', soDienThoai: '' };
+  step = 1; registerData = { email: '', password: '', confirmPassword: '', hoTen: '', soDienThoai: '' };
   otpCode = ''; errorMessage = ''; successMessage = ''; isSendingOtp = false; isVerifyingOtp = false; isLoading = false; isResendingOtp = false; resendCountdown = 0; otpVerified = false;
 
   constructor(private authService: AuthService, private otpService: OtpService, private router: Router) {

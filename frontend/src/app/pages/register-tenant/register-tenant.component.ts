@@ -60,6 +60,13 @@ import { OtpService } from '../../services/otp.service';
             <form (ngSubmit)="onRegister()">
               <div class="form-group"><label class="form-label">Email</label><input class="form-control disabled-input" [value]="registerData.email" disabled></div>
               <div class="form-group"><label class="form-label">Mật khẩu</label><input type="password" class="form-control" [(ngModel)]="registerData.password" name="pass" required minlength="6"></div>
+              <div class="form-group">
+                  <label class="form-label">Nhập lại mật khẩu</label>
+                  <input type="password" class="form-control" [(ngModel)]="registerData.confirmPassword" name="confPass" required>
+                  <small class="text-danger" *ngIf="registerData.password !== registerData.confirmPassword && registerData.confirmPassword">
+                    Mật khẩu nhập lại không khớp
+                </small>
+              </div>
               <div class="form-group"><label class="form-label">Họ tên</label><input class="form-control" [(ngModel)]="registerData.hoTen" name="name" required></div>
               <div class="form-group"><label class="form-label">SĐT</label><input class="form-control" [(ngModel)]="registerData.soDienThoai" name="phone" required></div>
               <button type="submit" class="btn btn-primary w-100" [disabled]="!isFormValid() || isLoading">{{ isLoading ? 'Đang xử lý...' : 'Đăng Ký' }}</button>
@@ -100,6 +107,7 @@ export class RegisterTenantComponent {
   registerData = {
     email: '',
     password: '',
+    confirmPassword: '',
     hoTen: '',
     soDienThoai: '',
     otpCode: ''
