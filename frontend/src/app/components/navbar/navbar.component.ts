@@ -87,8 +87,6 @@ import { filter } from 'rxjs/operators';
 
       <!-- Footer User + Theme Toggle -->
       <div class="sidebar-footer" *ngIf="currentUser">
-        
-        <!-- Nút Theme Toggle -->
         <div class="theme-toggle mb-3">
              <div class="theme-switch" (click)="toggleTheme()">
                  <div class="option" [class.active]="!(isDarkMode$ | async)">

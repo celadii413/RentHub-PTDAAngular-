@@ -12,7 +12,7 @@ import { firstValueFrom } from 'rxjs';
   template: `
     <div class="container">
       <div class="page-header">
-        <h1><i class='bx bx-door-open text-gradient'></i> Quản lý Phòng Trọ</h1>
+        <h1><i class='bx bx-door-open text-gradient'></i> Quản lý Phòng </h1>
         <button class="btn btn-primary" (click)="openModal()">
             <i class='bx bx-plus-circle'></i> Thêm phòng mới
         </button>
@@ -21,7 +21,7 @@ import { firstValueFrom } from 'rxjs';
       <div class="card p-3 mb-3">
         <div class="d-flex" style="flex-wrap: wrap;">
             <div class="form-group mb-0" style="flex: 1; min-width: 200px;">
-                <label class="form-label">Dãy trọ</label>
+                <label class="form-label">Dãy nhà</label>
                 <select class="form-control" [(ngModel)]="filterDayTroId" (change)="loadPhongTros()">
                     <option value="">Tất cả dãy</option>
                     <option *ngFor="let d of dayTros" [value]="d.id">{{d.tenDayTro}}</option>
@@ -53,7 +53,7 @@ import { firstValueFrom } from 'rxjs';
             <thead>
               <tr>
                 <th>Thông tin phòng</th>
-                <th>Dãy trọ</th>
+                <th>Dãy nhà</th>
                 <th>Giá & Cọc</th>
                 <th>Khách / Giới hạn</th>
                 <th>Trạng thái</th>
@@ -121,9 +121,9 @@ import { firstValueFrom } from 'rxjs';
         </div>
         <form (ngSubmit)="savePhong()">
           <div class="form-group">
-            <label class="form-label">Dãy Trọ *</label>
+            <label class="form-label">Dãy Nhà *</label>
             <select class="form-control" [(ngModel)]="formData.dayTroId" name="dayTroId" required>
-              <option value="">-- Chọn dãy trọ --</option>
+              <option value="">-- Chọn dãy nhà --</option>
               <option *ngFor="let day of dayTros" [value]="day.id">{{ day.tenDayTro }}</option>
             </select>
           </div>
@@ -266,7 +266,7 @@ export class PhongTroComponent implements OnInit {
 
   async savePhong() {
         if (!this.formData.dayTroId) {
-            alert('Vui lòng chọn Dãy trọ.');
+            alert('Vui lòng chọn Dãy nhà.');
             return;
         }
         
@@ -312,7 +312,7 @@ export class PhongTroComponent implements OnInit {
     }
 
   deletePhong(id: number) {
-    if (confirm('Bạn có chắc chắn muốn xóa phòng trọ này?')) {
+    if (confirm('Bạn có chắc chắn muốn xóa phòng này?')) {
       this.apiService.deletePhongTro(id).subscribe(() => this.loadPhongTros());
     }
   }
