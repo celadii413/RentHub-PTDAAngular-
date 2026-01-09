@@ -60,12 +60,12 @@ public class EmailService : IEmailService
 
     public async Task<bool> SendOtpEmailAsync(string toEmail, string otpCode)
     {
-        var subject = "Mã OTP xác thực - Hệ thống Quản lý Phòng trọ";
+        var subject = "Mã OTP xác thực - Hệ thống RentHub";
         var body = $@"
             <div style='font-family: Arial, sans-serif; padding: 20px; max-width: 600px; margin: 0 auto;'>
                 <h2 style='color: #2c3e50;'>Mã OTP xác thực</h2>
                 <p>Xin chào,</p>
-                <p>Bạn đang thực hiện xác thực tài khoản trên hệ thống Quản lý Phòng trọ.</p>
+                <p>Bạn đang thực hiện xác thực tài khoản trên hệ thống RentHub.</p>
                 <div style='background-color: #f4f4f4; padding: 20px; text-align: center; margin: 20px 0; border-radius: 5px;'>
                     <h1 style='color: #e74c3c; font-size: 32px; letter-spacing: 5px; margin: 0;'>{otpCode}</h1>
                 </div>

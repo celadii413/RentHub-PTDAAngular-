@@ -1,0 +1,47 @@
+<div class="container" style="max-width: 900px;">
+    <div class="page-header">
+        <h1><i class='bx bx-bell text-gradient'></i> Bảng Tin Thông Báo</h1>
+    </div>
+
+    <div class="card mb-4" *ngIf="isOwner">
+        <h3 class="mb-3" style="font-size: 16px; font-weight: 600;"><i class='bx bx-edit'></i> Đăng thông báo mới</h3>
+        <form (ngSubmit)="sendNotification()">
+            <div class="form-group">
+                <input class="form-control" [(ngModel)]="form.tieuDe" name="title" placeholder="Tiêu đề..." required style="font-weight: 600;">
+            </div>
+            <div class="form-group">
+                <textarea class="form-control" [(ngModel)]="form.noiDung" name="body" rows="4" placeholder="Nội dung chi tiết..." required></textarea>
+            </div>
+            <div class="text-right">
+                <button class="btn btn-primary" type="submit" [disabled]="submitting">
+                    <i class='bx bx-send'></i> {{ submitting ? 'Đang đăng...' : 'Đăng ngay' }}
+                </button>
+            </div>
+        </form>
+    </div>
+
+    <div class="feed-container">
+        <h3 class="mb-4 text-main" style="font-size: 18px;">Tin mới nhất của nhà</h3>
+         
+        <div *ngIf="notifications.length === 0" class="text-center text-muted p-5 border rounded">
+            <i class='bx bx-bell-off' style="font-size: 40px; opacity: 0.5;"></i>
+            <p class="mt-2">Hiện chưa có thông báo nào dành cho bạn.</p>
+        </div>
+         
+        <div class="feed-item" *ngFor="let n of notifications">
+            <div class="feed-icon"><i class='bx bx-message-rounded-dots'></i></div>
+            
+            <div class="feed-content">
+                <button *ngIf="isOwner" class="btn-delete-pos" (click)="deleteNotification(n.id || n.Id)" title="Xóa tin này">
+                    <i class='bx bx-trash'></i>
+                </button>
+
+                <div class="feed-header">
+                    <span class="feed-title">{{ n.tieuDe }}</span>
+                    <span class="feed-date">{{ n.ngayTao | date:'dd/MM HH:mm' }}</span>
+                </div>
+                <p class="feed-body">{{ n.noiDung }}</p>
+            </div>
+        </div>
+    </div>
+</div>

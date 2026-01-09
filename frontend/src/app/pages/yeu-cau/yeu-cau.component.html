@@ -1,0 +1,252 @@
+<div class="container-fluid">
+    <div class="page-header">
+        <h1><i class='bx bx-support text-gradient'></i> Yêu Cầu & Chỉ Số Online</h1>
+    </div>
+
+    <!-- Tabs -->
+    <div class="d-flex mb-4 gap-3">
+        <button class="btn" [class.btn-primary]="activeTab==='requests'" [class.btn-secondary]="activeTab!=='requests'" (click)="activeTab='requests'">
+            <i class='bx bx-message-error'></i> Yêu cầu sửa chữa
+            <span class="badge badge-danger" style="margin-left: 8px;" *ngIf="pendingRequestsCount > 0">{{ pendingRequestsCount }}</span>
+        </button>
+        <button class="btn" [class.btn-primary]="activeTab==='meters'" [class.btn-secondary]="activeTab!=='meters'" (click)="activeTab='meters'">
+          <i class='bx bx-cloud-upload'></i> Chỉ số khách gửi
+          <span class="badge badge-warning" style="margin-left: 8px;" *ngIf="pendingMetersCount > 0">{{ pendingMetersCount }}</span>
+        </button>
+    </div>
+
+    <div class="card p-0">
+        <div class="table-wrapper">
+          
+        <!-- Bảng Yêu Cầu -->
+        <table class="table align-middle" *ngIf="activeTab === 'requests'">
+            <thead>
+                <tr>
+                    <th>Thời gian</th>
+                    <th>Phòng & Khách</th>
+                    <th>Nội dung yêu cầu</th>
+                    <th>Trạng thái</th>
+                    <th class="text-right">Hành động</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let item of yeuCaus">
+                    <td style="min-width: 120px;">
+                        <div style="font-weight: 500; color: var(--text-main);">{{ item.ngayTao | date:'dd/MM/yyyy' }}</div>
+                        <div class="text-muted" style="font-size: 12px;">{{ item.ngayTao | date:'HH:mm' }}</div>
+                    </td>
+                    <td>
+                        <div style="font-weight: 700; color: var(--text-main);">{{ getTenPhong(item.phongTroId) }}</div>
+                        <small class="text-muted"><i class='bx bx-user'></i> {{ getTenKhach(item.khachThueId) }}</small>
+                    </td>
+                    <td>
+                        <span class="badge badge-secondary mb-1">{{ item.loaiYeuCau }}</span>
+                        <div style="font-weight: 500; color: var(--text-main);">{{ item.tieuDe }}</div>
+                    </td>
+                    <td>
+                    <span class="badge" [ngClass]="getStatusClass(item.trangThai)">{{ item.trangThai }}</span>
+                    <small *ngIf="item.trangThai === 'Từ chối'" class="text-muted d-block mt-1" style="font-style: italic;">
+                        "{{ item.ghiChu }}"
+                    </small>
+                    </td>
+                    <td class="text-right">
+                    <div class="btn-action-group">
+                        <button class="btn btn-sm btn-primary" (click)="openRequestModal(item)">
+                            <i class='bx bx-detail'></i> Xem chi tiết
+                        </button>
+                        <button class="btn-delete" (click)="deleteYeuCau(item.id)" title="Xoá yêu cầu">
+                            <i class='bx bx-trash'></i>
+                        </button>
+                    </div>
+                    </td>
+                </tr>
+                <tr *ngIf="yeuCaus.length === 0">
+                    <td colspan="5" class="text-center text-muted p-4">Không có yêu cầu nào</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- Bảng Chỉ Số -->
+        <table class="table align-middle" *ngIf="activeTab === 'meters'">
+            <thead>
+                <tr>
+                    <th>Ngày gửi</th>
+                    <th>Phòng</th>
+                    <th>Loại & Chỉ số</th>
+                    <th>Minh chứng</th>
+                    <th>Trạng thái</th>
+                    <th class="text-right">Hành động</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let item of meters">
+                    <td style="min-width: 120px;">
+                        <div style="color: var(--text-main);">{{ item.ngayGui | date:'dd/MM/yyyy' }}</div>
+                        <small class="text-muted">{{ item.ngayGui | date:'HH:mm' }}</small>
+                    </td>
+                    <td><strong style="color: var(--text-main);">{{ getTenPhong(item.phongTroId) }}</strong></td>
+                    <td>
+                        <span class="badge" [class.badge-warning]="item.loaiCongTo==='Điện'" [class.badge-info]="item.loaiCongTo==='Nước'">
+                            {{ item.loaiCongTo }}
+                        </span>
+                        <strong style="margin-left: 8px; font-size: 16px; color: var(--primary);">{{ item.chiSo | number }}</strong>
+                    </td>
+                    <td>
+                        <a *ngIf="item.anhCongTo" [href]="item.anhCongTo" target="_blank" class="btn-sm btn-outline text-muted" style="text-decoration: none;">
+                            <i class='bx bx-image'></i> Xem ảnh
+                        </a>
+                        <span *ngIf="!item.anhCongTo" class="text-muted">-</span>
+                    </td>
+                    <td><span class="badge" [ngClass]="getStatusClass(item.trangThai)">{{ item.trangThai }}</span></td>
+                    <td class="text-right">
+                        <div class="btn-action-group">
+                            <div class="d-flex gap-2" *ngIf="item.trangThai === 'Chờ xác nhận'">
+                                <button class="btn btn-sm btn-action-success" (click)="openMeterConfirmModal(item)">Duyệt</button>
+                                <button class="btn btn-sm btn-outline-danger" (click)="quickRejectMeter(item)">Từ chối</button>
+                            </div>
+                            <span *ngIf="item.trangThai !== 'Chờ xác nhận'" class="processed-tag">Đã xử lý</span>
+                            <button class="btn-delete" (click)="deleteMeter(item.id)" title="Xoá phiếu ghi">
+                                <i class='bx bx-trash'></i>
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+                <tr *ngIf="meters.length === 0">
+                    <td colspan="6" class="text-center text-muted p-4">Không có chỉ số nào được gửi</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    </div>
+</div>
+
+    <!-- Modal Xử Lý Yêu Cầu -->
+    <div class="modal" *ngIf="showRequestModal" (click)="closeRequestModal($event)">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h3 class="modal-title">Chi Tiết Yêu Cầu</h3>
+          <button class="close-btn" (click)="showRequestModal=false"><i class='bx bx-x'></i></button>
+        </div>
+        <div class="modal-body" *ngIf="selectedRequest">
+          <div class="mb-3">
+             <div class="d-flex justify-content-between mb-1">
+                <span class="text-muted">Tiêu đề:</span>
+                <strong style="color: var(--text-main);">{{ selectedRequest.tieuDe }}</strong>
+             </div>
+             <div class="d-flex justify-content-between">
+                <span class="text-muted">Người gửi:</span>
+                <span style="color: var(--text-main);">{{ getTenKhach(selectedRequest.khachThueId) }} ({{ getTenPhong(selectedRequest.phongTroId) }})</span>
+             </div>
+          </div>
+
+          <div class="form-group">
+             <label class="form-label">Nội dung yêu cầu:</label>
+             <div class="card p-3" style="background: var(--bg-input); border: none; color: var(--text-main);">
+                {{ selectedRequest.noiDung }}
+             </div>
+          </div>
+
+          <div class="form-group" *ngIf="selectedRequest.anhMinhHoa">
+             <label class="form-label">Ảnh đính kèm:</label>
+             <img [src]="selectedRequest.anhMinhHoa" style="width: 100%; border-radius: 8px; max-height: 300px; object-fit: contain; background: #000;">
+          </div>
+          
+          <hr style="border-color: var(--border); margin: 20px 0;">
+          
+          <div class="form-group">
+            <label class="form-label">Phản hồi của chủ nhà:</label>
+            <textarea class="form-control" rows="3" [(ngModel)]="requestResponse.phanHoi" placeholder="Nhập câu trả lời..."></textarea>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Trạng thái:</label>
+            <select class="form-control" [(ngModel)]="requestResponse.trangThai">
+              <option value="Đang xử lý">Đang xử lý</option>
+              <option value="Hoàn thành">Hoàn thành</option>
+              <option value="Từ chối">Từ chối</option>
+            </select>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-secondary" (click)="showRequestModal=false">Đóng</button>
+          <button class="btn btn-primary" (click)="submitRequestResponse()">Cập nhật</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- MODAL DUYỆT CHỈ SỐ -->
+    <div class="modal" *ngIf="showMeterModal" (click)="closeMeterModal($event)">
+      <div class="modal-content" style="max-width: 950px; padding: 40px;">
+        <div class="modal-header" style="margin-bottom: 30px;">
+          <h3 class="modal-title" style="font-size: 22px; color: var(--text-main);">Xác Nhận & Tạo Chỉ Số</h3>
+          <button class="close-btn" (click)="showMeterModal=false"><i class='bx bx-x'></i></button>
+        </div>
+        
+        <div class="modal-body" *ngIf="selectedMeter" style="display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: start;">
+           <div style="border-right: 1px solid var(--border); padding-right: 30px;">
+              <h4 class="section-label">THÔNG TIN KHÁCH GỬI</h4>
+              
+              <div class="mb-5">
+                 <label class="data-label">Phòng</label>
+                 <div class="data-value-lg">{{ getTenPhong(selectedMeter.phongTroId) }}</div>
+              </div>
+              
+              <div class="d-flex gap-5 mb-5">
+                  <div style="flex: 1;">
+                     <label class="data-label">Loại chỉ số</label>
+                     <span class="badge" 
+                           style="padding: 8px 12px; font-size: 14px;"
+                           [class.badge-warning]="selectedMeter.loaiCongTo==='Điện'" 
+                           [class.badge-info]="selectedMeter.loaiCongTo==='Nước'">
+                           {{ selectedMeter.loaiCongTo }}
+                     </span>
+                  </div>
+                  <div style="flex: 1;">
+                     <label class="data-label">Kỳ ghi</label>
+                     <span class="data-value-md">{{ selectedMeter.thangNam | date:'MM/yyyy' }}</span>
+                  </div>
+              </div>
+
+              <div class="info-box mb-4">
+                 <label class="data-label">Chỉ số MỚI (Khách nhập)</label>
+                 <div class="data-highlight">{{ selectedMeter.chiSo | number }}</div>
+              </div>
+
+              <div *ngIf="selectedMeter.anhCongTo">
+                  <label class="data-label">Ảnh minh chứng:</label>
+                  <img [src]="selectedMeter.anhCongTo" style="width: 100%; max-height: 200px; object-fit: contain; border-radius: 12px; border: 1px solid var(--border); background: #000;">
+              </div>
+           </div>
+
+           <div style="display: flex; flex-direction: column; justify-content: center; height: 100%;">
+              <h4 class="section-label">XỬ LÝ CỦA CHỦ NHÀ</h4>
+
+              <div class="form-group mb-5">
+                 <label class="form-label" style="font-size: 15px; margin-bottom: 12px; display: block;">Nhập chỉ số CŨ (Tháng trước)</label>
+                 <input type="number" class="form-control big-input" [(ngModel)]="meterConfirmData.chiSoCu" (change)="calculateUsage()" placeholder="0">
+                 <small class="text-muted mt-2 d-block"><i class='bx bx-info-circle'></i> Hệ thống tự động trừ để tính tiêu thụ.</small>
+              </div>
+
+              <div class="result-box p-4 rounded mt-2 mb-5" [ngClass]="meterConfirmData.soTieuThu >= 0 ? 'bg-success-light' : 'bg-danger-light'">
+                 <div class="d-flex justify-content-between align-items-center">
+                    <span style="font-weight: 600; font-size: 16px; color: var(--text-main);">Số tiêu thụ:</span>
+                    <strong style="font-size: 32px;" [style.color]="meterConfirmData.soTieuThu >= 0 ? '#10b981' : '#ef4444'">{{ meterConfirmData.soTieuThu | number }}</strong>
+                 </div>
+                 <div *ngIf="meterConfirmData.soTieuThu < 0" class="text-danger mt-2 text-sm font-bold">
+                    <i class='bx bx-error'></i> Lỗi: Chỉ số mới nhỏ hơn cũ!
+                 </div>
+              </div>
+              
+              <div class="mt-auto d-grid">
+                 <button class="btn btn-action-success w-100 btn-lg mb-4" (click)="confirmMeter()" [disabled]="meterConfirmData.soTieuThu < 0">
+                    <i class='bx bx-check-circle'></i> Duyệt & Lưu Chỉ Số
+                 </button>
+                 
+                 <button class="btn btn-action-danger w-100" (click)="rejectMeter()">
+                    <i class='bx bx-x-circle'></i> Từ chối
+                 </button>
+
+              </div>
+           </div>
+        </div>
+      </div>
+    </div>

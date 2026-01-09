@@ -91,7 +91,7 @@ public class BieuMauController : ControllerBase
         // Lấy mẫu của chủ trọ (ưu tiên) hoặc mẫu mặc định
         var mau = await _context.BieuMaus
             .Where(b => b.LoaiBieuMau == "HOP_DONG" && (b.UserId == userId || b.UserId == null))
-            .OrderByDescending(b => b.UserId) // Ưu tiên mẫu riêng của user
+            .OrderByDescending(b => b.UserId) 
             .FirstOrDefaultAsync();
 
         string templateContent = mau?.NoiDung ?? "<h1>Hợp đồng mẫu chưa được thiết lập</h1>";

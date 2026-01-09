@@ -218,13 +218,38 @@ public class AuthService : IAuthService
         var user = await _context.Users.FindAsync(userId);
         return user != null && BCrypt.Net.BCrypt.Verify(oldPassword, user.PasswordHash);
     }
-    public async Task<bool> ChangePasswordWithOtpAsync(int userId, string newPassword, string otpCode)
+    // Trong file QLPhongTro.API/Services/AuthService.cs
+
+    public async Task<bool> ChangePasswordWithOtpAsync(string email, string newPassword, string otpCode)
     {
-        var user = await _context.Users.FindAsync(userId);
-        if (user == null) return false;
-        if (!await _otpService.VerifyOtpAsync(user.Email, otpCode, "ChangePassword")) return false;
+        var otpRecord = await _context.OtpCodes
+            .Where(o => o.Email == email && !o.IsUsed)
+            .OrderByDescending(o => o.CreatedAt)
+            .FirstOrDefaultAsync();
+
+        if (otpRecord == null)
+        {
+            throw new Exception("Không tìm thấy mã OTP nào cho email này (hoặc mã đã được sử dụng).");
+        }
+
+        if (otpRecord.ExpiryTime < DateTime.Now)
+        {
+            throw new Exception($"Mã đã hết hạn lúc {otpRecord.ExpiryTime}. Giờ Server: {DateTime.Now}");
+        }
+
+        if (otpRecord.Code.Trim() != otpCode.Trim())
+        {
+            throw new Exception($"Mã sai. DB đang lưu: '{otpRecord.Code}', Bạn nhập: '{otpCode}'");
+        }
+
+        var user = await _context.Users.FirstOrDefaultAsync(u => u.Email == email);
+        if (user == null) throw new Exception("Không tìm thấy User với email này.");
+
         user.PasswordHash = BCrypt.Net.BCrypt.HashPassword(newPassword);
         user.NgayCapNhat = DateTime.Now;
+
+        otpRecord.IsUsed = true;
+
         await _context.SaveChangesAsync();
         return true;
     }

@@ -5,6 +5,7 @@ import { AppComponent } from './app/app.component';
 import { routes } from './app/app.routes';
 import { inject } from '@angular/core';
 import { AuthService } from './app/services/auth.service';
+import { provideAnimations } from '@angular/platform-browser/animations'; 
 
 const authInterceptor: HttpInterceptorFn = (req, next) => {
   const authService = inject(AuthService);
@@ -27,7 +28,8 @@ const authInterceptor: HttpInterceptorFn = (req, next) => {
 bootstrapApplication(AppComponent, {
   providers: [
     provideRouter(routes),
-    provideHttpClient(withInterceptors([authInterceptor]))
+    provideHttpClient(withInterceptors([authInterceptor])),
+    provideAnimations()
   ]
 }).catch(err => console.error(err));
 

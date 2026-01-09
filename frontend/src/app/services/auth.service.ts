@@ -2,8 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, BehaviorSubject } from 'rxjs';
 import { tap } from 'rxjs/operators';
-
-const API_URL = 'http://localhost:5000/api';
+import { environment } from '../../environments/environment';
 
 export interface User {
   id: number;
@@ -41,7 +40,7 @@ export class AuthService {
   }
 
   login(username: string, password: string): Observable<LoginResponse> {
-    return this.http.post<LoginResponse>(`${API_URL}/Auth/login`, { username, password })
+    return this.http.post<LoginResponse>(`${environment.apiUrl}/Auth/login`, { username, password })
       .pipe(
         tap(response => {
           const token = response.Token || response.token;
@@ -79,15 +78,15 @@ export class AuthService {
   }
 
   changePassword(oldPassword: string, newPassword: string): Observable<any> {
-    return this.http.post(`${API_URL}/Auth/change-password`, { oldPassword, newPassword });
+    return this.http.post(`${environment.apiUrl}/Auth/change-password`, { oldPassword, newPassword });
   }
 
   updateProfile(data: any): Observable<any> {
-    return this.http.put(`${API_URL}/Auth/profile`, data);
+    return this.http.put(`${environment.apiUrl}/Auth/profile`, data);
   }
 
   getProfile(): Observable<User> {
-    return this.http.get<User>(`${API_URL}/Auth/profile`);
+    return this.http.get<User>(`${environment.apiUrl}/Auth/profile`);
   }
 
   registerOwner(data: {
@@ -96,7 +95,7 @@ export class AuthService {
     hoTen: string;
     soDienThoai: string;
   }): Observable<any> {
-    return this.http.post(`${API_URL}/Auth/register-owner`, data);
+    return this.http.post(`${environment.apiUrl}/Auth/register-owner`, data);
   }
 
   registerTenant(data: {
@@ -106,11 +105,11 @@ export class AuthService {
     hoTen: string;
     soDienThoai: string;
   }): Observable<any> {
-    return this.http.post(`${API_URL}/Auth/register-tenant`, data);
+    return this.http.post(`${environment.apiUrl}/Auth/register-tenant`, data);
   }
 
   loginWithOtp(email: string, otpCode: string): Observable<LoginResponse> {
-    return this.http.post<LoginResponse>(`${API_URL}/Auth/login-with-otp`, {
+    return this.http.post<LoginResponse>(`${environment.apiUrl}/Auth/login-with-otp`, {
       email: email,
       otpCode: otpCode
     }).pipe(
@@ -127,15 +126,15 @@ export class AuthService {
   }
 
   requestChangePasswordOtp(oldPassword: string): Observable<any> {
-    return this.http.post(`${API_URL}/Auth/request-change-password-otp`, { oldPassword });
+    return this.http.post(`${environment.apiUrl}/Auth/request-change-password-otp`, { oldPassword });
   }
 
-  confirmChangePassword(otpCode: string, newPassword: string): Observable<any> {
-    return this.http.post(`${API_URL}/Auth/confirm-change-password`, { otpCode, newPassword });
+  confirmChangePassword(data: { email: string, otpCode: string, newPassword: string }): Observable<any> {
+    return this.http.post(`${environment.apiUrl}/Auth/confirm-change-password`, data);
   }
 
   resetPassword(email: string, otpCode: string, newPassword: string): Observable<any> {
-    return this.http.post(`${API_URL}/Auth/reset-password-with-otp`, { 
+    return this.http.post(`${environment.apiUrl}/Auth/confirm-change-password`, { 
       email, 
       otpCode, 
       newPassword 

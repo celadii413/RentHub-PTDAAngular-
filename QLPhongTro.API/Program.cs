@@ -57,10 +57,9 @@ builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowAngularApp", policy =>
     {
-        policy.WithOrigins("http://localhost:4200", "https://localhost:4200")
-              .AllowAnyHeader()
+        policy.AllowAnyOrigin()
               .AllowAnyMethod()
-              .AllowCredentials();
+              .AllowAnyHeader();
     });
 });
 
@@ -97,12 +96,13 @@ builder.Services.AddAuthorization();
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
+app.UseSwagger();
+
+app.UseSwaggerUI(c =>
 {
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
+    c.SwaggerEndpoint("/swagger/v1/swagger.json", "RentHub API V1");
+    c.RoutePrefix = string.Empty;
+});
 
 app.UseCors("AllowAngularApp");
 

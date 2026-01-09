@@ -116,6 +116,7 @@ public class RequestChangePasswordOtpDTO
 
 public class ConfirmChangePasswordDTO
 {
+    public string Email { get; set; }
     public string OtpCode { get; set; } = string.Empty;
     public string NewPassword { get; set; } = string.Empty;
 }

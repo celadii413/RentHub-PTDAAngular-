@@ -1,0 +1,243 @@
+<div class="container" style="max-width: 1200px;">
+    <!-- TỔNG QUAN -->
+    <div *ngIf="currentView === 'overview'" class="fade-in">
+        <div class="page-header">
+            <h1><i class='bx bx-home-smile text-gradient'></i> Tổng quan phòng</h1>
+        </div>
+         
+        <div class="grid-layout">
+            <!-- Card Thông tin -->
+            <div class="card info-card">
+                <div class="card-bg-icon"><i class='bx bx-home'></i></div>
+                <h3 class="mb-4 text-white">Thông tin phòng của bạn</h3>
+                <div *ngIf="room; else noRoom" class="room-details">
+                    <div class="detail-row">
+                        <span class="lbl"><i class='bx bx-map'></i> Dãy nhà</span>
+                        <span class="val">{{ room.tenDayTro }}</span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="lbl"><i class='bx bx-door-open'></i> Số phòng</span>
+                        <span class="val text-highlight">{{ room.soPhong }}</span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="lbl"><i class='bx bx-money'></i> Giá thuê</span>
+                        <span class="val">{{ room.giaThue | number }} đ</span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="lbl"><i class='bx bx-wallet'></i> Tiền cọc</span>
+                        <span class="val">{{ room.tienCoc | number }} đ</span>
+                    </div>
+                </div>
+                <ng-template #noRoom><div class="alert alert-warning">Chưa có thông tin phòng</div></ng-template>
+            </div>
+
+            <!-- Card Hợp Đồng -->
+            <div class="card">
+                <h3 class="mb-4"><i class='bx bx-file'></i> Hợp đồng thuê</h3>
+                <div *ngIf="contracts.length === 0" class="text-muted">Chưa có hợp đồng</div>
+                <div *ngFor="let c of contracts" class="contract-card">
+                    <div class="icon"><i class='bx bxs-file-pdf'></i></div>
+                    <div class="info">
+                        <div class="code">Mã: {{ c.maHopDong }}</div>
+                        <div class="date">{{ c.ngayBatDau | date:'dd/MM/yyyy' }} - {{ c.ngayKetThuc | date:'dd/MM/yyyy' }}</div>
+                    </div>
+                    <!-- Nút đồng bộ -->
+                    <button class="btn btn-outline btn-sm" (click)="downloadContract(c.id)">
+                        <i class='bx bx-download'></i> Tải về
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- HÓA ĐƠN -->
+    <div *ngIf="currentView === 'billing'" class="fade-in">
+        <div class="page-header">
+            <h1><i class='bx bx-receipt text-gradient'></i> Hóa đơn & Thanh toán</h1>
+        </div>
+        <div class="card p-0">
+            <div class="table-wrapper">
+                <table class="table align-middle">
+                    <thead>
+                        <tr>
+                            <th>Tháng/Năm</th>
+                            <th>Chi tiết phí</th>
+                            <th>Tổng tiền</th>
+                            <th>Trạng thái</th>
+                            <th class="text-right">Hành động</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let h of invoices">
+                            <td><strong>{{ h.thangNam | date:'MM/yyyy' }}</strong></td>
+                            <td>
+                                <div class="text-muted text-sm">
+                                    Điện: {{h.tienDien|number}}, Nước: {{h.tienNuoc|number}}
+                                </div>
+                            </td>
+                            <td><strong class="text-primary">{{ h.tongTien | number }} đ</strong></td>
+                            <td>
+                                <span class="badge" [ngClass]="getStatusClass(h.trangThai)">{{ h.trangThai }}</span>
+                            </td>
+                            <td class="text-right">
+                            <div class="d-flex justify-content-end gap-2">
+                                <button class="btn btn-outline btn-sm" (click)="downloadInvoice(h.id)" title="Tải hóa đơn">
+                                    <i class='bx bxs-file-pdf'></i> PDF
+                                </button>
+                                <button class="btn btn-primary btn-sm" (click)="openPaymentModal(h)">
+                                    <i class='bx bx-credit-card'></i> Thanh toán
+                                </button>
+                            </div>
+                            </td>
+                        </tr>
+                        <tr *ngIf="invoices.length===0">
+                            <td colspan="5" class="text-center text-muted p-4">Chưa có hóa đơn nào</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- YÊU CẦU & CHỈ SỐ -->
+    <div *ngIf="currentView === 'requests'" class="fade-in">
+        <div class="page-header">
+            <h1><i class='bx bx-support text-gradient'></i> Yêu cầu & Chỉ số</h1>
+        </div>
+        <div class="grid-layout">
+        <!-- Form Yêu Cầu -->
+            <div class="card">
+                <h3 class="mb-4">Gửi yêu cầu hỗ trợ</h3>
+                <form (ngSubmit)="submitRequest()">
+                    <div class="form-group">
+                        <label class="form-label">Loại yêu cầu</label>
+                        <select class="form-control" [(ngModel)]="requestForm.loaiYeuCau" name="loai">
+                            <option value="Sửa chữa">Sửa chữa thiết bị</option>
+                            <option value="An ninh">Vấn đề an ninh</option>
+                            <option value="Khác">Khác</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Tiêu đề</label>
+                        <input class="form-control" [(ngModel)]="requestForm.tieuDe" name="td" required placeholder="Ví dụ: Bóng đèn hỏng...">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Nội dung</label>
+                        <textarea class="form-control" [(ngModel)]="requestForm.noiDung" name="nd" rows="3" required></textarea>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Hình ảnh đính kèm (Tùy chọn)</label>
+                        <input type="file" class="form-control" (change)="onRequestFileSelect($event)">
+                    </div>
+
+                    <button class="btn btn-primary w-100" type="submit" [disabled]="requestSubmitting">
+                        <i class='bx bx-send'></i> {{ requestSubmitting ? 'Đang gửi...' : 'Gửi yêu cầu' }}
+                    </button>
+                </form>
+            </div>
+
+            <!-- Form Chỉ Số -->
+            <div class="card">
+               <h3 class="mb-4">Gửi chỉ số Điện/Nước</h3>
+               <form (ngSubmit)="submitMeter()">
+                    <div class="d-flex gap-3">
+                        <div class="form-group w-100">
+                            <label class="form-label">Loại công tơ</label>
+                            <select class="form-control" [(ngModel)]="meterForm.loaiCongTo" name="loaiM">
+                            <option value="Điện">Điện</option>
+                            <option value="Nước">Nước</option>
+                            </select>
+                        </div>
+                        <div class="form-group w-100">
+                            <label class="form-label">Chỉ số mới</label>
+                            <input type="number" class="form-control" [(ngModel)]="meterForm.chiSo" name="cs" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                            <label class="form-label">Tháng ghi sổ</label>
+                            <input type="month" class="form-control" [(ngModel)]="meterForm.thangNam" name="tnM" required>
+                        </div>
+                    <div class="form-group">
+                            <label class="form-label">Ảnh đồng hồ (Tùy chọn)</label>
+                            <div class="file-upload-container">
+                                <input type="file" (change)="onMeterFileSelect($event)" id="meterFile" hidden>
+                                <label for="meterFile" class="file-label-btn">
+                                    <i class='bx bx-camera'></i> {{ meterFile ? meterFile.name : 'Chụp ảnh chỉ số' }}
+                                </label>
+                            </div>
+                    </div>
+                    <button class="btn btn-primary w-100 py-3 mt-2" type="submit" [disabled]="meterSubmitting">
+                        <i class='bx bx-paper-plane'></i> {{ meterSubmitting ? 'Đang gửi...' : 'Gửi chỉ số' }}
+                    </button>
+                </form>
+            </div>
+            <!-- LỊCH SỬ GỬI CHỈ SỐ -->
+            <div class="card modern-card">
+                <h3 class="card-subtitle"><i class='bx bx-history'></i> Lịch sử gửi gần đây</h3>
+                <div class="history-scroll custom-scrollbar" style="max-height: 300px; overflow-y: auto;">
+                    <div *ngIf="submittedMeters.length === 0" class="text-center p-4 text-muted">Chưa có lịch sử</div>
+                    <div *ngFor="let m of submittedMeters" class="history-item-box mb-3">
+                        <div class="d-flex justify-content-between align-items-start">
+                            <div>
+                                <span class="type-tag" [class.elec]="m.loaiCongTo==='Điện'" [class.water]="m.loaiCongTo==='Nước'">{{m.loaiCongTo}}</span>
+                                <strong class="ms-2" style="font-size: 16px;">{{m.chiSo | number}}</strong>
+                                <div class="text-xs text-muted mt-1">Kỳ: {{m.thangNam | date:'MM/yyyy'}}</div>
+                            </div>
+                            <span class="badge" [ngClass]="getStatusClass(m.trangThai)">{{m.trangThai}}</span>
+                        </div>
+                        <div *ngIf="m.trangThai === 'Từ chối'" class="reject-reason-box mt-2">
+                            <i class='bx bx-info-circle'></i> <strong>Lý do:</strong> {{ m.ghiChu }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- THÔNG BÁO -->
+    <div *ngIf="currentView === 'notifications'" class="fade-in">
+        <div class="page-header">
+            <h1><i class='bx bx-bell text-gradient'></i> Thông báo mới nhất</h1>
+        </div>
+        <div class="card p-0">
+            <div class="notif-list">
+               <div *ngIf="notifications.length===0" class="p-5 text-center text-muted">Bạn không có thông báo nào</div>
+               <div *ngFor="let n of notifications" class="notif-item">
+                  <div class="notif-icon"><i class='bx bx-envelope'></i></div>
+                  <div class="notif-content">
+                        <div class="d-flex justify-content-between mb-1">
+                            <strong>{{n.tieuDe}}</strong>
+                            <span class="text-muted text-sm">{{n.ngayTao | date:'dd/MM HH:mm'}}</span>
+                        </div>
+                        <p>{{n.noiDung}}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal" *ngIf="showPaymentModal" (click)="closePaymentModal($event)">
+    <div class="modal-content text-center">
+        <div class="modal-header">
+            <h3 class="modal-title">Thanh toán</h3>
+            <button class="close-btn" (click)="showPaymentModal=false"><i class='bx bx-x'></i></button>
+        </div>
+        <p class="mb-3">Quét mã VietQR để thanh toán nhanh:</p>
+        <img [src]="qrUrl" *ngIf="qrUrl" style="max-width: 100%; border-radius: 12px; margin-bottom: 20px; border: 1px solid var(--border); box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
+        <div *ngIf="!qrUrl" class="alert alert-warning mb-3">Chủ nhà chưa cài đặt thông tin ngân hàng.</div>
+          
+        <div class="text-left">
+            <label class="form-label">Gửi ảnh xác nhận giao dịch:</label>
+            <input type="file" (change)="onProofFileSelect($event)" class="form-control mb-3">
+        </div>
+          
+        <div class="modal-footer">
+            <button class="btn btn-secondary" (click)="showPaymentModal=false">Đóng</button>
+            <button class="btn btn-primary" (click)="submitProof()" [disabled]="!proofFile">
+                <i class='bx bx-check'></i> Gửi xác nhận
+            </button>
+        </div>
+    </div>
+</div>

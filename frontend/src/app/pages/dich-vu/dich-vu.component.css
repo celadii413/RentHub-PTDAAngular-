@@ -1,0 +1,27 @@
+.icon-circle { 
+    width: 32px; 
+    height: 32px; 
+    border-radius: 50%; 
+    display: flex; 
+    align-items: center; 
+    justify-content: center; 
+    font-size: 18px; 
+    color: white; 
+    margin-right: 10px; 
+}
+
+.bg-warning { 
+    background: #f59e0b; 
+}
+
+.bg-info { 
+    background: #0ea5e9; 
+}
+
+.bg-purple { 
+    background: #8b5cf6; 
+}
+
+.bg-secondary { 
+    background: #64748b; 
+}

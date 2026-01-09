@@ -188,19 +188,49 @@ public class AuthController : ControllerBase
     }
 
     [HttpPost("confirm-change-password")]
-    [Authorize]
+    [AllowAnonymous] 
     public async Task<IActionResult> ConfirmChangePassword([FromBody] ConfirmChangePasswordDTO dto)
     {
-        var userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)!.Value);
+        try
+        {
+            if (string.IsNullOrEmpty(dto.Email)) 
+                return BadRequest(new { message = "Vui lòng cung cấp Email." });
+            
+            if (dto.NewPassword.Length < 6) 
+                return BadRequest(new { message = "Mật khẩu mới phải có ít nhất 6 ký tự" });
+            var result = await _authService.ChangePasswordWithOtpAsync(dto.Email, dto.NewPassword, dto.OtpCode);
 
-        if (dto.NewPassword.Length < 6)
-            return BadRequest(new { message = "Mật khẩu mới phải có ít nhất 6 ký tự" });
+            return Ok(new { message = "Đổi mật khẩu thành công" });
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(new { message = ex.Message });
+        }
+    }
 
-        var result = await _authService.ChangePasswordWithOtpAsync(userId, dto.NewPassword, dto.OtpCode);
+    private bool IsPasswordStrong(string password)
+    {
+        // Ít nhất 6 ký tự, gồm ít nhất 1 chữ cái và 1 con số
+        var regex = new System.Text.RegularExpressions.Regex(@"^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{6,}$");
+        return regex.IsMatch(password);
+    }
 
-        if (!result)
-            return BadRequest(new { message = "Mã OTP không đúng hoặc đã hết hạn" });
+    [HttpPost("reset-password-with-otp")]
+    [AllowAnonymous] // Cho phép người chưa đăng nhập gọi
+    public async Task<IActionResult> ResetPasswordWithOtp([FromBody] ResetPasswordWithOtpDTO dto)
+    {
+        // Tìm user qua email
+        var user = await _context.Users.FirstOrDefaultAsync(u => u.Email == dto.Email);
+        if (user == null) return NotFound(new { message = "Email không tồn tại" });
 
-        return Ok(new { message = "Đổi mật khẩu thành công" });
+        // Xác thực OTP (Sử dụng service có sẵn của bạn)
+        var isValid = await _otpService.VerifyOtpAsync(dto.Email, dto.OtpCode, "ResetPassword");
+        if (!isValid) return BadRequest(new { message = "Mã OTP không đúng hoặc đã hết hạn" });
+
+        // Cập nhật mật khẩu
+        user.PasswordHash = BCrypt.Net.BCrypt.HashPassword(dto.NewPassword);
+        await _context.SaveChangesAsync();
+
+        return Ok(new { message = "Đặt lại mật khẩu thành công" });
     }
 }

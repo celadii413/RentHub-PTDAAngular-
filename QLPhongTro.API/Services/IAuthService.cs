@@ -13,7 +13,7 @@ public interface IAuthService
     Task<string?> ForgotPasswordAsync(string email);
     Task<UserDTO?> GetUserByIdAsync(int id);
     Task<bool> UpdateProfileAsync(int id, UpdateProfileDTO updateProfileDto);
-    Task<bool> ValidateOldPasswordAsync(int userId, string oldPassword); 
-    Task<bool> ChangePasswordWithOtpAsync(int userId, string newPassword, string otpCode); 
+    Task<bool> ValidateOldPasswordAsync(int userId, string oldPassword);
+    Task<bool> ChangePasswordWithOtpAsync(string email, string newPassword, string otpCode);
 }
 
