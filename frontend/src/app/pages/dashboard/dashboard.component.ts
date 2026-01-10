@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { ApiService, ThongKe, DoanhThuThang } from '../../services/api.service';
 import { AuthService } from '../../services/auth.service';
-import { forkJoin } from 'rxjs'; 
+import { forkJoin } from 'rxjs';
 import { finalize } from 'rxjs/operators';
 import { ToastService } from '../../services/toast.service';
 
@@ -11,8 +11,8 @@ import { ToastService } from '../../services/toast.service';
   selector: 'app-dashboard',
   standalone: true,
   imports: [CommonModule],
-  templateUrl: './dashboard.component.html', 
-  styleUrls: ['./dashboard.component.css'] 
+  templateUrl: './dashboard.component.html',
+  styleUrls: ['./dashboard.component.css']
 })
 export class DashboardComponent implements OnInit {
   thongKe: ThongKe | null = null;
@@ -20,7 +20,7 @@ export class DashboardComponent implements OnInit {
   expiringContracts: any[] = [];
   isLoading = false;
 
-  constructor(private apiService: ApiService, private authService: AuthService, private router: Router, private toastService: ToastService ) {}
+  constructor(private apiService: ApiService, private authService: AuthService, private router: Router, private toastService: ToastService) { }
 
   ngOnInit() {
     if (this.authService.getCurrentUser()?.vaiTro === 'Người thuê') {

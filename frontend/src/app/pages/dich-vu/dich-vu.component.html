@@ -28,7 +28,7 @@
                                     'bg-purple': dv.tenDichVu === 'Internet',
                                     'bg-secondary': !['Điện','Nước','Internet'].includes(dv.tenDichVu)
                                 }">
-                                <i class='bx' [ngClass]="{
+                                    <i class='bx' [ngClass]="{
                                     'bxs-bolt': dv.tenDichVu === 'Điện',
                                     'bxs-droplet': dv.tenDichVu === 'Nước',
                                     'bx-wifi': dv.tenDichVu === 'Internet',
@@ -43,12 +43,16 @@
                         <td><strong class="text-success">{{ dv.giaMacDinh | number }} đ</strong></td>
                         <td>
                             <span *ngIf="dv.loaiGia === 'Chung'" class="badge badge-success">Toàn bộ hệ thống</span>
-                            <span *ngIf="dv.loaiGia === 'Theo dãy'" class="badge badge-info">Dãy: {{ dv.tenDayTro }}</span>
-                            <span *ngIf="dv.loaiGia === 'Theo phòng'" class="badge badge-warning">Phòng: {{ dv.soPhong }}</span>
+                            <span *ngIf="dv.loaiGia === 'Theo dãy'" class="badge badge-info">Dãy: {{ dv.tenDayTro
+                                }}</span>
+                            <span *ngIf="dv.loaiGia === 'Theo phòng'" class="badge badge-warning">Phòng: {{ dv.soPhong
+                                }}</span>
                         </td>
                         <td class="text-right">
-                            <button class="btn-icon-action edit" (click)="editDichVu(dv)"><i class='bx bx-edit-alt'></i></button>
-                            <button class="btn-icon-action delete" (click)="deleteDichVu(dv.id)"><i class='bx bx-trash'></i></button>
+                            <button class="btn-icon-action edit" (click)="editDichVu(dv)"><i
+                                    class='bx bx-edit-alt'></i></button>
+                            <button class="btn-icon-action delete" (click)="deleteDichVu(dv.id)"><i
+                                    class='bx bx-trash'></i></button>
                         </td>
                     </tr>
                 </tbody>
@@ -67,9 +71,14 @@
         <form (ngSubmit)="saveDichVu()">
             <div class="form-group">
                 <label class="form-label">Tên dịch vụ <span class="text-danger">*</span></label>
-                <input type="text" class="form-control" [(ngModel)]="formData.tenDichVu" name="tenDichVu" required list="serviceOptions" placeholder="Vd: Điện, Nước, Internet...">
+                <input type="text" class="form-control" [(ngModel)]="formData.tenDichVu" name="tenDichVu" required
+                    list="serviceOptions" placeholder="Vd: Điện, Nước, Internet...">
                 <datalist id="serviceOptions">
-                    <option value="Điện"><option value="Nước"><option value="Internet"><option value="Rác"><option value="Vệ sinh">
+                    <option value="Điện">
+                    <option value="Nước">
+                    <option value="Internet">
+                    <option value="Rác">
+                    <option value="Vệ sinh">
                 </datalist>
                 <div class="text-muted mt-1" style="font-size: 12px;">
                     * Đặt tên chính xác "Điện" hoặc "Nước" để hệ thống tính tiền tự động.
@@ -78,16 +87,19 @@
             <div class="d-flex gap-3">
                 <div class="form-group w-100">
                     <label class="form-label">Đơn vị tính <span class="text-danger">*</span></label>
-                    <input type="text" class="form-control" [(ngModel)]="formData.donViTinh" name="donViTinh" required placeholder="kWh, m3, tháng...">
+                    <input type="text" class="form-control" [(ngModel)]="formData.donViTinh" name="donViTinh" required
+                        placeholder="kWh, m3, tháng...">
                 </div>
                 <div class="form-group w-100">
                     <label class="form-label">Đơn giá (VNĐ) <span class="text-danger">*</span></label>
-                    <input type="number" class="form-control" [(ngModel)]="formData.giaMacDinh" name="giaMacDinh" required>
+                    <input type="number" class="form-control" [(ngModel)]="formData.giaMacDinh" name="giaMacDinh"
+                        required>
                 </div>
             </div>
             <div class="form-group">
                 <label class="form-label">Phạm vi áp dụng</label>
-                <select class="form-control" [(ngModel)]="formData.loaiGia" name="loaiGia" required (change)="onLoaiGiaChange()">
+                <select class="form-control" [(ngModel)]="formData.loaiGia" name="loaiGia" required
+                    (change)="onLoaiGiaChange()">
                     <option value="Chung">Áp dụng chung tất cả</option>
                     <option value="Theo dãy">Theo Dãy nhà</option>
                     <option value="Theo phòng">Theo Phòng</option>

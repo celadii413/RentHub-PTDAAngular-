@@ -184,7 +184,9 @@ public class AuthController : ControllerBase
         // Gửi OTP qua email để thay đổi mật khẩu
         await _otpService.GenerateOtpAsync(user.Email, "ChangePassword");
 
-        return Ok(new { message = "Mật khẩu cũ chính xác. Mã OTP đã được gửi đến email của bạn." });
+        return Ok(new { 
+            message = "Mật khẩu cũ chính xác. Mã OTP đã được gửi đến email của bạn." 
+        });
     }
 
     [HttpPost("confirm-change-password")]
@@ -208,29 +210,5 @@ public class AuthController : ControllerBase
         }
     }
 
-    private bool IsPasswordStrong(string password)
-    {
-        // Ít nhất 6 ký tự, gồm ít nhất 1 chữ cái và 1 con số
-        var regex = new System.Text.RegularExpressions.Regex(@"^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{6,}$");
-        return regex.IsMatch(password);
-    }
-
-    [HttpPost("reset-password-with-otp")]
-    [AllowAnonymous] // Cho phép người chưa đăng nhập gọi
-    public async Task<IActionResult> ResetPasswordWithOtp([FromBody] ResetPasswordWithOtpDTO dto)
-    {
-        // Tìm user qua email
-        var user = await _context.Users.FirstOrDefaultAsync(u => u.Email == dto.Email);
-        if (user == null) return NotFound(new { message = "Email không tồn tại" });
-
-        // Xác thực OTP (Sử dụng service có sẵn của bạn)
-        var isValid = await _otpService.VerifyOtpAsync(dto.Email, dto.OtpCode, "ResetPassword");
-        if (!isValid) return BadRequest(new { message = "Mã OTP không đúng hoặc đã hết hạn" });
-
-        // Cập nhật mật khẩu
-        user.PasswordHash = BCrypt.Net.BCrypt.HashPassword(dto.NewPassword);
-        await _context.SaveChangesAsync();
-
-        return Ok(new { message = "Đặt lại mật khẩu thành công" });
-    }
+    
 }

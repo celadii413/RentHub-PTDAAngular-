@@ -41,13 +41,9 @@ public class AuthService : IAuthService
             dayTroId = dayTro?.Id;
         }
 
-        // --- TÍNH TOÁN DỮ LIỆU ĐỂ TRẢ VỀ FRONTEND ---
-        // Frontend có thể cần biết User này đang thuê ở đâu (KhachThueId active)
         var activeTenant = await _context.KhachThues
             .FirstOrDefaultAsync(k => k.UserId == user.Id && k.NgayKetThucThue == null);
 
-        // Lưu ý: UserDTO của bạn có thể không có trường KhachThueId, 
-        // nếu Frontend cần, bạn nên thêm vào UserDTO. Ở đây tôi trả về UserDTO chuẩn.
         return new LoginResponseDTO
         {
             Token = token,
@@ -67,7 +63,7 @@ public class AuthService : IAuthService
     public async Task<bool> RegisterAsync(RegisterDTO registerDto)
     {
         if (await _context.Users.AnyAsync(u => u.Username == registerDto.Username || u.Email == registerDto.Email)) return false;
-        var user = new User { Username = registerDto.Username, Email = registerDto.Email, PasswordHash = BCrypt.Net.BCrypt.HashPassword(registerDto.Password), HoTen = registerDto.HoTen, SoDienThoai = registerDto.SoDienThoai, VaiTro = registerDto.VaiTro ?? "Nhân viên", IsActive = true, NgayTao = DateTime.Now };
+        var user = new User { Username = registerDto.Username, Email = registerDto.Email, PasswordHash = BCrypt.Net.BCrypt.HashPassword(registerDto.Password), HoTen = registerDto.HoTen, SoDienThoai = registerDto.SoDienThoai, VaiTro = registerDto.VaiTro ?? "Người thuê", IsActive = true, NgayTao = DateTime.Now };
         _context.Users.Add(user);
         await _context.SaveChangesAsync();
         return true;
@@ -133,7 +129,7 @@ public class AuthService : IAuthService
         user.SoTaiKhoan = dto.SoTaiKhoan;
         user.TenTaiKhoan = dto.TenTaiKhoan;
 
-        // --- SỬA: Cập nhật thông tin sang KhachThue active dựa trên UserId ---
+        // Cập nhật thông tin sang KhachThue active dựa trên UserId 
         if (user.VaiTro == "Người thuê")
         {
             var activeTenants = await _context.KhachThues
@@ -185,13 +181,12 @@ public class AuthService : IAuthService
             VaiTro = "Người thuê",
             IsActive = true,
             NgayTao = DateTime.Now
-            // Xóa KhachThueId
         };
 
         _context.Users.Add(user);
         await _context.SaveChangesAsync();
 
-        // --- LOGIC MỚI: Link User với KhachThue qua Email ---
+        //  Link User với KhachThue qua Email 
         var tenants = await _context.KhachThues.Where(k => k.Email == dto.Email).ToListAsync();
         foreach (var t in tenants) t.UserId = user.Id;
         if (tenants.Any()) await _context.SaveChangesAsync();
@@ -218,7 +213,6 @@ public class AuthService : IAuthService
         var user = await _context.Users.FindAsync(userId);
         return user != null && BCrypt.Net.BCrypt.Verify(oldPassword, user.PasswordHash);
     }
-    // Trong file QLPhongTro.API/Services/AuthService.cs
 
     public async Task<bool> ChangePasswordWithOtpAsync(string email, string newPassword, string otpCode)
     {

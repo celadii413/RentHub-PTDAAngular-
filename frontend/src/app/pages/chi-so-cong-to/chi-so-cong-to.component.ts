@@ -8,8 +8,8 @@ import { ToastService } from '../../services/toast.service';
   selector: 'app-chi-so-cong-to',
   standalone: true,
   imports: [CommonModule, FormsModule],
-  templateUrl: './chi-so-cong-to.component.html', 
-  styleUrls: ['./chi-so-cong-to.component.css'] 
+  templateUrl: './chi-so-cong-to.component.html',
+  styleUrls: ['./chi-so-cong-to.component.css']
 })
 export class ChiSoCongToComponent implements OnInit {
   chiSoCongTos: ChiSoCongTo[] = [];
@@ -27,13 +27,13 @@ export class ChiSoCongToComponent implements OnInit {
     thangNam: '',
     ghiChu: ''
   };
-  goiYChiSo: any = { 
-    chiSoCu: 0, 
-    chiSoMoiGoiY: 0 
+  goiYChiSo: any = {
+    chiSoCu: 0,
+    chiSoMoiGoiY: 0
   };
   editingId: number | null = null;
 
-  constructor(private apiService: ApiService, private toastService: ToastService ) {}
+  constructor(private apiService: ApiService, private toastService: ToastService) { }
 
   ngOnInit() {
     this.loadPhongTros();
@@ -45,9 +45,9 @@ export class ChiSoCongToComponent implements OnInit {
     const params: any = {};
     if (this.filterPhongTroId) params.phongTroId = this.filterPhongTroId;
     if (this.filterLoaiCongTo) params.loaiCongTo = this.filterLoaiCongTo;
-    if (this.filterThangNam) params.thangNam = this.filterThangNam + '-01'; 
+    if (this.filterThangNam) params.thangNam = this.filterThangNam + '-01';
     this.apiService.getChiSoCongTos(params.phongTroId, params.loaiCongTo, params.thangNam).subscribe(data => {
-        this.chiSoCongTos = data;
+      this.chiSoCongTos = data;
     });
   }
 
@@ -58,11 +58,11 @@ export class ChiSoCongToComponent implements OnInit {
   loadGoiYChiSo() {
     if (this.formData.phongTroId && this.formData.loaiCongTo) {
       this.apiService.getGoiYChiSo(parseInt(this.formData.phongTroId), this.formData.loaiCongTo).subscribe(data => {
-          this.goiYChiSo = data;
-          if (!this.isEdit) {
-            this.formData.chiSoCu = data.chiSoCu || 0;
-            this.formData.chiSoMoi = data.chiSoMoiGoiY || 0;
-          }
+        this.goiYChiSo = data;
+        if (!this.isEdit) {
+          this.formData.chiSoCu = data.chiSoCu || 0;
+          this.formData.chiSoMoi = data.chiSoMoiGoiY || 0;
+        }
       });
     }
   }
@@ -100,30 +100,30 @@ export class ChiSoCongToComponent implements OnInit {
     const data = { ...this.formData, phongTroId: parseInt(this.formData.phongTroId), thangNam: this.formData.thangNam + '-01' };
     const req = this.isEdit ? this.apiService.updateChiSoCongTo(this.editingId!, data) : this.apiService.createChiSoCongTo(data);
     req.subscribe({
-        next: () => {
-            this.loadChiSoCongTos();
-            this.closeModal();
-            this.toastService.success(this.isEdit ? 'Cập nhật chỉ số thành công!' : 'Ghi chỉ số mới thành công!');
-        },
-        error: (err) => this.toastService.error(err.error?.message || 'Lỗi khi lưu chỉ số')
+      next: () => {
+        this.loadChiSoCongTos();
+        this.closeModal();
+        this.toastService.success(this.isEdit ? 'Cập nhật chỉ số thành công!' : 'Ghi chỉ số mới thành công!');
+      },
+      error: (err) => this.toastService.error(err.error?.message || 'Lỗi khi lưu chỉ số')
     });
   }
 
   deleteChiSo(id: number) {
     if (confirm('Bạn có chắc chắn muốn xóa chỉ số này?')) {
       this.apiService.deleteChiSoCongTo(id).subscribe({
-          next: () => {
-              this.loadChiSoCongTos();
-              this.toastService.success('Đã xóa chỉ số!');
-          },
-          error: (err) => this.toastService.error(err.error?.message || 'Lỗi xóa chỉ số')
+        next: () => {
+          this.loadChiSoCongTos();
+          this.toastService.success('Đã xóa chỉ số!');
+        },
+        error: (err) => this.toastService.error(err.error?.message || 'Lỗi xóa chỉ số')
       });
     }
   }
 
   calculateSoTieuThu() {
-      if (this.formData.chiSoMoi >= this.formData.chiSoCu) {
-        this.formData.soTieuThu = this.formData.chiSoMoi - this.formData.chiSoCu;
-      }
+    if (this.formData.chiSoMoi >= this.formData.chiSoCu) {
+      this.formData.soTieuThu = this.formData.chiSoMoi - this.formData.chiSoCu;
+    }
   }
 }

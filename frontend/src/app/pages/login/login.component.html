@@ -17,28 +17,37 @@
 
             <!-- Tab chuyển đổi -->
             <div class="login-tabs">
-                <button class="tab-button" [class.active]="loginMethod === 'password'" (click)="switchLoginMethod('password')"><i class='bx bx-lock-alt'></i> Mật khẩu</button>
-                <button class="tab-button" [class.active]="loginMethod === 'otp'" (click)="switchLoginMethod('otp')"><i class='bx bx-envelope'></i> OTP Email</button>
+                <button class="tab-button" [class.active]="loginMethod === 'password'"
+                    (click)="switchLoginMethod('password')"><i class='bx bx-lock-alt'></i> Mật khẩu</button>
+                <button class="tab-button" [class.active]="loginMethod === 'otp'" (click)="switchLoginMethod('otp')"><i
+                        class='bx bx-envelope'></i> OTP Email</button>
             </div>
 
             <!-- Form Password -->
             <form (ngSubmit)="onLogin()" *ngIf="loginMethod === 'password' && !isLoading">
                 <div class="form-group">
                     <label class="form-label">Tên đăng nhập / Email</label>
-                    <div class="input-icon"><i class='bx bx-user'></i><input type="text" class="form-control" [(ngModel)]="username" name="username" required placeholder="Nhập username hoặc email"></div>
+                    <div class="input-icon"><i class='bx bx-user'></i><input type="text" class="form-control"
+                            [(ngModel)]="username" name="username" required placeholder="Nhập username hoặc email">
+                    </div>
                 </div>
                 <div class="form-group">
                     <label class="form-label">Mật khẩu</label>
-                    <div class="input-icon"><i class='bx bx-key'></i><input type="password" class="form-control" [(ngModel)]="password" name="password" required placeholder="Nhập mật khẩu"></div>
+                    <div class="input-icon"><i class='bx bx-key'></i><input type="password" class="form-control"
+                            [(ngModel)]="password" name="password" required placeholder="Nhập mật khẩu"></div>
                 </div>
                 <div class="text-right mb-3">
-                    <a (click)="switchToForgot()" class="btn-link" style="font-size: 13px; cursor: pointer;">Quên mật khẩu?</a>
+                    <a (click)="switchToForgot()" class="btn-link" style="font-size: 13px; cursor: pointer;">Quên mật
+                        khẩu?</a>
                 </div>
-                <div class="alert-error" *ngIf="errorMessage"><i class='bx bx-error-circle'></i> {{ errorMessage }}</div>
-                <button type="submit" class="btn btn-primary btn-block">Đăng nhập ngay <i class='bx bx-right-arrow-alt'></i></button>
+                <div class="alert-error" *ngIf="errorMessage"><i class='bx bx-error-circle'></i> {{ errorMessage }}
+                </div>
+                <button type="submit" class="btn btn-primary btn-block">Đăng nhập ngay <i
+                        class='bx bx-right-arrow-alt'></i></button>
                 <div class="auth-footer">
                     <p>Chưa có tài khoản? <a routerLink="/register">Đăng ký Chủ nhà</a></p>
-                    <p style="margin-top: 10px;">Bạn là người thuê? <a routerLink="/register-tenant">Đăng ký tại đây</a></p>
+                    <p style="margin-top: 10px;">Bạn là người thuê? <a routerLink="/register-tenant">Đăng ký tại đây</a>
+                    </p>
                 </div>
             </form>
 
@@ -49,12 +58,17 @@
                     <form (ngSubmit)="sendLoginOtp()">
                         <div class="form-group">
                             <label class="form-label">Email nhận OTP <span style="color:red">*</span></label>
-                            <div class="input-icon"><i class='bx bx-envelope'></i><input type="email" class="form-control" [(ngModel)]="loginEmail" name="loginEmail" required placeholder="name@example.com" [disabled]="isSendingOtp"></div>
+                            <div class="input-icon"><i class='bx bx-envelope'></i><input type="email"
+                                    class="form-control" [(ngModel)]="loginEmail" name="loginEmail" required
+                                    placeholder="name@example.com" [disabled]="isSendingOtp"></div>
                         </div>
-                        <div class="alert-error" *ngIf="errorMessage"><i class='bx bx-error-circle'></i> {{ errorMessage }}</div>
-                        <div class="alert-success" *ngIf="successMessage"><i class='bx bx-check-circle'></i> {{ successMessage }}</div>
-                        <button type="submit" class="btn btn-primary btn-block" [disabled]="!loginEmail || isSendingOtp">
-                            <i class='bx' [ngClass]="isSendingOtp ? 'bx-loader-alt bx-spin' : 'bx-send'"></i> 
+                        <div class="alert-error" *ngIf="errorMessage"><i class='bx bx-error-circle'></i> {{ errorMessage
+                            }}</div>
+                        <div class="alert-success" *ngIf="successMessage"><i class='bx bx-check-circle'></i> {{
+                            successMessage }}</div>
+                        <button type="submit" class="btn btn-primary btn-block"
+                            [disabled]="!loginEmail || isSendingOtp">
+                            <i class='bx' [ngClass]="isSendingOtp ? 'bx-loader-alt bx-spin' : 'bx-send'"></i>
                             {{ isSendingOtp ? 'Đang gửi...' : 'Gửi Mã OTP' }}
                         </button>
                     </form>
@@ -62,13 +76,27 @@
 
                 <!-- STEP 2 -->
                 <div *ngIf="otpStep === 2">
-                    <div class="text-center mb-4"><p class="text-muted mb-1">Mã OTP 6 số đã được gửi tới</p><strong style="color: var(--text-main); font-size: 16px;">{{ loginEmail }}</strong></div>
+                    <div class="text-center mb-4">
+                        <p class="text-muted mb-1">Mã OTP 6 số đã được gửi tới</p><strong
+                            style="color: var(--text-main); font-size: 16px;">{{ loginEmail }}</strong>
+                    </div>
                     <form (ngSubmit)="loginWithOtp()">
-                        <div class="form-group mb-3"><input type="text" class="form-control otp-input" [(ngModel)]="loginOtpCode" name="loginOtpCode" required placeholder="000000" maxlength="6" pattern="[0-9]{6}" (input)="onOtpInput()" [disabled]="isVerifyingOtp"></div>
-                        <div class="form-group text-center mb-4"><button type="button" class="btn-link" (click)="resendLoginOtp()" [disabled]="isResendingOtp || resendCountdown > 0"><span *ngIf="resendCountdown === 0 && !isResendingOtp">Gửi lại mã</span><span *ngIf="isResendingOtp">Đang gửi...</span><span *ngIf="resendCountdown > 0">Gửi lại sau {{ resendCountdown }}s</span></button></div>
-                        <div class="alert-error mb-3" *ngIf="errorMessage"><i class='bx bx-error'></i> {{ errorMessage }}</div>
-                        <button type="submit" class="btn btn-primary btn-block mb-3" [disabled]="loginOtpCode.length !== 6 || isVerifyingOtp">{{ isVerifyingOtp ? 'Đang xử lý...' : 'Xác thực & Đăng nhập' }}</button>
-                        <button type="button" class="btn btn-outline btn-block" (click)="backToSendOtp()">Quay lại</button>
+                        <div class="form-group mb-3"><input type="text" class="form-control otp-input"
+                                [(ngModel)]="loginOtpCode" name="loginOtpCode" required placeholder="000000"
+                                maxlength="6" pattern="[0-9]{6}" (input)="onOtpInput()" [disabled]="isVerifyingOtp">
+                        </div>
+                        <div class="form-group text-center mb-4"><button type="button" class="btn-link"
+                                (click)="resendLoginOtp()" [disabled]="isResendingOtp || resendCountdown > 0"><span
+                                    *ngIf="resendCountdown === 0 && !isResendingOtp">Gửi lại mã</span><span
+                                    *ngIf="isResendingOtp">Đang gửi...</span><span *ngIf="resendCountdown > 0">Gửi lại
+                                    sau {{ resendCountdown }}s</span></button></div>
+                        <div class="alert-error mb-3" *ngIf="errorMessage"><i class='bx bx-error'></i> {{ errorMessage
+                            }}</div>
+                        <button type="submit" class="btn btn-primary btn-block mb-3"
+                            [disabled]="loginOtpCode.length !== 6 || isVerifyingOtp">{{ isVerifyingOtp ? 'Đang xử lý...'
+                            : 'Xác thực & Đăng nhập' }}</button>
+                        <button type="button" class="btn btn-outline btn-block" (click)="backToSendOtp()">Quay
+                            lại</button>
                     </form>
                 </div>
             </div>
@@ -82,15 +110,16 @@
                 <!-- Bước 1: Nhập Email -->
                 <div *ngIf="forgotStep === 1">
                     <div class="form-group">
-                    <label class="form-label">Nhập Email tài khoản</label>
-                    <div class="input-icon">
-                        <i class='bx bx-envelope'></i>
-                        <input type="email" class="form-control" [(ngModel)]="forgotEmail" name="forgotEmail" placeholder="email@example.com">
-                    </div>
+                        <label class="form-label">Nhập Email tài khoản</label>
+                        <div class="input-icon">
+                            <i class='bx bx-envelope'></i>
+                            <input type="email" class="form-control" [(ngModel)]="forgotEmail" name="forgotEmail"
+                                placeholder="email@example.com">
+                        </div>
                     </div>
                     <div class="alert-error" *ngIf="errorMessage">{{ errorMessage }}</div>
                     <button class="btn btn-primary btn-block" (click)="sendForgotOtp()" [disabled]="isSendingForgotOtp">
-                    {{ isSendingForgotOtp ? 'Đang gửi...' : 'Tiếp tục' }}
+                        {{ isSendingForgotOtp ? 'Đang gửi...' : 'Tiếp tục' }}
                     </button>
                 </div>
 
@@ -98,23 +127,28 @@
                 <div *ngIf="forgotStep === 2">
                     <div class="form-group">
                         <label class="form-label">Mã OTP xác thực</label>
-                        <input type="text" class="form-control text-center font-bold" [(ngModel)]="forgotOtpCode" name="fOtp" maxlength="6" placeholder="000000" style="letter-spacing: 5px; font-size: 20px;">
+                        <input type="text" class="form-control text-center font-bold" [(ngModel)]="forgotOtpCode"
+                            name="fOtp" maxlength="6" placeholder="000000"
+                            style="letter-spacing: 5px; font-size: 20px;">
                     </div>
                     <div class="form-group">
                         <label class="form-label">Mật khẩu mới</label>
-                        <input type="password" class="form-control" [(ngModel)]="newPassword" name="newP" placeholder="Tối thiểu 6 ký tự">
+                        <input type="password" class="form-control" [(ngModel)]="newPassword" name="newP"
+                            placeholder="Tối thiểu 6 ký tự">
                     </div>
                     <div class="form-group">
                         <label class="form-label">Xác nhận mật khẩu</label>
                         <input type="password" class="form-control" [(ngModel)]="confirmNewPassword" name="cNewP">
                     </div>
                     <div class="alert-error" *ngIf="errorMessage">{{ errorMessage }}</div>
-                    <button class="btn btn-primary btn-block" (click)="onResetPassword()" [disabled]="isResettingPassword">
+                    <button class="btn btn-primary btn-block" (click)="onResetPassword()"
+                        [disabled]="isResettingPassword">
                         {{ isResettingPassword ? 'Đang xử lý...' : 'Xác nhận thay đổi' }}
                     </button>
                 </div>
 
-                <button class="btn btn-outline btn-block mt-3" (click)="switchLoginMethod('password')">Quay lại đăng nhập</button>
+                <button class="btn btn-outline btn-block mt-3" (click)="switchLoginMethod('password')">Quay lại đăng
+                    nhập</button>
             </div>
         </div>
     </div>

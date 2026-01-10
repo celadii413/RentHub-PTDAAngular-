@@ -52,7 +52,8 @@
                     <tr *ngFor="let phong of phongTros">
                         <td>
                             <div style="font-weight: 700; font-size: 15px;">{{ phong.soPhong }}</div>
-                            <div class="text-muted" style="font-size: 12px;">{{ phong.tenPhong }} - Tầng {{ phong.tang }}</div>
+                            <div class="text-muted" style="font-size: 12px;">{{ phong.tenPhong }} - Tầng {{ phong.tang
+                                }}</div>
                         </td>
                         <td>{{ phong.tenDayTro }}</td>
                         <td>
@@ -60,18 +61,21 @@
                             <div class="text-muted" style="font-size: 12px;">Cọc: {{ phong.tienCoc | number }}</div>
                         </td>
                         <td>
-                            <span class="d-flex"><i class='bx bxs-user'></i> {{ phong.soKhachThue }} / {{ phong.gioiHanSoNguoi }}</span>
+                            <span class="d-flex"><i class='bx bxs-user'></i> {{ phong.soKhachThue }} / {{
+                                phong.gioiHanSoNguoi }}</span>
                         </td>
                         <td>
-                        <span class="badge" [ngClass]="{
+                            <span class="badge" [ngClass]="{
                             'badge-success': phong.trangThai === 'Trống',
                             'badge-info': phong.trangThai === 'Đã thuê',
                             'badge-warning': phong.trangThai === 'Đang sửa chữa'
                         }">{{ phong.trangThai }}</span>
                         </td>
                         <td class="text-right">
-                        <button class="btn-icon-action edit" (click)="editPhong(phong)" title="Sửa"><i class='bx bx-edit-alt'></i></button>
-                        <button class="btn-icon-action delete" (click)="deletePhong(phong.id)" title="Xóa"><i class='bx bx-trash'></i></button>
+                            <button class="btn-icon-action edit" (click)="editPhong(phong)" title="Sửa"><i
+                                    class='bx bx-edit-alt'></i></button>
+                            <button class="btn-icon-action delete" (click)="deletePhong(phong.id)" title="Xóa"><i
+                                    class='bx bx-trash'></i></button>
                         </td>
                     </tr>
                 </tbody>
@@ -80,17 +84,21 @@
     </div>
 
     <!-- GRID VIEW -->
-    <div class="grid-view" *ngIf="viewMode === 'grid'" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px;">
+    <div class="grid-view" *ngIf="viewMode === 'grid'"
+        style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px;">
         <div class="card" *ngFor="let phong of phongTros" style="margin-bottom: 0;">
             <div class="d-flex" style="justify-content: space-between; margin-bottom: 10px;">
                 <h3 style="margin: 0;">{{ phong.soPhong }}</h3>
-                <span class="badge" [ngClass]="'badge-' + getStatusClass(phong.trangThai).split('-')[1]">{{ phong.trangThai }}</span>
+                <span class="badge" [ngClass]="'badge-' + getStatusClass(phong.trangThai).split('-')[1]">{{
+                    phong.trangThai }}</span>
             </div>
             <p class="text-muted">{{ phong.tenDayTro }} - {{ phong.tenPhong }}</p>
             <hr style="border-color: var(--border); opacity: 0.5;">
             <div style="margin: 10px 0;">
-                <div class="d-flex justify-content-between"><span>Giá:</span> <strong>{{ phong.giaThue | number }}</strong></div>
-                <div class="d-flex justify-content-between"><span>Khách:</span> <span>{{ phong.soKhachThue }}/{{ phong.gioiHanSoNguoi }}</span></div>
+                <div class="d-flex justify-content-between"><span>Giá:</span> <strong>{{ phong.giaThue | number
+                        }}</strong></div>
+                <div class="d-flex justify-content-between"><span>Khách:</span> <span>{{ phong.soKhachThue }}/{{
+                        phong.gioiHanSoNguoi }}</span></div>
             </div>
             <div class="d-flex" style="margin-top: 15px;">
                 <button class="btn btn-outline w-100" (click)="editPhong(phong)">Sửa</button>
@@ -104,8 +112,8 @@
 <div class="modal" *ngIf="showModal" (click)="closeModal($event)">
     <div class="modal-content">
         <div class="modal-header">
-          <h3 class="modal-title">{{ isEdit ? 'Cập nhật Phòng' : 'Thêm Phòng Mới' }}</h3>
-          <button class="close-btn" (click)="closeModal()"><i class='bx bx-x'></i></button>
+            <h3 class="modal-title">{{ isEdit ? 'Cập nhật Phòng' : 'Thêm Phòng Mới' }}</h3>
+            <button class="close-btn" (click)="closeModal()"><i class='bx bx-x'></i></button>
         </div>
         <form (ngSubmit)="savePhong()">
             <div class="form-group">
@@ -118,7 +126,8 @@
             <div class="d-flex gap-2">
                 <div class="form-group" style="flex: 1">
                     <label class="form-label">Số Phòng *</label>
-                    <input class="form-control" [(ngModel)]="formData.soPhong" name="soPhong" [disabled]="isEdit" required>
+                    <input class="form-control" [(ngModel)]="formData.soPhong" name="soPhong" [disabled]="isEdit"
+                        required>
                 </div>
                 <div class="form-group" style="flex: 1">
                     <label class="form-label">Tầng *</label>
@@ -146,7 +155,8 @@
                 </div>
                 <div class="form-group" style="flex: 1">
                     <label class="form-label">Giới Hạn Người *</label>
-                    <input type="number" class="form-control" [(ngModel)]="formData.gioiHanSoNguoi" name="gioiHanSoNguoi" required>
+                    <input type="number" class="form-control" [(ngModel)]="formData.gioiHanSoNguoi"
+                        name="gioiHanSoNguoi" required>
                 </div>
             </div>
             <div class="form-group">
@@ -161,10 +171,13 @@
                 <label class="form-label">Hình Ảnh (Tối đa 3)</label>
                 <div class="d-flex gap-2" style="flex-wrap: wrap;">
                     <div *ngFor="let key of ['hinhAnh1', 'hinhAnh2', 'hinhAnh3']" style="flex: 1; min-width: 100px;">
-                        <input type="file" class="form-control" style="font-size: 11px;" (change)="onFileSelect($event, key)" accept="image/*">
+                        <input type="file" class="form-control" style="font-size: 11px;"
+                            (change)="onFileSelect($event, key)" accept="image/*">
                         <div *ngIf="currentImages[key]" style="position: relative; margin-top: 5px;">
-                            <img [src]="currentImages[key]!" style="width: 100%; height: 80px; object-fit: cover; border-radius: 4px;">
-                            <button type="button" (click)="clearImage(key)" style="position: absolute; top: 0; right: 0; background: red; color: white; border: none; cursor: pointer;">&times;</button>
+                            <img [src]="currentImages[key]!"
+                                style="width: 100%; height: 80px; object-fit: cover; border-radius: 4px;">
+                            <button type="button" (click)="clearImage(key)"
+                                style="position: absolute; top: 0; right: 0; background: red; color: white; border: none; cursor: pointer;">&times;</button>
                         </div>
                     </div>
                 </div>

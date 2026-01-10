@@ -8,8 +8,8 @@ import { ToastService } from '../../services/toast.service';
   selector: 'app-dich-vu',
   standalone: true,
   imports: [CommonModule, FormsModule],
-  templateUrl: './dich-vu.component.html', 
-  styleUrls: ['./dich-vu.component.css']  
+  templateUrl: './dich-vu.component.html',
+  styleUrls: ['./dich-vu.component.css']
 })
 export class DichVuComponent implements OnInit {
   dichVus: DichVu[] = [];
@@ -17,17 +17,17 @@ export class DichVuComponent implements OnInit {
   phongTros: PhongTro[] = [];
   showModal = false;
   isEdit = false;
-  formData: any = { 
-    tenDichVu: 'Điện', 
-    donViTinh: 'kWh', 
-    giaMacDinh: 0, 
-    loaiGia: 'Chung', 
-    dayTroId: null, 
-    phongTroId: null 
+  formData: any = {
+    tenDichVu: 'Điện',
+    donViTinh: 'kWh',
+    giaMacDinh: 0,
+    loaiGia: 'Chung',
+    dayTroId: null,
+    phongTroId: null
   };
   editingId: number | null = null;
 
-  constructor(private apiService: ApiService, private toastService: ToastService ) {}
+  constructor(private apiService: ApiService, private toastService: ToastService) { }
 
   ngOnInit() {
     this.loadDichVus();
@@ -35,16 +35,16 @@ export class DichVuComponent implements OnInit {
     this.loadPhongTros();
   }
 
-  loadDichVus() { 
-    this.apiService.getDichVus().subscribe(data => this.dichVus = data); 
+  loadDichVus() {
+    this.apiService.getDichVus().subscribe(data => this.dichVus = data);
   }
 
-  loadDayTros() { 
-    this.apiService.getDayTros().subscribe(data => this.dayTros = data); 
+  loadDayTros() {
+    this.apiService.getDayTros().subscribe(data => this.dayTros = data);
   }
 
-  loadPhongTros() { 
-    this.apiService.getPhongTros().subscribe(data => this.phongTros = data); 
+  loadPhongTros() {
+    this.apiService.getPhongTros().subscribe(data => this.phongTros = data);
   }
 
   openModal() {
@@ -76,23 +76,23 @@ export class DichVuComponent implements OnInit {
     };
     const req = this.isEdit ? this.apiService.updateDichVu(this.editingId!, data) : this.apiService.createDichVu(data);
     req.subscribe({
-        next: () => { 
-            this.loadDichVus(); 
-            this.closeModal(); 
-            this.toastService.success(this.isEdit ? 'Cập nhật dịch vụ thành công!' : 'Thêm dịch vụ mới thành công!');
-        },
-        error: (err) => this.toastService.error(err.error?.message || 'Lỗi khi lưu dịch vụ')
+      next: () => {
+        this.loadDichVus();
+        this.closeModal();
+        this.toastService.success(this.isEdit ? 'Cập nhật dịch vụ thành công!' : 'Thêm dịch vụ mới thành công!');
+      },
+      error: (err) => this.toastService.error(err.error?.message || 'Lỗi khi lưu dịch vụ')
     });
   }
 
   deleteDichVu(id: number) {
     if (confirm('Bạn có chắc chắn muốn xóa dịch vụ này?')) {
       this.apiService.deleteDichVu(id).subscribe({
-          next: () => {
-              this.loadDichVus();
-              this.toastService.success('Đã xóa dịch vụ!');
-          },
-          error: (err) => this.toastService.error(err.error?.message || 'Lỗi khi xóa dịch vụ')
+        next: () => {
+          this.loadDichVus();
+          this.toastService.success('Đã xóa dịch vụ!');
+        },
+        error: (err) => this.toastService.error(err.error?.message || 'Lỗi khi xóa dịch vụ')
       });
     }
   }

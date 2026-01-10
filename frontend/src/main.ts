@@ -5,22 +5,22 @@ import { AppComponent } from './app/app.component';
 import { routes } from './app/app.routes';
 import { inject } from '@angular/core';
 import { AuthService } from './app/services/auth.service';
-import { provideAnimations } from '@angular/platform-browser/animations'; 
+import { provideAnimations } from '@angular/platform-browser/animations';
 
 const authInterceptor: HttpInterceptorFn = (req, next) => {
   const authService = inject(AuthService);
   const token = authService.getToken();
-  
+
   if (token) {
     const clonedReq = req.clone({
       setHeaders: {
         Authorization: `Bearer ${token}`
       }
     });
-    console.log('✅ Token được gửi kèm request:', clonedReq.url);
+    console.log('Token được gửi kèm request:', clonedReq.url);
     return next(clonedReq);
   } else {
-    console.warn('⚠️ Không có token cho request:', req.url);
+    console.warn('Không có token cho request:', req.url);
     return next(req);
   }
 };

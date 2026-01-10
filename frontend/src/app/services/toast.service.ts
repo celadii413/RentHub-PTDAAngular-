@@ -15,7 +15,7 @@ export class ToastService {
   public toasts$ = this.toastsSubject.asObservable();
   private counter = 0;
 
-  constructor() {}
+  constructor() { }
 
   success(message: string) {
     this.addToast('success', message);
@@ -41,7 +41,7 @@ export class ToastService {
   private addToast(type: 'success' | 'error' | 'info' | 'warning', message: string) {
     const id = this.counter++;
     const newToast: Toast = { id, type, message };
-    
+
     const currentToasts = this.toastsSubject.value;
     this.toastsSubject.next([...currentToasts, newToast]);
 

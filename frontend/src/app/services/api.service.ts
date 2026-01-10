@@ -193,8 +193,8 @@ export interface ThongBao {
 })
 
 export class ApiService {
-  private baseUrl = environment.apiUrl; 
-  
+  private baseUrl = environment.apiUrl;
+
   constructor(private http: HttpClient) { }
 
   getDayTros(): Observable<DayTro[]> {
@@ -245,8 +245,14 @@ export class ApiService {
     return this.http.delete<any>(`${this.baseUrl}/PhongTro/${id}`);
   }
 
-  getKhachThues(): Observable<KhachThue[]> {
-    return this.http.get<KhachThue[]>(`${this.baseUrl}/KhachThue`);
+  getKhachThues(search: string = ''): Observable<KhachThue[]> {
+    let url = `${this.baseUrl}/KhachThue`;
+
+    if (search && search.trim() !== '') {
+      url += `?search=${encodeURIComponent(search.trim())}`;
+    }
+
+    return this.http.get<KhachThue[]>(url);
   }
 
   getKhachThue(id: number): Observable<KhachThue> {
@@ -384,8 +390,8 @@ export class ApiService {
     const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
     const dateToSend = thangNam + '-01';
     return this.http.post<HoaDon>(
-      `${this.baseUrl}/HoaDon/tu-dong-tinh/${phongTroId}`, 
-      JSON.stringify(dateToSend), 
+      `${this.baseUrl}/HoaDon/tu-dong-tinh/${phongTroId}`,
+      JSON.stringify(dateToSend),
       { headers }
     );
   }
@@ -551,21 +557,21 @@ export class ApiService {
   }
 
   getPreviewHoaDon(id: number): Observable<{ html: string }> {
-  return this.http.get<{ html: string }>(`${this.baseUrl}/BieuMau/preview-hoa-don/${id}`);
+    return this.http.get<{ html: string }>(`${this.baseUrl}/BieuMau/preview-hoa-don/${id}`);
   }
 
   uploadImage(file: File, folder: string): Observable<{ message: string, filePath: string, fileUrl: string }> {
     const formData = new FormData();
     formData.append('file', file);
     return this.http.post<{ message: string, filePath: string, fileUrl: string }>(
-      `${this.baseUrl}/FileUpload/image?folder=${folder}`, 
+      `${this.baseUrl}/FileUpload/image?folder=${folder}`,
       formData
     );
   }
-  
+
   submitPaymentProof(hoaDonId: number, imageUrl: string): Observable<any> {
-  return this.http.post(`${this.baseUrl}/HoaDon/${hoaDonId}/submit-proof`, JSON.stringify(imageUrl), {
-    headers: { 'Content-Type': 'application/json' }
+    return this.http.post(`${this.baseUrl}/HoaDon/${hoaDonId}/submit-proof`, JSON.stringify(imageUrl), {
+      headers: { 'Content-Type': 'application/json' }
     });
   }
 
@@ -586,11 +592,11 @@ export class ApiService {
   }
 
   deleteYeuCau(id: number) {
-    return this.http.delete(`${this.baseUrl}/YeuCauChinhSua/${id}`); 
+    return this.http.delete(`${this.baseUrl}/YeuCauChinhSua/${id}`);
   }
 
-  deleteMeterReading(id: number) { 
-    return this.http.delete(`${this.baseUrl}/ChiSoCongToGuiTuThue/${id}`); 
+  deleteMeterReading(id: number) {
+    return this.http.delete(`${this.baseUrl}/ChiSoCongToGuiTuThue/${id}`);
   }
 }
 

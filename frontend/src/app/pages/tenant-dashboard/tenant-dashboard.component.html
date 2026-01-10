@@ -4,7 +4,7 @@
         <div class="page-header">
             <h1><i class='bx bx-home-smile text-gradient'></i> Tổng quan phòng</h1>
         </div>
-         
+
         <div class="grid-layout">
             <!-- Card Thông tin -->
             <div class="card info-card">
@@ -28,7 +28,9 @@
                         <span class="val">{{ room.tienCoc | number }} đ</span>
                     </div>
                 </div>
-                <ng-template #noRoom><div class="alert alert-warning">Chưa có thông tin phòng</div></ng-template>
+                <ng-template #noRoom>
+                    <div class="alert alert-warning">Chưa có thông tin phòng</div>
+                </ng-template>
             </div>
 
             <!-- Card Hợp Đồng -->
@@ -39,7 +41,8 @@
                     <div class="icon"><i class='bx bxs-file-pdf'></i></div>
                     <div class="info">
                         <div class="code">Mã: {{ c.maHopDong }}</div>
-                        <div class="date">{{ c.ngayBatDau | date:'dd/MM/yyyy' }} - {{ c.ngayKetThuc | date:'dd/MM/yyyy' }}</div>
+                        <div class="date">{{ c.ngayBatDau | date:'dd/MM/yyyy' }} - {{ c.ngayKetThuc | date:'dd/MM/yyyy'
+                            }}</div>
                     </div>
                     <!-- Nút đồng bộ -->
                     <button class="btn btn-outline btn-sm" (click)="downloadContract(c.id)">
@@ -80,14 +83,15 @@
                                 <span class="badge" [ngClass]="getStatusClass(h.trangThai)">{{ h.trangThai }}</span>
                             </td>
                             <td class="text-right">
-                            <div class="d-flex justify-content-end gap-2">
-                                <button class="btn btn-outline btn-sm" (click)="downloadInvoice(h.id)" title="Tải hóa đơn">
-                                    <i class='bx bxs-file-pdf'></i> PDF
-                                </button>
-                                <button class="btn btn-primary btn-sm" (click)="openPaymentModal(h)">
-                                    <i class='bx bx-credit-card'></i> Thanh toán
-                                </button>
-                            </div>
+                                <div class="d-flex justify-content-end gap-2">
+                                    <button class="btn btn-outline btn-sm" (click)="downloadInvoice(h.id)"
+                                        title="Tải hóa đơn">
+                                        <i class='bx bxs-file-pdf'></i> PDF
+                                    </button>
+                                    <button class="btn btn-primary btn-sm" (click)="openPaymentModal(h)">
+                                        <i class='bx bx-credit-card'></i> Thanh toán
+                                    </button>
+                                </div>
                             </td>
                         </tr>
                         <tr *ngIf="invoices.length===0">
@@ -105,7 +109,7 @@
             <h1><i class='bx bx-support text-gradient'></i> Yêu cầu & Chỉ số</h1>
         </div>
         <div class="grid-layout">
-        <!-- Form Yêu Cầu -->
+            <!-- Form Yêu Cầu -->
             <div class="card">
                 <h3 class="mb-4">Gửi yêu cầu hỗ trợ</h3>
                 <form (ngSubmit)="submitRequest()">
@@ -119,13 +123,15 @@
                     </div>
                     <div class="form-group">
                         <label class="form-label">Tiêu đề</label>
-                        <input class="form-control" [(ngModel)]="requestForm.tieuDe" name="td" required placeholder="Ví dụ: Bóng đèn hỏng...">
+                        <input class="form-control" [(ngModel)]="requestForm.tieuDe" name="td" required
+                            placeholder="Ví dụ: Bóng đèn hỏng...">
                     </div>
                     <div class="form-group">
                         <label class="form-label">Nội dung</label>
-                        <textarea class="form-control" [(ngModel)]="requestForm.noiDung" name="nd" rows="3" required></textarea>
+                        <textarea class="form-control" [(ngModel)]="requestForm.noiDung" name="nd" rows="3"
+                            required></textarea>
                     </div>
-                    
+
                     <div class="form-group">
                         <label class="form-label">Hình ảnh đính kèm (Tùy chọn)</label>
                         <input type="file" class="form-control" (change)="onRequestFileSelect($event)">
@@ -139,14 +145,14 @@
 
             <!-- Form Chỉ Số -->
             <div class="card">
-               <h3 class="mb-4">Gửi chỉ số Điện/Nước</h3>
-               <form (ngSubmit)="submitMeter()">
+                <h3 class="mb-4">Gửi chỉ số Điện/Nước</h3>
+                <form (ngSubmit)="submitMeter()">
                     <div class="d-flex gap-3">
                         <div class="form-group w-100">
                             <label class="form-label">Loại công tơ</label>
                             <select class="form-control" [(ngModel)]="meterForm.loaiCongTo" name="loaiM">
-                            <option value="Điện">Điện</option>
-                            <option value="Nước">Nước</option>
+                                <option value="Điện">Điện</option>
+                                <option value="Nước">Nước</option>
                             </select>
                         </div>
                         <div class="form-group w-100">
@@ -155,17 +161,17 @@
                         </div>
                     </div>
                     <div class="form-group">
-                            <label class="form-label">Tháng ghi sổ</label>
-                            <input type="month" class="form-control" [(ngModel)]="meterForm.thangNam" name="tnM" required>
-                        </div>
+                        <label class="form-label">Tháng ghi sổ</label>
+                        <input type="month" class="form-control" [(ngModel)]="meterForm.thangNam" name="tnM" required>
+                    </div>
                     <div class="form-group">
-                            <label class="form-label">Ảnh đồng hồ (Tùy chọn)</label>
-                            <div class="file-upload-container">
-                                <input type="file" (change)="onMeterFileSelect($event)" id="meterFile" hidden>
-                                <label for="meterFile" class="file-label-btn">
-                                    <i class='bx bx-camera'></i> {{ meterFile ? meterFile.name : 'Chụp ảnh chỉ số' }}
-                                </label>
-                            </div>
+                        <label class="form-label">Ảnh đồng hồ (Tùy chọn)</label>
+                        <div class="file-upload-container">
+                            <input type="file" (change)="onMeterFileSelect($event)" id="meterFile" hidden>
+                            <label for="meterFile" class="file-label-btn">
+                                <i class='bx bx-camera'></i> {{ meterFile ? meterFile.name : 'Chụp ảnh chỉ số' }}
+                            </label>
+                        </div>
                     </div>
                     <button class="btn btn-primary w-100 py-3 mt-2" type="submit" [disabled]="meterSubmitting">
                         <i class='bx bx-paper-plane'></i> {{ meterSubmitting ? 'Đang gửi...' : 'Gửi chỉ số' }}
@@ -180,7 +186,8 @@
                     <div *ngFor="let m of submittedMeters" class="history-item-box mb-3">
                         <div class="d-flex justify-content-between align-items-start">
                             <div>
-                                <span class="type-tag" [class.elec]="m.loaiCongTo==='Điện'" [class.water]="m.loaiCongTo==='Nước'">{{m.loaiCongTo}}</span>
+                                <span class="type-tag" [class.elec]="m.loaiCongTo==='Điện'"
+                                    [class.water]="m.loaiCongTo==='Nước'">{{m.loaiCongTo}}</span>
                                 <strong class="ms-2" style="font-size: 16px;">{{m.chiSo | number}}</strong>
                                 <div class="text-xs text-muted mt-1">Kỳ: {{m.thangNam | date:'MM/yyyy'}}</div>
                             </div>
@@ -202,10 +209,11 @@
         </div>
         <div class="card p-0">
             <div class="notif-list">
-               <div *ngIf="notifications.length===0" class="p-5 text-center text-muted">Bạn không có thông báo nào</div>
-               <div *ngFor="let n of notifications" class="notif-item">
-                  <div class="notif-icon"><i class='bx bx-envelope'></i></div>
-                  <div class="notif-content">
+                <div *ngIf="notifications.length===0" class="p-5 text-center text-muted">Bạn không có thông báo nào
+                </div>
+                <div *ngFor="let n of notifications" class="notif-item">
+                    <div class="notif-icon"><i class='bx bx-envelope'></i></div>
+                    <div class="notif-content">
                         <div class="d-flex justify-content-between mb-1">
                             <strong>{{n.tieuDe}}</strong>
                             <span class="text-muted text-sm">{{n.ngayTao | date:'dd/MM HH:mm'}}</span>
@@ -225,14 +233,15 @@
             <button class="close-btn" (click)="showPaymentModal=false"><i class='bx bx-x'></i></button>
         </div>
         <p class="mb-3">Quét mã VietQR để thanh toán nhanh:</p>
-        <img [src]="qrUrl" *ngIf="qrUrl" style="max-width: 100%; border-radius: 12px; margin-bottom: 20px; border: 1px solid var(--border); box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
+        <img [src]="qrUrl" *ngIf="qrUrl"
+            style="max-width: 100%; border-radius: 12px; margin-bottom: 20px; border: 1px solid var(--border); box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
         <div *ngIf="!qrUrl" class="alert alert-warning mb-3">Chủ nhà chưa cài đặt thông tin ngân hàng.</div>
-          
+
         <div class="text-left">
             <label class="form-label">Gửi ảnh xác nhận giao dịch:</label>
             <input type="file" (change)="onProofFileSelect($event)" class="form-control mb-3">
         </div>
-          
+
         <div class="modal-footer">
             <button class="btn btn-secondary" (click)="showPaymentModal=false">Đóng</button>
             <button class="btn btn-primary" (click)="submitProof()" [disabled]="!proofFile">

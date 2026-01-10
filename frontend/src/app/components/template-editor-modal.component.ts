@@ -5,7 +5,7 @@ import { QuillModule, QuillEditorComponent } from 'ngx-quill';
 import Quill from 'quill';
 
 const Font = Quill.import('formats/font') as any;
-Font.whitelist = ['times-new-roman', 'arial', 'roboto', 'mirza']; 
+Font.whitelist = ['times-new-roman', 'arial', 'roboto', 'mirza'];
 Quill.register(Font, true);
 
 @Component({
@@ -57,7 +57,7 @@ Quill.register(Font, true);
                   <h4>Thời hạn</h4>
                   <button class="badge-btn" (click)="copyKeyword('{{NGAY_BAT_DAU}}')">Ngày bắt đầu</button>
                   <button class="badge-btn" (click)="copyKeyword('{{NGAY_KET_THUC}}')">Ngày kết thúc</button>
-                  <h4>Chủ trọ</h4>
+                  <h4>Chủ nhà</h4>
                   <button class="badge-btn" (click)="copyKeyword('{{TEN_CHU_TRO}}')">Tên chủ</button>
                   <button class="badge-btn" (click)="copyKeyword('{{SDT_CHU_TRO}}')">SĐT chủ</button>
                 </div>
@@ -89,7 +89,6 @@ Quill.register(Font, true);
     </div>
   `,
   styles: [`
-    /* ... (Giữ nguyên các style layout cũ: modal-overlay, modal-container...) ... */
     .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 1000; display: flex; align-items: center; justify-content: center; }
     .modal-container { background: #ffffff !important; color: #1f2937 !important; width: 95%; height: 90vh; border-radius: 8px; display: flex; flex-direction: column; max-width: 1400px; overflow: hidden; }
     .modal-header { padding: 15px; border-bottom: 1px solid #eee; display: flex; justify-content: space-between; align-items: center; flex-shrink: 0; }
@@ -119,11 +118,6 @@ Quill.register(Font, true);
     ::ng-deep .ql-editor { flex: 1; overflow-y: auto; padding: 20px; font-size: 16px; line-height: 1.5; color: #000; }
     ::ng-deep .ql-editor table { border-collapse: collapse; width: 100%; margin: 10px 0; }
     ::ng-deep .ql-editor table td, ::ng-deep .ql-editor table th { border: 1px solid #000; padding: 8px; min-width: 50px; }
-
-    /* ============================================================
-       PHẦN QUAN TRỌNG: ĐỊNH NGHĨA FONT CHỮ THỰC TẾ
-       (Giúp văn bản đổi font khi chọn trên menu)
-       ============================================================ */
     
     /* 1. Font Times New Roman */
     ::ng-deep .ql-font-times-new-roman { 
@@ -135,7 +129,7 @@ Quill.register(Font, true);
       font-family: "Arial", Helvetica, sans-serif !important; 
     }
 
-    /* 3. Font Roboto (cần import font này ở index.html hoặc styles.css global nếu chưa có) */
+    /* 3. Font Roboto  */
     ::ng-deep .ql-font-roboto { 
       font-family: 'Roboto', sans-serif !important; 
     }
@@ -158,7 +152,6 @@ Quill.register(Font, true);
       font-family: 'Roboto', sans-serif;
     }
 
-    /* Mở rộng chiều rộng menu để hiển thị đủ tên font */
     ::ng-deep .ql-snow .ql-picker.ql-font { 
       width: 170px !important; 
     }
@@ -178,23 +171,23 @@ export class TemplateEditorModalComponent {
       [{ 'font': ['times-new-roman', 'arial', false] }, { 'size': ['small', false, 'large', 'huge'] }],
       ['bold', 'italic', 'underline'],
       [{ 'align': [] }, { 'color': [] }, { 'background': [] }],
-      [{ 'list': 'ordered'}, { 'list': 'bullet' }, { 'indent': '-1'}, { 'indent': '+1' }],
+      [{ 'list': 'ordered' }, { 'list': 'bullet' }, { 'indent': '-1' }, { 'indent': '+1' }],
       [{ 'header': [1, 2, 3, false] }, 'clean']
     ]
   };
 
-  constructor() {}
+  constructor() { }
 
   get isHopDong() { return this.title.toLowerCase().includes('hợp đồng'); }
   close() { this.onClose.emit(); }
-  
+
   export() {
     this.isProcessing = true;
     this.onExport.emit(this.htmlContent);
   }
 
   copyKeyword(keyword: string) {
-    navigator.clipboard.writeText(keyword).then(() => {});
+    navigator.clipboard.writeText(keyword).then(() => { });
   }
 
   insertTable() {

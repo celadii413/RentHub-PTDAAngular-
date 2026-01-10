@@ -9,25 +9,25 @@ import { ToastService } from '../../services/toast.service';
   standalone: true,
   imports: [CommonModule, FormsModule],
   templateUrl: './day-tro.component.html',
-  styleUrls: ['./day-tro.component.css'] 
+  styleUrls: ['./day-tro.component.css']
 })
 export class DayTroComponent implements OnInit {
   dayTros: DayTro[] = [];
   showModal = false;
   isEdit = false;
-  formData: any = { 
-    tenDayTro: '', 
-    diaChi: '', 
-    soTang: 1, 
-    soPhongMoiTang: 1, 
-    moTa: '' 
+  formData: any = {
+    tenDayTro: '',
+    diaChi: '',
+    soTang: 1,
+    soPhongMoiTang: 1,
+    moTa: ''
   };
   editingId: number | null = null;
 
-  constructor(private apiService: ApiService, private toastService: ToastService ) {}
+  constructor(private apiService: ApiService, private toastService: ToastService) { }
 
-  ngOnInit() { 
-    this.loadDayTros(); 
+  ngOnInit() {
+    this.loadDayTros();
   }
 
   loadDayTros() {
@@ -39,12 +39,12 @@ export class DayTroComponent implements OnInit {
 
   openModal() {
     this.isEdit = false;
-    this.formData = { 
-      tenDayTro: '', 
-      diaChi: '', 
-      soTang: 1, 
-      soPhongMoiTang: 1, 
-      moTa: '' 
+    this.formData = {
+      tenDayTro: '',
+      diaChi: '',
+      soTang: 1,
+      soPhongMoiTang: 1,
+      moTa: ''
     };
     this.editingId = null;
     this.showModal = true;
@@ -64,26 +64,26 @@ export class DayTroComponent implements OnInit {
   }
 
   saveDay() {
-    const request = this.isEdit 
-        ? this.apiService.updateDayTro(this.editingId!, this.formData) 
-        : this.apiService.createDayTro(this.formData);
-        
+    const request = this.isEdit
+      ? this.apiService.updateDayTro(this.editingId!, this.formData)
+      : this.apiService.createDayTro(this.formData);
+
     request.subscribe({
-        next: () => { 
-            this.loadDayTros(); 
-            this.closeModal(); 
-            this.toastService.success(this.isEdit ? 'Cập nhật dãy trọ thành công!' : 'Thêm dãy trọ mới thành công!');
-        },
-        error: (err) => this.toastService.error(err.error?.message || 'Có lỗi xảy ra khi lưu dãy trọ')
+      next: () => {
+        this.loadDayTros();
+        this.closeModal();
+        this.toastService.success(this.isEdit ? 'Cập nhật dãy trọ thành công!' : 'Thêm dãy trọ mới thành công!');
+      },
+      error: (err) => this.toastService.error(err.error?.message || 'Có lỗi xảy ra khi lưu dãy trọ')
     });
   }
 
   deleteDay(id: number) {
     if (confirm('Bạn có chắc chắn muốn xóa dãy nhà này?')) {
       this.apiService.deleteDayTro(id).subscribe({
-        next: () => { 
-            this.loadDayTros(); 
-            this.toastService.success('Đã xóa dãy trọ thành công!');
+        next: () => {
+          this.loadDayTros();
+          this.toastService.success('Đã xóa dãy trọ thành công!');
         },
         error: (err) => this.toastService.error(err.error?.message || 'Không thể xóa (có thể đang có phòng)')
       });

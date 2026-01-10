@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { AuthService } from '../../services/auth.service'; 
+import { AuthService } from '../../services/auth.service';
 import { User } from '../../services/api.service';
 import { ToastService } from '../../services/toast.service';
 
@@ -9,31 +9,32 @@ import { ToastService } from '../../services/toast.service';
   selector: 'app-profile',
   standalone: true,
   imports: [CommonModule, FormsModule],
-  templateUrl: './profile.component.html', 
-  styleUrls: ['./profile.component.css']  
+  templateUrl: './profile.component.html',
+  styleUrls: ['./profile.component.css']
 })
 export class ProfileComponent implements OnInit {
   currentUser: User | null = null;
   activeTab = 'info';
   loading = false;
 
-  profileForm: any = { 
-   hoTen: '', 
-   soDienThoai: '', 
-   tenNganHang: '', 
-   soTaiKhoan: '', 
-   tenTaiKhoan: '' 
-};
-  
-  passwordStep = 1;
-  passwordForm = { 
-   oldPassword: '', 
-   otpCode: '', 
-   newPassword: '', 
-   confirmPassword: '' 
-};
+  profileForm: any = {
+    email: '',
+    hoTen: '',
+    soDienThoai: '',
+    tenNganHang: '',
+    soTaiKhoan: '',
+    tenTaiKhoan: ''
+  };
 
-  constructor(private authService: AuthService, private toastService: ToastService ) {}
+  passwordStep = 1;
+  passwordForm = {
+    oldPassword: '',
+    otpCode: '',
+    newPassword: '',
+    confirmPassword: ''
+  };
+
+  constructor(private authService: AuthService, private toastService: ToastService) { }
 
   ngOnInit() {
     this.loadProfile();
@@ -41,15 +42,16 @@ export class ProfileComponent implements OnInit {
 
   loadProfile() {
     this.authService.getProfile().subscribe(user => {
-        this.currentUser = user;
-        this.profileForm = {
-          hoTen: user.hoTen,
-          soDienThoai: user.soDienThoai,
-          tenNganHang: user.tenNganHang || '',
-          soTaiKhoan: user.soTaiKhoan || '',
-          tenTaiKhoan: user.tenTaiKhoan || ''
-        };
-        this.authService.updateUserState(user);
+      this.currentUser = user;
+      this.profileForm = {
+        email: user.email,
+        hoTen: user.hoTen,
+        soDienThoai: user.soDienThoai,
+        tenNganHang: user.tenNganHang || '',
+        soTaiKhoan: user.soTaiKhoan || '',
+        tenTaiKhoan: user.tenTaiKhoan || ''
+      };
+      this.authService.updateUserState(user);
     });
   }
 
@@ -77,34 +79,38 @@ export class ProfileComponent implements OnInit {
       }
     }
 
-   this.loading = true;
-   this.authService.updateProfile(this.profileForm).subscribe({
-         next: () => {
-            this.loading = false;
-            this.toastService.success('Cập nhật thông tin hồ sơ thành công!');
-            this.loadProfile(); 
-         },
-         error: (err) => {
-            this.loading = false;
-            this.toastService.error(err.error?.message || 'Lỗi cập nhật hồ sơ');
-         }
-      });
-   }
+    if (!this.profileForm.email && this.currentUser) {
+      this.profileForm.email = this.currentUser.email;
+    }
 
-   onlyNumberKey(event: any) {
-   const charCode = (event.which) ? event.which : event.keyCode;
-      if (charCode > 31 && (charCode < 48 || charCode > 57)) {
-         return false;
+    this.loading = true;
+    this.authService.updateProfile(this.profileForm).subscribe({
+      next: () => {
+        this.loading = false;
+        this.toastService.success('Cập nhật thông tin hồ sơ thành công!');
+        this.loadProfile();
+      },
+      error: (err) => {
+        this.loading = false;
+        this.toastService.error(err.error?.message || 'Lỗi cập nhật hồ sơ');
       }
-      return true;
-   }
+    });
+  }
 
-   verifyOldPassword() {
-     this.authService.requestChangePasswordOtp(this.passwordForm.oldPassword).subscribe({
-       next: () => this.passwordStep = 2,
-       error: (err) => alert(err.error?.message || 'Mật khẩu cũ không đúng')
-     });
-   }
+  onlyNumberKey(event: any) {
+    const charCode = (event.which) ? event.which : event.keyCode;
+    if (charCode > 31 && (charCode < 48 || charCode > 57)) {
+      return false;
+    }
+    return true;
+  }
+
+  verifyOldPassword() {
+    this.authService.requestChangePasswordOtp(this.passwordForm.oldPassword).subscribe({
+      next: () => this.passwordStep = 2,
+      error: (err) => this.toastService.error(err.error?.message || 'Mật khẩu cũ không đúng')
+    });
+  }
 
   submitNewPassword() {
     if (this.passwordForm.newPassword !== this.passwordForm.confirmPassword) {
@@ -113,9 +119,9 @@ export class ProfileComponent implements OnInit {
     }
 
     const data = {
-        email: this.currentUser?.email || '', 
-        otpCode: this.passwordForm.otpCode, 
-        newPassword: this.passwordForm.newPassword
+      email: this.currentUser?.email || '',
+      otpCode: this.passwordForm.otpCode,
+      newPassword: this.passwordForm.newPassword
     };
 
     this.authService.confirmChangePassword(data).subscribe({

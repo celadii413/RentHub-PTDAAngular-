@@ -23,7 +23,7 @@ export interface OtpResponse {
   providedIn: 'root'
 })
 export class OtpService {
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
   sendOtp(email: string, purpose: 'Register' | 'Login'): Observable<any> {
     return this.http.post(`${environment.apiUrl}/Otp/send`, {

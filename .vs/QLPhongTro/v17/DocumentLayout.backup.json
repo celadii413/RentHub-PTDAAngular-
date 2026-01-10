@@ -3,12 +3,52 @@
   "WorkspaceRootPath": "D:\\Project\\QLPhongTro\\",
   "Documents": [
     {
+      "AbsoluteMoniker": "D:0:0:{357FB607-233D-65A6-8CE0-62019C71FD02}|QLPhongTro.API\\QLPhongTro.API.csproj|d:\\project\\qlphongtro\\qlphongtro.api\\controllers\\authcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{357FB607-233D-65A6-8CE0-62019C71FD02}|QLPhongTro.API\\QLPhongTro.API.csproj|solutionrelative:qlphongtro.api\\controllers\\authcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{357FB607-233D-65A6-8CE0-62019C71FD02}|QLPhongTro.API\\QLPhongTro.API.csproj|d:\\project\\qlphongtro\\qlphongtro.api\\controllers\\khachthuecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{357FB607-233D-65A6-8CE0-62019C71FD02}|QLPhongTro.API\\QLPhongTro.API.csproj|solutionrelative:qlphongtro.api\\controllers\\khachthuecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{357FB607-233D-65A6-8CE0-62019C71FD02}|QLPhongTro.API\\QLPhongTro.API.csproj|d:\\project\\qlphongtro\\qlphongtro.api\\services\\authservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{357FB607-233D-65A6-8CE0-62019C71FD02}|QLPhongTro.API\\QLPhongTro.API.csproj|solutionrelative:qlphongtro.api\\services\\authservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{357FB607-233D-65A6-8CE0-62019C71FD02}|QLPhongTro.API\\QLPhongTro.API.csproj|d:\\project\\qlphongtro\\qlphongtro.api\\models\\khachthue.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{357FB607-233D-65A6-8CE0-62019C71FD02}|QLPhongTro.API\\QLPhongTro.API.csproj|solutionrelative:qlphongtro.api\\models\\khachthue.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{357FB607-233D-65A6-8CE0-62019C71FD02}|QLPhongTro.API\\QLPhongTro.API.csproj|d:\\project\\qlphongtro\\qlphongtro.api\\services\\emailservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{357FB607-233D-65A6-8CE0-62019C71FD02}|QLPhongTro.API\\QLPhongTro.API.csproj|solutionrelative:qlphongtro.api\\services\\emailservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{357FB607-233D-65A6-8CE0-62019C71FD02}|QLPhongTro.API\\QLPhongTro.API.csproj|d:\\project\\qlphongtro\\qlphongtro.api\\services\\iauthservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{357FB607-233D-65A6-8CE0-62019C71FD02}|QLPhongTro.API\\QLPhongTro.API.csproj|solutionrelative:qlphongtro.api\\services\\iauthservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{357FB607-233D-65A6-8CE0-62019C71FD02}|QLPhongTro.API\\QLPhongTro.API.csproj|d:\\project\\qlphongtro\\qlphongtro.api\\controllers\\phongtrocontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{357FB607-233D-65A6-8CE0-62019C71FD02}|QLPhongTro.API\\QLPhongTro.API.csproj|solutionrelative:qlphongtro.api\\controllers\\phongtrocontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{357FB607-233D-65A6-8CE0-62019C71FD02}|QLPhongTro.API\\QLPhongTro.API.csproj|d:\\project\\qlphongtro\\qlphongtro.api\\controllers\\tenantcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{357FB607-233D-65A6-8CE0-62019C71FD02}|QLPhongTro.API\\QLPhongTro.API.csproj|solutionrelative:qlphongtro.api\\controllers\\tenantcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{357FB607-233D-65A6-8CE0-62019C71FD02}|QLPhongTro.API\\QLPhongTro.API.csproj|d:\\project\\qlphongtro\\qlphongtro.api\\controllers\\usercontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{357FB607-233D-65A6-8CE0-62019C71FD02}|QLPhongTro.API\\QLPhongTro.API.csproj|solutionrelative:qlphongtro.api\\controllers\\usercontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{357FB607-233D-65A6-8CE0-62019C71FD02}|QLPhongTro.API\\QLPhongTro.API.csproj|d:\\project\\qlphongtro\\qlphongtro.api\\controllers\\hoadoncontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{357FB607-233D-65A6-8CE0-62019C71FD02}|QLPhongTro.API\\QLPhongTro.API.csproj|solutionrelative:qlphongtro.api\\controllers\\hoadoncontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{357FB607-233D-65A6-8CE0-62019C71FD02}|QLPhongTro.API\\QLPhongTro.API.csproj|d:\\project\\qlphongtro\\qlphongtro.api\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{357FB607-233D-65A6-8CE0-62019C71FD02}|QLPhongTro.API\\QLPhongTro.API.csproj|solutionrelative:qlphongtro.api\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{357FB607-233D-65A6-8CE0-62019C71FD02}|QLPhongTro.API\\QLPhongTro.API.csproj|d:\\project\\qlphongtro\\qlphongtro.api\\controllers\\authcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{357FB607-233D-65A6-8CE0-62019C71FD02}|QLPhongTro.API\\QLPhongTro.API.csproj|solutionrelative:qlphongtro.api\\controllers\\authcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{357FB607-233D-65A6-8CE0-62019C71FD02}|QLPhongTro.API\\QLPhongTro.API.csproj|d:\\project\\qlphongtro\\qlphongtro.api\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
+      "RelativeMoniker": "D:0:0:{357FB607-233D-65A6-8CE0-62019C71FD02}|QLPhongTro.API\\QLPhongTro.API.csproj|solutionrelative:qlphongtro.api\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{357FB607-233D-65A6-8CE0-62019C71FD02}|QLPhongTro.API\\QLPhongTro.API.csproj|d:\\project\\qlphongtro\\qlphongtro.api\\controllers\\chisocongtocontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -19,20 +59,8 @@
       "RelativeMoniker": "D:0:0:{357FB607-233D-65A6-8CE0-62019C71FD02}|QLPhongTro.API\\QLPhongTro.API.csproj|solutionrelative:qlphongtro.api\\controllers\\bieumaucontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{357FB607-233D-65A6-8CE0-62019C71FD02}|QLPhongTro.API\\QLPhongTro.API.csproj|d:\\project\\qlphongtro\\qlphongtro.api\\services\\emailservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{357FB607-233D-65A6-8CE0-62019C71FD02}|QLPhongTro.API\\QLPhongTro.API.csproj|solutionrelative:qlphongtro.api\\services\\emailservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{357FB607-233D-65A6-8CE0-62019C71FD02}|QLPhongTro.API\\QLPhongTro.API.csproj|d:\\project\\qlphongtro\\qlphongtro.api\\services\\otpservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{357FB607-233D-65A6-8CE0-62019C71FD02}|QLPhongTro.API\\QLPhongTro.API.csproj|solutionrelative:qlphongtro.api\\services\\otpservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{357FB607-233D-65A6-8CE0-62019C71FD02}|QLPhongTro.API\\QLPhongTro.API.csproj|d:\\project\\qlphongtro\\qlphongtro.api\\services\\authservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{357FB607-233D-65A6-8CE0-62019C71FD02}|QLPhongTro.API\\QLPhongTro.API.csproj|solutionrelative:qlphongtro.api\\services\\authservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{357FB607-233D-65A6-8CE0-62019C71FD02}|QLPhongTro.API\\QLPhongTro.API.csproj|d:\\project\\qlphongtro\\qlphongtro.api\\services\\iauthservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{357FB607-233D-65A6-8CE0-62019C71FD02}|QLPhongTro.API\\QLPhongTro.API.csproj|solutionrelative:qlphongtro.api\\services\\iauthservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{357FB607-233D-65A6-8CE0-62019C71FD02}|QLPhongTro.API\\QLPhongTro.API.csproj|d:\\project\\qlphongtro\\qlphongtro.api\\dtos\\authdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -45,10 +73,6 @@
     {
       "AbsoluteMoniker": "D:0:0:{357FB607-233D-65A6-8CE0-62019C71FD02}|QLPhongTro.API\\QLPhongTro.API.csproj|d:\\project\\qlphongtro\\qlphongtro.api\\models\\thongbao.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{357FB607-233D-65A6-8CE0-62019C71FD02}|QLPhongTro.API\\QLPhongTro.API.csproj|solutionrelative:qlphongtro.api\\models\\thongbao.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{357FB607-233D-65A6-8CE0-62019C71FD02}|QLPhongTro.API\\QLPhongTro.API.csproj|d:\\project\\qlphongtro\\qlphongtro.api\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
-      "RelativeMoniker": "D:0:0:{357FB607-233D-65A6-8CE0-62019C71FD02}|QLPhongTro.API\\QLPhongTro.API.csproj|solutionrelative:qlphongtro.api\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{357FB607-233D-65A6-8CE0-62019C71FD02}|QLPhongTro.API\\QLPhongTro.API.csproj|d:\\project\\qlphongtro\\qlphongtro.api\\.gitignore||{3B902123-F8A7-4915-9F01-361F908088D0}",
@@ -75,32 +99,12 @@
       "RelativeMoniker": "D:0:0:{357FB607-233D-65A6-8CE0-62019C71FD02}|QLPhongTro.API\\QLPhongTro.API.csproj|solutionrelative:qlphongtro.api\\controllers\\yeucauchinhsuacontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{357FB607-233D-65A6-8CE0-62019C71FD02}|QLPhongTro.API\\QLPhongTro.API.csproj|d:\\project\\qlphongtro\\qlphongtro.api\\controllers\\usercontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{357FB607-233D-65A6-8CE0-62019C71FD02}|QLPhongTro.API\\QLPhongTro.API.csproj|solutionrelative:qlphongtro.api\\controllers\\usercontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{357FB607-233D-65A6-8CE0-62019C71FD02}|QLPhongTro.API\\QLPhongTro.API.csproj|d:\\project\\qlphongtro\\qlphongtro.api\\controllers\\tenantcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{357FB607-233D-65A6-8CE0-62019C71FD02}|QLPhongTro.API\\QLPhongTro.API.csproj|solutionrelative:qlphongtro.api\\controllers\\tenantcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{357FB607-233D-65A6-8CE0-62019C71FD02}|QLPhongTro.API\\QLPhongTro.API.csproj|d:\\project\\qlphongtro\\qlphongtro.api\\controllers\\phongtrocontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{357FB607-233D-65A6-8CE0-62019C71FD02}|QLPhongTro.API\\QLPhongTro.API.csproj|solutionrelative:qlphongtro.api\\controllers\\phongtrocontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{357FB607-233D-65A6-8CE0-62019C71FD02}|QLPhongTro.API\\QLPhongTro.API.csproj|d:\\project\\qlphongtro\\qlphongtro.api\\controllers\\pdfcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{357FB607-233D-65A6-8CE0-62019C71FD02}|QLPhongTro.API\\QLPhongTro.API.csproj|solutionrelative:qlphongtro.api\\controllers\\pdfcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{357FB607-233D-65A6-8CE0-62019C71FD02}|QLPhongTro.API\\QLPhongTro.API.csproj|d:\\project\\qlphongtro\\qlphongtro.api\\controllers\\khachthuecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{357FB607-233D-65A6-8CE0-62019C71FD02}|QLPhongTro.API\\QLPhongTro.API.csproj|solutionrelative:qlphongtro.api\\controllers\\khachthuecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{357FB607-233D-65A6-8CE0-62019C71FD02}|QLPhongTro.API\\QLPhongTro.API.csproj|d:\\project\\qlphongtro\\qlphongtro.api\\controllers\\hopdongcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{357FB607-233D-65A6-8CE0-62019C71FD02}|QLPhongTro.API\\QLPhongTro.API.csproj|solutionrelative:qlphongtro.api\\controllers\\hopdongcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{357FB607-233D-65A6-8CE0-62019C71FD02}|QLPhongTro.API\\QLPhongTro.API.csproj|d:\\project\\qlphongtro\\qlphongtro.api\\controllers\\hoadoncontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{357FB607-233D-65A6-8CE0-62019C71FD02}|QLPhongTro.API\\QLPhongTro.API.csproj|solutionrelative:qlphongtro.api\\controllers\\hoadoncontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{357FB607-233D-65A6-8CE0-62019C71FD02}|QLPhongTro.API\\QLPhongTro.API.csproj|d:\\project\\qlphongtro\\qlphongtro.api\\controllers\\fileuploadcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -195,10 +199,6 @@
       "RelativeMoniker": "D:0:0:{357FB607-233D-65A6-8CE0-62019C71FD02}|QLPhongTro.API\\QLPhongTro.API.csproj|solutionrelative:qlphongtro.api\\models\\hopdong.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{357FB607-233D-65A6-8CE0-62019C71FD02}|QLPhongTro.API\\QLPhongTro.API.csproj|d:\\project\\qlphongtro\\qlphongtro.api\\models\\khachthue.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{357FB607-233D-65A6-8CE0-62019C71FD02}|QLPhongTro.API\\QLPhongTro.API.csproj|solutionrelative:qlphongtro.api\\models\\khachthue.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{357FB607-233D-65A6-8CE0-62019C71FD02}|QLPhongTro.API\\QLPhongTro.API.csproj|d:\\project\\qlphongtro\\qlphongtro.api\\models\\lichsuchuyenphong.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{357FB607-233D-65A6-8CE0-62019C71FD02}|QLPhongTro.API\\QLPhongTro.API.csproj|solutionrelative:qlphongtro.api\\models\\lichsuchuyenphong.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
@@ -270,31 +270,46 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 6,
+          "SelectedChildIndex": 0,
           "Children": [
             {
               "$type": "Document",
-              "DocumentIndex": 11,
-              "Title": "appsettings.json",
-              "DocumentMoniker": "D:\\Project\\QLPhongTro\\QLPhongTro.API\\appsettings.json",
-              "RelativeDocumentMoniker": "QLPhongTro.API\\appsettings.json",
-              "ToolTip": "D:\\Project\\QLPhongTro\\QLPhongTro.API\\appsettings.json",
-              "RelativeToolTip": "QLPhongTro.API\\appsettings.json",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAkAAABZAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
-              "WhenOpened": "2025-12-09T11:47:38.296Z"
+              "DocumentIndex": 0,
+              "Title": "AuthController.cs",
+              "DocumentMoniker": "D:\\Project\\QLPhongTro\\QLPhongTro.API\\Controllers\\AuthController.cs",
+              "RelativeDocumentMoniker": "QLPhongTro.API\\Controllers\\AuthController.cs",
+              "ToolTip": "D:\\Project\\QLPhongTro\\QLPhongTro.API\\Controllers\\AuthController.cs",
+              "RelativeToolTip": "QLPhongTro.API\\Controllers\\AuthController.cs",
+              "ViewState": "AgIAABEAAAAAAAAAAAAQwCAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-12-09T11:40:05.264Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "AuthService.cs",
+              "DocumentMoniker": "D:\\Project\\QLPhongTro\\QLPhongTro.API\\Services\\AuthService.cs",
+              "RelativeDocumentMoniker": "QLPhongTro.API\\Services\\AuthService.cs",
+              "ToolTip": "D:\\Project\\QLPhongTro\\QLPhongTro.API\\Services\\AuthService.cs",
+              "RelativeToolTip": "QLPhongTro.API\\Services\\AuthService.cs",
+              "ViewState": "AgIAAOYAAAAAAAAAAAAcwPMAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-12-13T02:32:48.149Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 5,
-              "Title": "OtpService.cs",
-              "DocumentMoniker": "D:\\Project\\QLPhongTro\\QLPhongTro.API\\Services\\OtpService.cs",
-              "RelativeDocumentMoniker": "QLPhongTro.API\\Services\\OtpService.cs",
-              "ToolTip": "D:\\Project\\QLPhongTro\\QLPhongTro.API\\Services\\OtpService.cs",
-              "RelativeToolTip": "QLPhongTro.API\\Services\\OtpService.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAQAAAAUAAAAAAAAAA==",
+              "Title": "IAuthService.cs",
+              "DocumentMoniker": "D:\\Project\\QLPhongTro\\QLPhongTro.API\\Services\\IAuthService.cs",
+              "RelativeDocumentMoniker": "QLPhongTro.API\\Services\\IAuthService.cs",
+              "ToolTip": "D:\\Project\\QLPhongTro\\QLPhongTro.API\\Services\\IAuthService.cs",
+              "RelativeToolTip": "QLPhongTro.API\\Services\\IAuthService.cs",
+              "ViewState": "AgIAAAIAAAAAAAAAAAASwBAAAABcAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-12-13T02:33:21.928Z"
+              "WhenOpened": "2025-12-13T02:33:03.182Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
@@ -304,210 +319,53 @@
               "RelativeDocumentMoniker": "QLPhongTro.API\\Services\\EmailService.cs",
               "ToolTip": "D:\\Project\\QLPhongTro\\QLPhongTro.API\\Services\\EmailService.cs",
               "RelativeToolTip": "QLPhongTro.API\\Services\\EmailService.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA0AAAAZAAAAAAAAAA==",
+              "ViewState": "AgIAAF4AAAAAAAAAAAAkwBAAAABXAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-12-13T02:32:52.531Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 1,
-              "Title": "AuthController.cs",
-              "DocumentMoniker": "D:\\Project\\QLPhongTro\\QLPhongTro.API\\Controllers\\AuthController.cs",
-              "RelativeDocumentMoniker": "QLPhongTro.API\\Controllers\\AuthController.cs",
-              "ToolTip": "D:\\Project\\QLPhongTro\\QLPhongTro.API\\Controllers\\AuthController.cs",
-              "RelativeToolTip": "QLPhongTro.API\\Controllers\\AuthController.cs",
-              "ViewState": "AgIAALMAAAAAAAAAAAAAAMEAAAALAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-12-09T11:40:05.264Z",
+              "WhenOpened": "2025-12-13T02:32:52.531Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 3,
-              "Title": "BieuMauController.cs",
-              "DocumentMoniker": "D:\\Project\\QLPhongTro\\QLPhongTro.API\\Controllers\\BieuMauController.cs",
-              "RelativeDocumentMoniker": "QLPhongTro.API\\Controllers\\BieuMauController.cs",
-              "ToolTip": "D:\\Project\\QLPhongTro\\QLPhongTro.API\\Controllers\\BieuMauController.cs",
-              "RelativeToolTip": "QLPhongTro.API\\Controllers\\BieuMauController.cs",
-              "ViewState": "AgIAAKwAAAAAAAAAAAAwwF0AAAAuAAAAAAAAAA==",
+              "Title": "KhachThue.cs",
+              "DocumentMoniker": "D:\\Project\\QLPhongTro\\QLPhongTro.API\\Models\\KhachThue.cs",
+              "RelativeDocumentMoniker": "QLPhongTro.API\\Models\\KhachThue.cs",
+              "ToolTip": "D:\\Project\\QLPhongTro\\QLPhongTro.API\\Models\\KhachThue.cs",
+              "RelativeToolTip": "QLPhongTro.API\\Models\\KhachThue.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAUAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-12-13T09:32:53.199Z",
+              "WhenOpened": "2025-12-13T02:32:22.664Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
-              "Title": "ChiSoCongToController.cs",
-              "DocumentMoniker": "D:\\Project\\QLPhongTro\\QLPhongTro.API\\Controllers\\ChiSoCongToController.cs",
-              "RelativeDocumentMoniker": "QLPhongTro.API\\Controllers\\ChiSoCongToController.cs",
-              "ToolTip": "D:\\Project\\QLPhongTro\\QLPhongTro.API\\Controllers\\ChiSoCongToController.cs",
-              "RelativeToolTip": "QLPhongTro.API\\Controllers\\ChiSoCongToController.cs",
-              "ViewState": "AgIAADsBAAAAAAAAAAAIwFQBAAA+AAAAAAAAAA==",
+              "DocumentIndex": 1,
+              "Title": "KhachThueController.cs",
+              "DocumentMoniker": "D:\\Project\\QLPhongTro\\QLPhongTro.API\\Controllers\\KhachThueController.cs",
+              "RelativeDocumentMoniker": "QLPhongTro.API\\Controllers\\KhachThueController.cs",
+              "ToolTip": "D:\\Project\\QLPhongTro\\QLPhongTro.API\\Controllers\\KhachThueController.cs",
+              "RelativeToolTip": "QLPhongTro.API\\Controllers\\KhachThueController.cs",
+              "ViewState": "AgIAAA8BAAAAAAAAAAAiwCQBAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-12-13T02:29:54.93Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 0,
-              "Title": "Program.cs",
-              "DocumentMoniker": "D:\\Project\\QLPhongTro\\QLPhongTro.API\\Program.cs",
-              "RelativeDocumentMoniker": "QLPhongTro.API\\Program.cs",
-              "ToolTip": "D:\\Project\\QLPhongTro\\QLPhongTro.API\\Program.cs",
-              "RelativeToolTip": "QLPhongTro.API\\Program.cs",
-              "ViewState": "AgIAAGMAAAAAAAAAAAASwGkAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-12-09T11:47:51.317Z",
+              "WhenOpened": "2025-12-13T02:30:24.801Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 6,
-              "Title": "AuthService.cs",
-              "DocumentMoniker": "D:\\Project\\QLPhongTro\\QLPhongTro.API\\Services\\AuthService.cs",
-              "RelativeDocumentMoniker": "QLPhongTro.API\\Services\\AuthService.cs",
-              "ToolTip": "D:\\Project\\QLPhongTro\\QLPhongTro.API\\Services\\AuthService.cs",
-              "RelativeToolTip": "QLPhongTro.API\\Services\\AuthService.cs",
-              "ViewState": "AgIAALgAAAAAAAAAAAAwwOoAAAAwAAAAAAAAAA==",
+              "Title": "PhongTroController.cs",
+              "DocumentMoniker": "D:\\Project\\QLPhongTro\\QLPhongTro.API\\Controllers\\PhongTroController.cs",
+              "RelativeDocumentMoniker": "QLPhongTro.API\\Controllers\\PhongTroController.cs",
+              "ToolTip": "D:\\Project\\QLPhongTro\\QLPhongTro.API\\Controllers\\PhongTroController.cs",
+              "RelativeToolTip": "QLPhongTro.API\\Controllers\\PhongTroController.cs",
+              "ViewState": "AgIAAGEAAAAAAAAAAAAkwCUAAAAIAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-12-13T02:32:48.149Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 7,
-              "Title": "IAuthService.cs",
-              "DocumentMoniker": "D:\\Project\\QLPhongTro\\QLPhongTro.API\\Services\\IAuthService.cs",
-              "RelativeDocumentMoniker": "QLPhongTro.API\\Services\\IAuthService.cs",
-              "ToolTip": "D:\\Project\\QLPhongTro\\QLPhongTro.API\\Services\\IAuthService.cs",
-              "RelativeToolTip": "QLPhongTro.API\\Services\\IAuthService.cs",
-              "ViewState": "AgIAAAIAAAAAAAAAAAASwBAAAABcAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-12-13T02:33:03.182Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 9,
-              "Title": "OtpCode.cs",
-              "DocumentMoniker": "D:\\Project\\QLPhongTro\\QLPhongTro.API\\Models\\OtpCode.cs",
-              "RelativeDocumentMoniker": "QLPhongTro.API\\Models\\OtpCode.cs",
-              "ToolTip": "D:\\Project\\QLPhongTro\\QLPhongTro.API\\Models\\OtpCode.cs",
-              "RelativeToolTip": "QLPhongTro.API\\Models\\OtpCode.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAUAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-12-13T02:32:29.268Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 10,
-              "Title": "ThongBao.cs",
-              "DocumentMoniker": "D:\\Project\\QLPhongTro\\QLPhongTro.API\\Models\\ThongBao.cs",
-              "RelativeDocumentMoniker": "QLPhongTro.API\\Models\\ThongBao.cs",
-              "ToolTip": "D:\\Project\\QLPhongTro\\QLPhongTro.API\\Models\\ThongBao.cs",
-              "RelativeToolTip": "QLPhongTro.API\\Models\\ThongBao.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAUAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-12-13T02:32:36.836Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 8,
-              "Title": "AuthDTO.cs",
-              "DocumentMoniker": "D:\\Project\\QLPhongTro\\QLPhongTro.API\\DTOs\\AuthDTO.cs",
-              "RelativeDocumentMoniker": "QLPhongTro.API\\DTOs\\AuthDTO.cs",
-              "ToolTip": "D:\\Project\\QLPhongTro\\QLPhongTro.API\\DTOs\\AuthDTO.cs",
-              "RelativeToolTip": "QLPhongTro.API\\DTOs\\AuthDTO.cs",
-              "ViewState": "AgIAAGoAAAAAAAAAAAA2wHMAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-12-13T02:31:05.584Z",
+              "WhenOpened": "2025-12-13T02:30:35.382Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 12,
-              "Title": ".gitignore",
-              "DocumentMoniker": "D:\\Project\\QLPhongTro\\QLPhongTro.API\\.gitignore",
-              "RelativeDocumentMoniker": "QLPhongTro.API\\.gitignore",
-              "ToolTip": "D:\\Project\\QLPhongTro\\QLPhongTro.API\\.gitignore",
-              "RelativeToolTip": "QLPhongTro.API\\.gitignore",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001001|",
-              "WhenOpened": "2026-01-07T06:33:05.245Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 15,
-              "Title": "OtpController.cs",
-              "DocumentMoniker": "D:\\Project\\QLPhongTro\\QLPhongTro.API\\Controllers\\OtpController.cs",
-              "RelativeDocumentMoniker": "QLPhongTro.API\\Controllers\\OtpController.cs",
-              "ToolTip": "D:\\Project\\QLPhongTro\\QLPhongTro.API\\Controllers\\OtpController.cs",
-              "RelativeToolTip": "QLPhongTro.API\\Controllers\\OtpController.cs",
-              "ViewState": "AgIAADEAAAAAAAAAAAAUwEMAAAAJAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-12-13T02:30:28.335Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 13,
-              "Title": "ChiSoCongToGuiTuThueDTO.cs",
-              "DocumentMoniker": "D:\\Project\\QLPhongTro\\QLPhongTro.API\\DTOs\\ChiSoCongToGuiTuThueDTO.cs",
-              "RelativeDocumentMoniker": "QLPhongTro.API\\DTOs\\ChiSoCongToGuiTuThueDTO.cs",
-              "ToolTip": "D:\\Project\\QLPhongTro\\QLPhongTro.API\\DTOs\\ChiSoCongToGuiTuThueDTO.cs",
-              "RelativeToolTip": "QLPhongTro.API\\DTOs\\ChiSoCongToGuiTuThueDTO.cs",
-              "ViewState": "AgIAAAgAAAAAAAAAAAAwwBoAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-12-13T02:31:13.236Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 16,
-              "Title": "ApplicationDbContext.cs",
-              "DocumentMoniker": "D:\\Project\\QLPhongTro\\QLPhongTro.API\\Data\\ApplicationDbContext.cs",
-              "RelativeDocumentMoniker": "QLPhongTro.API\\Data\\ApplicationDbContext.cs",
-              "ToolTip": "D:\\Project\\QLPhongTro\\QLPhongTro.API\\Data\\ApplicationDbContext.cs",
-              "RelativeToolTip": "QLPhongTro.API\\Data\\ApplicationDbContext.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAkBAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-12-09T11:40:11.62Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 14,
-              "Title": "ThongBaoController.cs",
-              "DocumentMoniker": "D:\\Project\\QLPhongTro\\QLPhongTro.API\\Controllers\\ThongBaoController.cs",
-              "RelativeDocumentMoniker": "QLPhongTro.API\\Controllers\\ThongBaoController.cs",
-              "ToolTip": "D:\\Project\\QLPhongTro\\QLPhongTro.API\\Controllers\\ThongBaoController.cs",
-              "RelativeToolTip": "QLPhongTro.API\\Controllers\\ThongBaoController.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAIoAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-12-13T02:30:46.134Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 17,
-              "Title": "YeuCauChinhSuaController.cs",
-              "DocumentMoniker": "D:\\Project\\QLPhongTro\\QLPhongTro.API\\Controllers\\YeuCauChinhSuaController.cs",
-              "RelativeDocumentMoniker": "QLPhongTro.API\\Controllers\\YeuCauChinhSuaController.cs",
-              "ToolTip": "D:\\Project\\QLPhongTro\\QLPhongTro.API\\Controllers\\YeuCauChinhSuaController.cs",
-              "RelativeToolTip": "QLPhongTro.API\\Controllers\\YeuCauChinhSuaController.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAGQAAAABAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-12-13T02:30:55.044Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 18,
-              "Title": "UserController.cs",
-              "DocumentMoniker": "D:\\Project\\QLPhongTro\\QLPhongTro.API\\Controllers\\UserController.cs",
-              "RelativeDocumentMoniker": "QLPhongTro.API\\Controllers\\UserController.cs",
-              "ToolTip": "D:\\Project\\QLPhongTro\\QLPhongTro.API\\Controllers\\UserController.cs",
-              "RelativeToolTip": "QLPhongTro.API\\Controllers\\UserController.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAFkAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-12-13T02:30:49.662Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 19,
+              "DocumentIndex": 7,
               "Title": "TenantController.cs",
               "DocumentMoniker": "D:\\Project\\QLPhongTro\\QLPhongTro.API\\Controllers\\TenantController.cs",
               "RelativeDocumentMoniker": "QLPhongTro.API\\Controllers\\TenantController.cs",
@@ -520,19 +378,205 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 20,
-              "Title": "PhongTroController.cs",
-              "DocumentMoniker": "D:\\Project\\QLPhongTro\\QLPhongTro.API\\Controllers\\PhongTroController.cs",
-              "RelativeDocumentMoniker": "QLPhongTro.API\\Controllers\\PhongTroController.cs",
-              "ToolTip": "D:\\Project\\QLPhongTro\\QLPhongTro.API\\Controllers\\PhongTroController.cs",
-              "RelativeToolTip": "QLPhongTro.API\\Controllers\\PhongTroController.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAACUAAAAIAAAAAAAAAA==",
+              "DocumentIndex": 8,
+              "Title": "UserController.cs",
+              "DocumentMoniker": "D:\\Project\\QLPhongTro\\QLPhongTro.API\\Controllers\\UserController.cs",
+              "RelativeDocumentMoniker": "QLPhongTro.API\\Controllers\\UserController.cs",
+              "ToolTip": "D:\\Project\\QLPhongTro\\QLPhongTro.API\\Controllers\\UserController.cs",
+              "RelativeToolTip": "QLPhongTro.API\\Controllers\\UserController.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAFkAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-12-13T02:30:35.382Z"
+              "WhenOpened": "2025-12-13T02:30:49.662Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 9,
+              "Title": "HoaDonController.cs",
+              "DocumentMoniker": "D:\\Project\\QLPhongTro\\QLPhongTro.API\\Controllers\\HoaDonController.cs",
+              "RelativeDocumentMoniker": "QLPhongTro.API\\Controllers\\HoaDonController.cs",
+              "ToolTip": "D:\\Project\\QLPhongTro\\QLPhongTro.API\\Controllers\\HoaDonController.cs",
+              "RelativeToolTip": "QLPhongTro.API\\Controllers\\HoaDonController.cs",
+              "ViewState": "AgIAAHgBAAAAAAAAAAAowI0BAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-12-13T02:30:17.904Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 10,
+              "Title": "Program.cs",
+              "DocumentMoniker": "D:\\Project\\QLPhongTro\\QLPhongTro.API\\Program.cs",
+              "RelativeDocumentMoniker": "QLPhongTro.API\\Program.cs",
+              "ToolTip": "D:\\Project\\QLPhongTro\\QLPhongTro.API\\Program.cs",
+              "RelativeToolTip": "QLPhongTro.API\\Program.cs",
+              "ViewState": "AgIAAAcAAAAAAAAAAAASwBoAAAAmAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-12-09T11:47:51.317Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 12,
+              "Title": "ChiSoCongToController.cs",
+              "DocumentMoniker": "D:\\Project\\QLPhongTro\\QLPhongTro.API\\Controllers\\ChiSoCongToController.cs",
+              "RelativeDocumentMoniker": "QLPhongTro.API\\Controllers\\ChiSoCongToController.cs",
+              "ToolTip": "D:\\Project\\QLPhongTro\\QLPhongTro.API\\Controllers\\ChiSoCongToController.cs",
+              "RelativeToolTip": "QLPhongTro.API\\Controllers\\ChiSoCongToController.cs",
+              "ViewState": "AgIAADsBAAAAAAAAAAAIwFQBAAA+AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-12-13T02:29:54.93Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 13,
+              "Title": "BieuMauController.cs",
+              "DocumentMoniker": "D:\\Project\\QLPhongTro\\QLPhongTro.API\\Controllers\\BieuMauController.cs",
+              "RelativeDocumentMoniker": "QLPhongTro.API\\Controllers\\BieuMauController.cs",
+              "ToolTip": "D:\\Project\\QLPhongTro\\QLPhongTro.API\\Controllers\\BieuMauController.cs",
+              "RelativeToolTip": "QLPhongTro.API\\Controllers\\BieuMauController.cs",
+              "ViewState": "AgIAAKwAAAAAAAAAAAAwwF0AAAAuAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-12-13T09:32:53.199Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 11,
+              "Title": "appsettings.json",
+              "DocumentMoniker": "D:\\Project\\QLPhongTro\\QLPhongTro.API\\appsettings.json",
+              "RelativeDocumentMoniker": "QLPhongTro.API\\appsettings.json",
+              "ToolTip": "D:\\Project\\QLPhongTro\\QLPhongTro.API\\appsettings.json",
+              "RelativeToolTip": "QLPhongTro.API\\appsettings.json",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAkAAABZAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
+              "WhenOpened": "2025-12-09T11:47:38.296Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 14,
+              "Title": "OtpService.cs",
+              "DocumentMoniker": "D:\\Project\\QLPhongTro\\QLPhongTro.API\\Services\\OtpService.cs",
+              "RelativeDocumentMoniker": "QLPhongTro.API\\Services\\OtpService.cs",
+              "ToolTip": "D:\\Project\\QLPhongTro\\QLPhongTro.API\\Services\\OtpService.cs",
+              "RelativeToolTip": "QLPhongTro.API\\Services\\OtpService.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAQAAAAUAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-12-13T02:33:21.928Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 16,
+              "Title": "OtpCode.cs",
+              "DocumentMoniker": "D:\\Project\\QLPhongTro\\QLPhongTro.API\\Models\\OtpCode.cs",
+              "RelativeDocumentMoniker": "QLPhongTro.API\\Models\\OtpCode.cs",
+              "ToolTip": "D:\\Project\\QLPhongTro\\QLPhongTro.API\\Models\\OtpCode.cs",
+              "RelativeToolTip": "QLPhongTro.API\\Models\\OtpCode.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAUAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-12-13T02:32:29.268Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 17,
+              "Title": "ThongBao.cs",
+              "DocumentMoniker": "D:\\Project\\QLPhongTro\\QLPhongTro.API\\Models\\ThongBao.cs",
+              "RelativeDocumentMoniker": "QLPhongTro.API\\Models\\ThongBao.cs",
+              "ToolTip": "D:\\Project\\QLPhongTro\\QLPhongTro.API\\Models\\ThongBao.cs",
+              "RelativeToolTip": "QLPhongTro.API\\Models\\ThongBao.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAUAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-12-13T02:32:36.836Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 15,
+              "Title": "AuthDTO.cs",
+              "DocumentMoniker": "D:\\Project\\QLPhongTro\\QLPhongTro.API\\DTOs\\AuthDTO.cs",
+              "RelativeDocumentMoniker": "QLPhongTro.API\\DTOs\\AuthDTO.cs",
+              "ToolTip": "D:\\Project\\QLPhongTro\\QLPhongTro.API\\DTOs\\AuthDTO.cs",
+              "RelativeToolTip": "QLPhongTro.API\\DTOs\\AuthDTO.cs",
+              "ViewState": "AgIAAGoAAAAAAAAAAAA2wHMAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-12-13T02:31:05.584Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 18,
+              "Title": ".gitignore",
+              "DocumentMoniker": "D:\\Project\\QLPhongTro\\QLPhongTro.API\\.gitignore",
+              "RelativeDocumentMoniker": "QLPhongTro.API\\.gitignore",
+              "ToolTip": "D:\\Project\\QLPhongTro\\QLPhongTro.API\\.gitignore",
+              "RelativeToolTip": "QLPhongTro.API\\.gitignore",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001001|",
+              "WhenOpened": "2026-01-07T06:33:05.245Z"
             },
             {
               "$type": "Document",
               "DocumentIndex": 21,
+              "Title": "OtpController.cs",
+              "DocumentMoniker": "D:\\Project\\QLPhongTro\\QLPhongTro.API\\Controllers\\OtpController.cs",
+              "RelativeDocumentMoniker": "QLPhongTro.API\\Controllers\\OtpController.cs",
+              "ToolTip": "D:\\Project\\QLPhongTro\\QLPhongTro.API\\Controllers\\OtpController.cs",
+              "RelativeToolTip": "QLPhongTro.API\\Controllers\\OtpController.cs",
+              "ViewState": "AgIAADEAAAAAAAAAAAAUwEMAAAAJAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-12-13T02:30:28.335Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 19,
+              "Title": "ChiSoCongToGuiTuThueDTO.cs",
+              "DocumentMoniker": "D:\\Project\\QLPhongTro\\QLPhongTro.API\\DTOs\\ChiSoCongToGuiTuThueDTO.cs",
+              "RelativeDocumentMoniker": "QLPhongTro.API\\DTOs\\ChiSoCongToGuiTuThueDTO.cs",
+              "ToolTip": "D:\\Project\\QLPhongTro\\QLPhongTro.API\\DTOs\\ChiSoCongToGuiTuThueDTO.cs",
+              "RelativeToolTip": "QLPhongTro.API\\DTOs\\ChiSoCongToGuiTuThueDTO.cs",
+              "ViewState": "AgIAAAgAAAAAAAAAAAAwwBoAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-12-13T02:31:13.236Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 22,
+              "Title": "ApplicationDbContext.cs",
+              "DocumentMoniker": "D:\\Project\\QLPhongTro\\QLPhongTro.API\\Data\\ApplicationDbContext.cs",
+              "RelativeDocumentMoniker": "QLPhongTro.API\\Data\\ApplicationDbContext.cs",
+              "ToolTip": "D:\\Project\\QLPhongTro\\QLPhongTro.API\\Data\\ApplicationDbContext.cs",
+              "RelativeToolTip": "QLPhongTro.API\\Data\\ApplicationDbContext.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAkBAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-12-09T11:40:11.62Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 20,
+              "Title": "ThongBaoController.cs",
+              "DocumentMoniker": "D:\\Project\\QLPhongTro\\QLPhongTro.API\\Controllers\\ThongBaoController.cs",
+              "RelativeDocumentMoniker": "QLPhongTro.API\\Controllers\\ThongBaoController.cs",
+              "ToolTip": "D:\\Project\\QLPhongTro\\QLPhongTro.API\\Controllers\\ThongBaoController.cs",
+              "RelativeToolTip": "QLPhongTro.API\\Controllers\\ThongBaoController.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAIoAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-12-13T02:30:46.134Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 23,
+              "Title": "YeuCauChinhSuaController.cs",
+              "DocumentMoniker": "D:\\Project\\QLPhongTro\\QLPhongTro.API\\Controllers\\YeuCauChinhSuaController.cs",
+              "RelativeDocumentMoniker": "QLPhongTro.API\\Controllers\\YeuCauChinhSuaController.cs",
+              "ToolTip": "D:\\Project\\QLPhongTro\\QLPhongTro.API\\Controllers\\YeuCauChinhSuaController.cs",
+              "RelativeToolTip": "QLPhongTro.API\\Controllers\\YeuCauChinhSuaController.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAGQAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-12-13T02:30:55.044Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 24,
               "Title": "PdfController.cs",
               "DocumentMoniker": "D:\\Project\\QLPhongTro\\QLPhongTro.API\\Controllers\\PdfController.cs",
               "RelativeDocumentMoniker": "QLPhongTro.API\\Controllers\\PdfController.cs",
@@ -544,19 +588,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 22,
-              "Title": "KhachThueController.cs",
-              "DocumentMoniker": "D:\\Project\\QLPhongTro\\QLPhongTro.API\\Controllers\\KhachThueController.cs",
-              "RelativeDocumentMoniker": "QLPhongTro.API\\Controllers\\KhachThueController.cs",
-              "ToolTip": "D:\\Project\\QLPhongTro\\QLPhongTro.API\\Controllers\\KhachThueController.cs",
-              "RelativeToolTip": "QLPhongTro.API\\Controllers\\KhachThueController.cs",
-              "ViewState": "AgIAAPsAAAAAAAAAAAAUwNgAAAAjAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-12-13T02:30:24.801Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 23,
+              "DocumentIndex": 25,
               "Title": "HopDongController.cs",
               "DocumentMoniker": "D:\\Project\\QLPhongTro\\QLPhongTro.API\\Controllers\\HopDongController.cs",
               "RelativeDocumentMoniker": "QLPhongTro.API\\Controllers\\HopDongController.cs",
@@ -569,20 +601,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 24,
-              "Title": "HoaDonController.cs",
-              "DocumentMoniker": "D:\\Project\\QLPhongTro\\QLPhongTro.API\\Controllers\\HoaDonController.cs",
-              "RelativeDocumentMoniker": "QLPhongTro.API\\Controllers\\HoaDonController.cs",
-              "ToolTip": "D:\\Project\\QLPhongTro\\QLPhongTro.API\\Controllers\\HoaDonController.cs",
-              "RelativeToolTip": "QLPhongTro.API\\Controllers\\HoaDonController.cs",
-              "ViewState": "AgIAADICAAAAAAAAAAAqwEgCAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-12-13T02:30:17.904Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 25,
+              "DocumentIndex": 26,
               "Title": "FileUploadController.cs",
               "DocumentMoniker": "D:\\Project\\QLPhongTro\\QLPhongTro.API\\Controllers\\FileUploadController.cs",
               "RelativeDocumentMoniker": "QLPhongTro.API\\Controllers\\FileUploadController.cs",
@@ -594,7 +613,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 26,
+              "DocumentIndex": 27,
               "Title": "DichVuController.cs",
               "DocumentMoniker": "D:\\Project\\QLPhongTro\\QLPhongTro.API\\Controllers\\DichVuController.cs",
               "RelativeDocumentMoniker": "QLPhongTro.API\\Controllers\\DichVuController.cs",
@@ -606,7 +625,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 27,
+              "DocumentIndex": 28,
               "Title": "DayTroController.cs",
               "DocumentMoniker": "D:\\Project\\QLPhongTro\\QLPhongTro.API\\Controllers\\DayTroController.cs",
               "RelativeDocumentMoniker": "QLPhongTro.API\\Controllers\\DayTroController.cs",
@@ -618,7 +637,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 28,
+              "DocumentIndex": 29,
               "Title": "DashboardController.cs",
               "DocumentMoniker": "D:\\Project\\QLPhongTro\\QLPhongTro.API\\Controllers\\DashboardController.cs",
               "RelativeDocumentMoniker": "QLPhongTro.API\\Controllers\\DashboardController.cs",
@@ -630,7 +649,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 29,
+              "DocumentIndex": 30,
               "Title": "ChiSoCongToGuiTuThueController.cs",
               "DocumentMoniker": "D:\\Project\\QLPhongTro\\QLPhongTro.API\\Controllers\\ChiSoCongToGuiTuThueController.cs",
               "RelativeDocumentMoniker": "QLPhongTro.API\\Controllers\\ChiSoCongToGuiTuThueController.cs",
@@ -642,7 +661,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 30,
+              "DocumentIndex": 31,
               "Title": "ChiSoCongToDTO.cs",
               "DocumentMoniker": "D:\\Project\\QLPhongTro\\QLPhongTro.API\\DTOs\\ChiSoCongToDTO.cs",
               "RelativeDocumentMoniker": "QLPhongTro.API\\DTOs\\ChiSoCongToDTO.cs",
@@ -654,7 +673,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 36,
+              "DocumentIndex": 37,
               "Title": "TemplateDTOs.cs",
               "DocumentMoniker": "D:\\Project\\QLPhongTro\\QLPhongTro.API\\DTOs\\TemplateDTOs.cs",
               "RelativeDocumentMoniker": "QLPhongTro.API\\DTOs\\TemplateDTOs.cs",
@@ -666,7 +685,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 31,
+              "DocumentIndex": 32,
               "Title": "DichVuDTO.cs",
               "DocumentMoniker": "D:\\Project\\QLPhongTro\\QLPhongTro.API\\DTOs\\DichVuDTO.cs",
               "RelativeDocumentMoniker": "QLPhongTro.API\\DTOs\\DichVuDTO.cs",
@@ -678,7 +697,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 32,
+              "DocumentIndex": 33,
               "Title": "HoaDonDTO.cs",
               "DocumentMoniker": "D:\\Project\\QLPhongTro\\QLPhongTro.API\\DTOs\\HoaDonDTO.cs",
               "RelativeDocumentMoniker": "QLPhongTro.API\\DTOs\\HoaDonDTO.cs",
@@ -690,7 +709,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 33,
+              "DocumentIndex": 34,
               "Title": "HopDongDTO.cs",
               "DocumentMoniker": "D:\\Project\\QLPhongTro\\QLPhongTro.API\\DTOs\\HopDongDTO.cs",
               "RelativeDocumentMoniker": "QLPhongTro.API\\DTOs\\HopDongDTO.cs",
@@ -702,7 +721,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 34,
+              "DocumentIndex": 35,
               "Title": "KhachThueDTO.cs",
               "DocumentMoniker": "D:\\Project\\QLPhongTro\\QLPhongTro.API\\DTOs\\KhachThueDTO.cs",
               "RelativeDocumentMoniker": "QLPhongTro.API\\DTOs\\KhachThueDTO.cs",
@@ -714,7 +733,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 35,
+              "DocumentIndex": 36,
               "Title": "PhongTroDTO.cs",
               "DocumentMoniker": "D:\\Project\\QLPhongTro\\QLPhongTro.API\\DTOs\\PhongTroDTO.cs",
               "RelativeDocumentMoniker": "QLPhongTro.API\\DTOs\\PhongTroDTO.cs",
@@ -726,7 +745,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 37,
+              "DocumentIndex": 38,
               "Title": "ThanhToanDTO.cs",
               "DocumentMoniker": "D:\\Project\\QLPhongTro\\QLPhongTro.API\\DTOs\\ThanhToanDTO.cs",
               "RelativeDocumentMoniker": "QLPhongTro.API\\DTOs\\ThanhToanDTO.cs",
@@ -738,7 +757,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 38,
+              "DocumentIndex": 39,
               "Title": "ThongBaoDTO.cs",
               "DocumentMoniker": "D:\\Project\\QLPhongTro\\QLPhongTro.API\\DTOs\\ThongBaoDTO.cs",
               "RelativeDocumentMoniker": "QLPhongTro.API\\DTOs\\ThongBaoDTO.cs",
@@ -750,7 +769,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 39,
+              "DocumentIndex": 40,
               "Title": "YeuCauChinhSuaDTO.cs",
               "DocumentMoniker": "D:\\Project\\QLPhongTro\\QLPhongTro.API\\DTOs\\YeuCauChinhSuaDTO.cs",
               "RelativeDocumentMoniker": "QLPhongTro.API\\DTOs\\YeuCauChinhSuaDTO.cs",
@@ -762,7 +781,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 40,
+              "DocumentIndex": 41,
               "Title": "20251208153801_InitialCreate.cs",
               "DocumentMoniker": "D:\\Project\\QLPhongTro\\QLPhongTro.API\\Migrations\\20251208153801_InitialCreate.cs",
               "RelativeDocumentMoniker": "QLPhongTro.API\\Migrations\\20251208153801_InitialCreate.cs",
@@ -774,7 +793,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 41,
+              "DocumentIndex": 42,
               "Title": "BieuMau.cs",
               "DocumentMoniker": "D:\\Project\\QLPhongTro\\QLPhongTro.API\\Models\\BieuMau.cs",
               "RelativeDocumentMoniker": "QLPhongTro.API\\Models\\BieuMau.cs",
@@ -786,7 +805,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 42,
+              "DocumentIndex": 43,
               "Title": "ChiSoCongTo.cs",
               "DocumentMoniker": "D:\\Project\\QLPhongTro\\QLPhongTro.API\\Models\\ChiSoCongTo.cs",
               "RelativeDocumentMoniker": "QLPhongTro.API\\Models\\ChiSoCongTo.cs",
@@ -798,7 +817,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 43,
+              "DocumentIndex": 44,
               "Title": "ChiSoCongToGuiTuThue.cs",
               "DocumentMoniker": "D:\\Project\\QLPhongTro\\QLPhongTro.API\\Models\\ChiSoCongToGuiTuThue.cs",
               "RelativeDocumentMoniker": "QLPhongTro.API\\Models\\ChiSoCongToGuiTuThue.cs",
@@ -810,7 +829,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 44,
+              "DocumentIndex": 45,
               "Title": "DayTro.cs",
               "DocumentMoniker": "D:\\Project\\QLPhongTro\\QLPhongTro.API\\Models\\DayTro.cs",
               "RelativeDocumentMoniker": "QLPhongTro.API\\Models\\DayTro.cs",
@@ -822,7 +841,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 45,
+              "DocumentIndex": 46,
               "Title": "DichVu.cs",
               "DocumentMoniker": "D:\\Project\\QLPhongTro\\QLPhongTro.API\\Models\\DichVu.cs",
               "RelativeDocumentMoniker": "QLPhongTro.API\\Models\\DichVu.cs",
@@ -834,7 +853,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 46,
+              "DocumentIndex": 47,
               "Title": "HoaDon.cs",
               "DocumentMoniker": "D:\\Project\\QLPhongTro\\QLPhongTro.API\\Models\\HoaDon.cs",
               "RelativeDocumentMoniker": "QLPhongTro.API\\Models\\HoaDon.cs",
@@ -846,7 +865,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 47,
+              "DocumentIndex": 48,
               "Title": "HopDong.cs",
               "DocumentMoniker": "D:\\Project\\QLPhongTro\\QLPhongTro.API\\Models\\HopDong.cs",
               "RelativeDocumentMoniker": "QLPhongTro.API\\Models\\HopDong.cs",
@@ -855,18 +874,6 @@
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAUAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-12-13T02:32:14.743Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 48,
-              "Title": "KhachThue.cs",
-              "DocumentMoniker": "D:\\Project\\QLPhongTro\\QLPhongTro.API\\Models\\KhachThue.cs",
-              "RelativeDocumentMoniker": "QLPhongTro.API\\Models\\KhachThue.cs",
-              "ToolTip": "D:\\Project\\QLPhongTro\\QLPhongTro.API\\Models\\KhachThue.cs",
-              "RelativeToolTip": "QLPhongTro.API\\Models\\KhachThue.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAUAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-12-13T02:32:22.664Z"
             },
             {
               "$type": "Document",

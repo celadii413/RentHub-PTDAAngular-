@@ -10,29 +10,29 @@ import { ToastService } from '../../services/toast.service';
   selector: 'app-register',
   standalone: true,
   imports: [CommonModule, FormsModule, RouterLink],
-  templateUrl: './register.component.html', 
-  styleUrls: ['./register.component.css']  
+  templateUrl: './register.component.html',
+  styleUrls: ['./register.component.css']
 })
 export class RegisterComponent {
-  step = 1; 
-  registerData = { 
-    email: '', 
-    password: '', 
-    confirmPassword: '', 
-    hoTen: '', 
-    soDienThoai: '' 
+  step = 1;
+  registerData = {
+    email: '',
+    password: '',
+    confirmPassword: '',
+    hoTen: '',
+    soDienThoai: ''
   };
-  otpCode = ''; 
-  errorMessage = ''; 
-  successMessage = ''; 
-  isSendingOtp = false; 
-  isVerifyingOtp = false; 
-  isLoading = false; 
-  isResendingOtp = false; 
-  resendCountdown = 0; 
+  otpCode = '';
+  errorMessage = '';
+  successMessage = '';
+  isSendingOtp = false;
+  isVerifyingOtp = false;
+  isLoading = false;
+  isResendingOtp = false;
+  resendCountdown = 0;
   otpVerified = false;
 
-  constructor(private authService: AuthService, private otpService: OtpService, private router: Router, private toastService: ToastService ) {
+  constructor(private authService: AuthService, private otpService: OtpService, private router: Router, private toastService: ToastService) {
     if (this.authService.isAuthenticated()) this.router.navigate(['/dashboard']);
   }
 
@@ -40,19 +40,19 @@ export class RegisterComponent {
     if (!this.registerData.email) { this.errorMessage = 'Vui lòng nhập email'; return; }
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(this.registerData.email)) { this.errorMessage = 'Email không hợp lệ'; return; }
-    
+
     this.errorMessage = ''; this.successMessage = ''; this.isSendingOtp = true;
-    
+
     this.otpService.sendOtp(this.registerData.email, 'Register').subscribe({
-      next: () => { 
-        this.isSendingOtp = false; 
-        this.successMessage = 'Đã gửi mã OTP'; 
-        this.step = 2; 
-        this.startResendCountdown(); 
+      next: () => {
+        this.isSendingOtp = false;
+        this.successMessage = 'Đã gửi mã OTP';
+        this.step = 2;
+        this.startResendCountdown();
       },
-      error: (err) => { 
-        this.isSendingOtp = false; 
-        this.errorMessage = err.error?.message || 'Không thể gửi mã OTP. Vui lòng thử lại.'; 
+      error: (err) => {
+        this.isSendingOtp = false;
+        this.errorMessage = err.error?.message || 'Không thể gửi mã OTP. Vui lòng thử lại.';
       }
     });
   }
@@ -80,18 +80,18 @@ export class RegisterComponent {
     });
   }
 
-  startResendCountdown() { 
-    this.resendCountdown = 60; 
-    const interval = setInterval(() => { this.resendCountdown--; if (this.resendCountdown <= 0) clearInterval(interval); }, 1000); 
+  startResendCountdown() {
+    this.resendCountdown = 60;
+    const interval = setInterval(() => { this.resendCountdown--; if (this.resendCountdown <= 0) clearInterval(interval); }, 1000);
   }
-  backToStep1() { 
-    this.step = 1; 
-    this.otpCode = ''; 
-    this.errorMessage = ''; 
+  backToStep1() {
+    this.step = 1;
+    this.otpCode = '';
+    this.errorMessage = '';
   }
 
-  isFormValid() { 
-    return !!(this.registerData.email && this.registerData.password.length >= 6 && this.registerData.hoTen && this.registerData.soDienThoai && this.otpVerified); 
+  isFormValid() {
+    return !!(this.registerData.email && this.registerData.password.length >= 6 && this.registerData.hoTen && this.registerData.soDienThoai && this.otpVerified);
   }
 
   onRegister() {

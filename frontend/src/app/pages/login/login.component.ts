@@ -10,8 +10,8 @@ import { ToastService } from '../../services/toast.service';
   selector: 'app-login',
   standalone: true,
   imports: [CommonModule, FormsModule, RouterLink],
-  templateUrl: './login.component.html', 
-  styleUrls: ['./login.component.css']  
+  templateUrl: './login.component.html',
+  styleUrls: ['./login.component.css']
 })
 export class LoginComponent implements OnInit {
   loginMethod: 'password' | 'otp' | 'forgot' = 'password';
@@ -19,7 +19,7 @@ export class LoginComponent implements OnInit {
   password = '';
   loginEmail = '';
   loginOtpCode = '';
-  otpStep = 1; 
+  otpStep = 1;
   errorMessage = '';
   successMessage = '';
   isLoading = false;
@@ -31,7 +31,7 @@ export class LoginComponent implements OnInit {
   forgotOtpCode = '';
   newPassword = '';
   confirmNewPassword = '';
-  forgotStep = 1; 
+  forgotStep = 1;
   isSendingForgotOtp = false;
   isResettingPassword = false;
 
@@ -40,9 +40,8 @@ export class LoginComponent implements OnInit {
     private otpService: OtpService,
     private router: Router,
     private route: ActivatedRoute,
-    private toastService: ToastService 
-  ) 
-  {
+    private toastService: ToastService
+  ) {
     if (this.authService.isAuthenticated()) {
       this.router.navigate(['/dashboard']);
     }
@@ -84,7 +83,7 @@ export class LoginComponent implements OnInit {
       error: (err) => {
         this.isLoading = false;
         this.errorMessage = err.error?.message || 'Đăng nhập thất bại';
-        if(err.status >= 500) this.toastService.error('Lỗi kết nối Server!');
+        if (err.status >= 500) this.toastService.error('Lỗi kết nối Server!');
       }
     });
   }
@@ -239,7 +238,7 @@ export class LoginComponent implements OnInit {
     }
 
     this.isResettingPassword = true;
-    
+
     this.authService.resetPassword(this.forgotEmail, this.forgotOtpCode, this.newPassword).subscribe({
       next: () => {
         this.isResettingPassword = false;

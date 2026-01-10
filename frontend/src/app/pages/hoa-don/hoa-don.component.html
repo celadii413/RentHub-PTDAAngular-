@@ -38,26 +38,32 @@
                                 <div>Phòng: {{ hd.tienPhong | number }}</div>
                             </div>
                         </td>
-                        <td><strong style="color: var(--primary); font-size: 15px;">{{ hd.tongTien | number }} đ</strong></td>
+                        <td><strong style="color: var(--primary); font-size: 15px;">{{ hd.tongTien | number }}
+                                đ</strong></td>
                         <td>
-                        <span class="badge" [ngClass]="{
+                            <span class="badge" [ngClass]="{
                             'badge-success': hd.trangThai === 'Đã thanh toán',
                             'badge-danger': hd.trangThai === 'Quá hạn',
                             'badge-warning': hd.trangThai === 'Chưa thanh toán'
                         }">{{ hd.trangThai }}</span>
                         </td>
                         <td>
-                            <button *ngIf="hd.anhMinhChung" class="btn btn-sm btn-outline" (click)="viewProof(hd.anhMinhChung, hd.id)">
+                            <button *ngIf="hd.anhMinhChung" class="btn btn-sm btn-outline"
+                                (click)="viewProof(hd.anhMinhChung, hd.id)">
                                 <i class='bx bx-image'></i> Xem ảnh
                             </button>
                             <span *ngIf="!hd.anhMinhChung" class="text-muted">-</span>
                         </td>
                         <td class="text-right">
                             <div class="d-flex justify-content-end" style="gap: 4px;">
-                                <button class="btn-icon-action" (click)="exportPdf(hd.id)" title="Xuất PDF"><i class='bx bxs-file-pdf'></i></button>
-                                <button class="btn-icon-action" (click)="sendEmail(hd.id)" title="Gửi Email"><i class='bx bx-envelope'></i></button>
-                                <button class="btn-icon-action edit" (click)="editHoaDon(hd)" title="Sửa"><i class='bx bx-edit-alt'></i></button>
-                                <button class="btn-icon-action delete" (click)="deleteHoaDon(hd.id)" title="Xóa"><i class='bx bx-trash'></i></button>
+                                <button class="btn-icon-action" (click)="exportPdf(hd.id)" title="Xuất PDF"><i
+                                        class='bx bxs-file-pdf'></i></button>
+                                <button class="btn-icon-action" (click)="sendEmail(hd.id)" title="Gửi Email"><i
+                                        class='bx bx-envelope'></i></button>
+                                <button class="btn-icon-action edit" (click)="editHoaDon(hd)" title="Sửa"><i
+                                        class='bx bx-edit-alt'></i></button>
+                                <button class="btn-icon-action delete" (click)="deleteHoaDon(hd.id)" title="Xóa"><i
+                                        class='bx bx-trash'></i></button>
                             </div>
                         </td>
                     </tr>
@@ -77,21 +83,22 @@
         <form (ngSubmit)="saveHoaDonTuDong()">
             <div class="form-group">
                 <label class="form-label">Phòng *</label>
-                    <select class="form-control" [(ngModel)]="formDataTuDong.phongTroId" name="phongTroId" required>
-                        <option [ngValue]="null">-- Chọn phòng --</option>
-                        <option *ngFor="let p of phongTros" [ngValue]="p.id">{{p.soPhong}} - {{p.tenPhong}}</option>
-                    </select>
+                <select class="form-control" [(ngModel)]="formDataTuDong.phongTroId" name="phongTroId" required>
+                    <option [ngValue]="null">-- Chọn phòng --</option>
+                    <option *ngFor="let p of phongTros" [ngValue]="p.id">{{p.soPhong}} - {{p.tenPhong}}</option>
+                </select>
             </div>
             <div class="form-group">
                 <label class="form-label">Tháng/Năm *</label>
                 <input type="month" class="form-control" [(ngModel)]="formDataTuDong.thangNam" name="thangNam" required>
             </div>
             <div class="card" style="background: var(--bg-input); font-size: 13px;">
-                <i class='bx bx-info-circle'></i> Hệ thống sẽ tự động lấy chỉ số điện nước mới nhất, nhân với giá dịch vụ và cộng thêm tiền phòng + công nợ cũ.
+                <i class='bx bx-info-circle'></i> Hệ thống sẽ tự động lấy chỉ số điện nước mới nhất, nhân với giá dịch
+                vụ và cộng thêm tiền phòng + công nợ cũ.
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" (click)="closeModalTuDong()">Hủy</button>
-                <button type="submit" class="btn btn-primary">Thực hiện</button> 
+                <button type="submit" class="btn btn-primary">Thực hiện</button>
             </div>
         </form>
     </div>
@@ -116,16 +123,22 @@
                 <input type="month" class="form-control" [(ngModel)]="formData.thangNam" name="thangNam" required>
             </div>
             <div class="d-flex gap-2">
-                <div class="form-group" style="flex:1"><label class="form-label">Tiền phòng</label><input type="number" class="form-control" [(ngModel)]="formData.tienPhong" name="tp"></div>
-                <div class="form-group" style="flex:1"><label class="form-label">Công nợ cũ</label><input type="number" class="form-control" [(ngModel)]="formData.congNoThangTruoc" name="cn"></div>
+                <div class="form-group" style="flex:1"><label class="form-label">Tiền phòng</label><input type="number"
+                        class="form-control" [(ngModel)]="formData.tienPhong" name="tp"></div>
+                <div class="form-group" style="flex:1"><label class="form-label">Công nợ cũ</label><input type="number"
+                        class="form-control" [(ngModel)]="formData.congNoThangTruoc" name="cn"></div>
             </div>
             <div class="d-flex gap-2">
-                <div class="form-group" style="flex:1"><label class="form-label">Tiền Điện</label><input type="number" class="form-control" [(ngModel)]="formData.tienDien" name="td"></div>
-                <div class="form-group" style="flex:1"><label class="form-label">Tiền Nước</label><input type="number" class="form-control" [(ngModel)]="formData.tienNuoc" name="tn"></div>
+                <div class="form-group" style="flex:1"><label class="form-label">Tiền Điện</label><input type="number"
+                        class="form-control" [(ngModel)]="formData.tienDien" name="td"></div>
+                <div class="form-group" style="flex:1"><label class="form-label">Tiền Nước</label><input type="number"
+                        class="form-control" [(ngModel)]="formData.tienNuoc" name="tn"></div>
             </div>
             <div class="d-flex gap-2">
-                <div class="form-group" style="flex:1"><label class="form-label">Internet</label><input type="number" class="form-control" [(ngModel)]="formData.tienInternet" name="ti"></div>
-                <div class="form-group" style="flex:1"><label class="form-label">Vệ sinh</label><input type="number" class="form-control" [(ngModel)]="formData.tienVeSinh" name="tv"></div>
+                <div class="form-group" style="flex:1"><label class="form-label">Internet</label><input type="number"
+                        class="form-control" [(ngModel)]="formData.tienInternet" name="ti"></div>
+                <div class="form-group" style="flex:1"><label class="form-label">Vệ sinh</label><input type="number"
+                        class="form-control" [(ngModel)]="formData.tienVeSinh" name="tv"></div>
             </div>
             <div class="form-group">
                 <label class="form-label">Trạng thái</label>
@@ -158,5 +171,5 @@
     </div>
 </div>
 
-<app-template-editor-modal *ngIf="showEditorModal" [htmlContent]="previewHtml" title="Xem trước hóa đơn" (onClose)="showEditorModal=false" (onExport)="handleExportPdf($event)"></app-template-editor-modal>
-  
+<app-template-editor-modal *ngIf="showEditorModal" [htmlContent]="previewHtml" title="Xem trước hóa đơn"
+    (onClose)="showEditorModal=false" (onExport)="handleExportPdf($event)"></app-template-editor-modal>

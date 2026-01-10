@@ -34,16 +34,52 @@ public class KhachThueController : ControllerBase
     private bool IsOwner() => User.FindFirst(ClaimTypes.Role)?.Value == "Chủ trọ";
 
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<KhachThueDTO>>> GetKhachThues()
+    public async Task<ActionResult<IEnumerable<KhachThueDTO>>> GetKhachThues([FromQuery] string? search = null)
     {
         var query = _context.KhachThues.Include(k => k.PhongTro).AsQueryable();
+
         if (IsOwner())
         {
             var userDayTroId = await GetUserDayTroIdAsync();
-            if (userDayTroId.HasValue) query = query.Where(k => k.PhongTro != null && k.PhongTro.DayTroId == userDayTroId.Value);
-            else return Ok(new List<KhachThueDTO>());
+            if (userDayTroId.HasValue)
+                query = query.Where(k => k.PhongTro != null && k.PhongTro.DayTroId == userDayTroId.Value);
+            else
+                return Ok(new List<KhachThueDTO>());
         }
-        var khachThues = await query.Select(k => new KhachThueDTO { Id = k.Id, HoTen = k.HoTen, SoDienThoai = k.SoDienThoai, Email = k.Email, CCCD = k.CCCD, NgaySinh = k.NgaySinh, GioiTinh = k.GioiTinh, DiaChiThuongTru = k.DiaChiThuongTru, NgayBatDauThue = k.NgayBatDauThue, NgayKetThucThue = k.NgayKetThucThue, PhongTroId = k.PhongTroId, SoPhong = k.PhongTro != null ? k.PhongTro.SoPhong : null }).ToListAsync();
+
+        if (!string.IsNullOrWhiteSpace(search))
+        {
+            string keyword = search.Trim().ToLower();
+
+            // Tìm kiếm trên nhiều trường: Tên, SĐT, Email, CCCD, Tên Phòng
+            query = query.Where(k =>
+                (k.HoTen != null && k.HoTen.ToLower().Contains(keyword)) ||
+                (k.SoDienThoai != null && k.SoDienThoai.Contains(keyword)) ||
+                (k.Email != null && k.Email.ToLower().Contains(keyword)) ||
+                (k.CCCD != null && k.CCCD.Contains(keyword)) ||
+                (k.PhongTro != null && k.PhongTro.SoPhong.ToLower().Contains(keyword))
+            );
+        }
+
+        var khachThues = await query
+            .OrderByDescending(k => k.NgayBatDauThue) 
+            .Select(k => new KhachThueDTO
+            {
+                Id = k.Id,
+                HoTen = k.HoTen,
+                SoDienThoai = k.SoDienThoai,
+                Email = k.Email,
+                CCCD = k.CCCD,
+                NgaySinh = k.NgaySinh,
+                GioiTinh = k.GioiTinh,
+                DiaChiThuongTru = k.DiaChiThuongTru,
+                NgayBatDauThue = k.NgayBatDauThue,
+                NgayKetThucThue = k.NgayKetThucThue,
+                PhongTroId = k.PhongTroId,
+                SoPhong = k.PhongTro != null ? k.PhongTro.SoPhong : null
+            })
+            .ToListAsync();
+
         return Ok(khachThues);
     }
 

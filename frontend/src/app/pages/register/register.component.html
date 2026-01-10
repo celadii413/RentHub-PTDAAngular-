@@ -22,15 +22,19 @@
                         <label class="form-label">Email đăng ký <span class="text-danger">*</span></label>
                         <div class="input-icon">
                             <i class='bx bx-envelope'></i>
-                            <input type="email" class="form-control" [(ngModel)]="registerData.email" name="email" required placeholder="example@gmail.com" [disabled]="isSendingOtp">
+                            <input type="email" class="form-control" [(ngModel)]="registerData.email" name="email"
+                                required placeholder="example@gmail.com" [disabled]="isSendingOtp">
                         </div>
                     </div>
-                    
-                    <div class="alert-error" *ngIf="errorMessage"><i class='bx bx-error-circle'></i> {{ errorMessage }}</div>
-                    <div class="alert-success" *ngIf="successMessage"><i class='bx bx-check-circle'></i> {{ successMessage }}</div>
 
-                    <button type="submit" class="btn btn-primary w-100" [disabled]="!registerData.email || isSendingOtp">
-                        <i class='bx' [ngClass]="isSendingOtp ? 'bx-loader-alt bx-spin' : 'bx-send'"></i> 
+                    <div class="alert-error" *ngIf="errorMessage"><i class='bx bx-error-circle'></i> {{ errorMessage }}
+                    </div>
+                    <div class="alert-success" *ngIf="successMessage"><i class='bx bx-check-circle'></i> {{
+                        successMessage }}</div>
+
+                    <button type="submit" class="btn btn-primary w-100"
+                        [disabled]="!registerData.email || isSendingOtp">
+                        <i class='bx' [ngClass]="isSendingOtp ? 'bx-loader-alt bx-spin' : 'bx-send'"></i>
                         {{ isSendingOtp ? 'Đang kiểm tra...' : 'Gửi Mã Xác Thực' }}
                     </button>
                 </form>
@@ -41,24 +45,28 @@
                 <div class="text-center mb-4">
                     <p class="text-muted">Mã OTP 6 số đã gửi tới <strong>{{ registerData.email }}</strong></p>
                 </div>
-                
+
                 <form (ngSubmit)="verifyOtp()">
-                <div class="form-group">
-                    <input type="text" class="form-control otp-input" [(ngModel)]="otpCode" name="otp" maxlength="6" placeholder="000000" pattern="[0-9]{6}" (input)="onOtpInput()" [disabled]="isVerifyingOtp">
-                </div>
-                
-                <div class="text-center mb-3">
-                    <button type="button" class="btn-link" (click)="resendOtp()" [disabled]="isResendingOtp || resendCountdown > 0">
-                        {{ resendCountdown > 0 ? 'Gửi lại sau ' + resendCountdown + 's' : 'Gửi lại mã' }}
+                    <div class="form-group">
+                        <input type="text" class="form-control otp-input" [(ngModel)]="otpCode" name="otp" maxlength="6"
+                            placeholder="000000" pattern="[0-9]{6}" (input)="onOtpInput()" [disabled]="isVerifyingOtp">
+                    </div>
+
+                    <div class="text-center mb-3">
+                        <button type="button" class="btn-link" (click)="resendOtp()"
+                            [disabled]="isResendingOtp || resendCountdown > 0">
+                            {{ resendCountdown > 0 ? 'Gửi lại sau ' + resendCountdown + 's' : 'Gửi lại mã' }}
+                        </button>
+                    </div>
+
+                    <div class="alert-error" *ngIf="errorMessage"><i class='bx bx-error-circle'></i> {{ errorMessage }}
+                    </div>
+
+                    <button type="submit" class="btn btn-primary w-100"
+                        [disabled]="otpCode.length !== 6 || isVerifyingOtp">
+                        {{ isVerifyingOtp ? 'Đang kiểm tra...' : 'Xác thực' }}
                     </button>
-                </div>
-
-                <div class="alert-error" *ngIf="errorMessage"><i class='bx bx-error-circle'></i> {{ errorMessage }}</div>
-
-                <button type="submit" class="btn btn-primary w-100" [disabled]="otpCode.length !== 6 || isVerifyingOtp">
-                    {{ isVerifyingOtp ? 'Đang kiểm tra...' : 'Xác thực' }}
-                </button>
-                <button type="button" class="btn btn-outline w-100 mt-2" (click)="backToStep1()">Quay lại</button>
+                    <button type="button" class="btn btn-outline w-100 mt-2" (click)="backToStep1()">Quay lại</button>
                 </form>
             </div>
 
@@ -68,7 +76,7 @@
                     <i class='bx bxs-check-shield' style="font-size: 40px;"></i>
                     <p>Email đã xác thực</p>
                 </div>
-                
+
                 <form (ngSubmit)="onRegister()">
                     <div class="form-group">
                         <label class="form-label">Email</label>
@@ -78,16 +86,19 @@
                         <label class="form-label">Mật khẩu <span class="text-danger">*</span></label>
                         <div class="input-icon">
                             <i class='bx bx-lock-alt'></i>
-                            <input type="password" class="form-control" [(ngModel)]="registerData.password" name="pass" required minlength="6" placeholder="******">
+                            <input type="password" class="form-control" [(ngModel)]="registerData.password" name="pass"
+                                required minlength="6" placeholder="******">
                         </div>
                     </div>
                     <div class="form-group">
                         <label class="form-label">Nhập lại mật khẩu <span class="text-danger">*</span></label>
                         <div class="input-icon">
                             <i class='bx bx-check-shield'></i>
-                            <input type="password" class="form-control" [(ngModel)]="registerData.confirmPassword" name="confPass" required placeholder="******">
+                            <input type="password" class="form-control" [(ngModel)]="registerData.confirmPassword"
+                                name="confPass" required placeholder="******">
                         </div>
-                        <small class="text-danger" *ngIf="registerData.password !== registerData.confirmPassword && registerData.confirmPassword">
+                        <small class="text-danger"
+                            *ngIf="registerData.password !== registerData.confirmPassword && registerData.confirmPassword">
                             Mật khẩu nhập lại không khớp
                         </small>
                     </div>
@@ -95,19 +106,23 @@
                         <label class="form-label">Họ và tên <span class="text-danger">*</span></label>
                         <div class="input-icon">
                             <i class='bx bx-user'></i>
-                            <input type="text" class="form-control" [(ngModel)]="registerData.hoTen" name="name" required placeholder="Nguyễn Văn A">
+                            <input type="text" class="form-control" [(ngModel)]="registerData.hoTen" name="name"
+                                required placeholder="Nguyễn Văn A">
                         </div>
                     </div>
                     <div class="form-group">
                         <label class="form-label">Số điện thoại <span class="text-danger">*</span></label>
                         <div class="input-icon">
                             <i class='bx bx-phone'></i>
-                            <input type="tel" class="form-control" [(ngModel)]="registerData.soDienThoai" name="phone" required placeholder="090...">
+                            <input type="tel" class="form-control" [(ngModel)]="registerData.soDienThoai" name="phone"
+                                required placeholder="090...">
                         </div>
                     </div>
 
-                    <div class="alert-error" *ngIf="errorMessage"><i class='bx bx-error-circle'></i> {{ errorMessage }}</div>
-                    <div class="alert-success" *ngIf="successMessage"><i class='bx bx-check-circle'></i> {{ successMessage }}</div>
+                    <div class="alert-error" *ngIf="errorMessage"><i class='bx bx-error-circle'></i> {{ errorMessage }}
+                    </div>
+                    <div class="alert-success" *ngIf="successMessage"><i class='bx bx-check-circle'></i> {{
+                        successMessage }}</div>
 
                     <button type="submit" class="btn btn-primary w-100" [disabled]="!isFormValid() || isLoading">
                         {{ isLoading ? 'Đang đăng ký...' : 'Hoàn Tất Đăng Ký' }}

@@ -9,22 +9,22 @@ import { ToastService } from '../../services/toast.service';
   selector: 'app-bieu-mau',
   standalone: true,
   imports: [CommonModule, FormsModule, TemplateEditorModalComponent],
-  templateUrl: './bieu-mau.component.html', 
-  styleUrls: ['./bieu-mau.component.css']   
+  templateUrl: './bieu-mau.component.html',
+  styleUrls: ['./bieu-mau.component.css']
 })
 export class BieuMauComponent implements OnInit {
-  showModal = false; 
-  currentType = ''; 
-  currentContent = ''; 
-  currentTitle = ''; 
+  showModal = false;
+  currentType = '';
+  currentContent = '';
+  currentTitle = '';
   currentId = 0;
-  defaultHopDong = 
-  `<p style="text-align:center"><strong>CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM</strong></p>
+  defaultHopDong =
+    `<p style="text-align:center"><strong>CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM</strong></p>
   <h2 style="text-align:center">HỢP ĐỒNG THUÊ</h2>`;
   defaultHoaDon = `<h2 style="text-align:center">HÓA ĐƠN TIỀN NHÀ</h2><p>Tháng: {{THANG_NAM}}</p>`;
 
-  constructor(private api: ApiService, private toastService: ToastService ) {}
-  ngOnInit() {}
+  constructor(private api: ApiService, private toastService: ToastService) { }
+  ngOnInit() { }
 
   decodeHtml(html: string) {
     if (!html) return '';
@@ -52,15 +52,15 @@ export class BieuMauComponent implements OnInit {
 
   saveTemplate(content: string) {
     this.api.saveBieuMau({ id: this.currentId, tenBieuMau: this.currentTitle, loaiBieuMau: this.currentType, noiDung: content }).subscribe({
-      next: () => { 
-          this.toastService.success('Lưu mẫu in ấn thành công!'); 
-          this.showModal = false; 
+      next: () => {
+        this.toastService.success('Lưu mẫu in ấn thành công!');
+        this.showModal = false;
       },
       error: (err) => this.toastService.error('Lỗi lưu mẫu: ' + err.error?.message)
     });
   }
-  
-  closeModal() { 
-    this.showModal = false; 
+
+  closeModal() {
+    this.showModal = false;
   }
 }

@@ -6,15 +6,34 @@
         </button>
     </div>
 
-    <div class="d-flex mb-4 gap-3">
-        <button class="btn" [class.btn-secondary]="activeTab!=='current'" [class.btn-primary]="activeTab==='current'" (click)="activeTab='current'">
-            <i class='bx bx-check-circle'></i> Đang thuê 
-            <span class="badge badge-warning ml-2 text-dark">{{currentTenants.length}}</span>
-        </button>
-        <button class="btn" [class.btn-secondary]="activeTab!=='past'" [class.btn-primary]="activeTab==='past'" (click)="activeTab='past'">
-            <i class='bx bx-history'></i> Đã trả phòng
-            <span class="badge badge-secondary ml-2">{{pastTenants.length}}</span>
-        </button>
+    <div class="d-flex justify-content-between align-items-center mb-4 gap-3 flex-wrap">
+        <div class="d-flex gap-3">
+            <button class="btn" [class.btn-secondary]="activeTab!=='current'"
+                [class.btn-primary]="activeTab==='current'" (click)="activeTab='current'">
+                <i class='bx bx-check-circle'></i> Đang thuê
+                <span class="badge badge-warning ml-2 text-dark">{{currentTenants.length}}</span>
+            </button>
+            <button class="btn" [class.btn-secondary]="activeTab!=='past'" [class.btn-primary]="activeTab==='past'"
+                (click)="activeTab='past'">
+                <i class='bx bx-history'></i> Đã trả phòng
+                <span class="badge badge-secondary ml-2">{{pastTenants.length}}</span>
+            </button>
+        </div>
+
+        <!-- Input Tìm kiếm -->
+        <div class="search-group d-flex gap-2" style="flex: 1; max-width: 400px;">
+            <div style="position: relative; width: 100%;">
+                <input type="text" class="form-control" placeholder="Tìm tên, SĐT, CCCD, phòng..."
+                    [(ngModel)]="searchTerm" (keyup.enter)="onSearch()" style="padding-right: 35px;">
+
+                <i class='bx bx-x' *ngIf="searchTerm" (click)="clearSearch()"
+                    style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); cursor: pointer; color: #999; font-size: 20px;">
+                </i>
+            </div>
+            <button class="btn btn-primary" (click)="onSearch()">
+                <i class='bx bx-search'></i>
+            </button>
+        </div>
     </div>
 
     <div class="card p-0">
@@ -49,12 +68,16 @@
                         </td>
                         <td>{{ k.ngayBatDauThue | date:'dd/MM/yyyy' }}</td>
                         <td class="text-right">
-                            <button class="btn-icon-action edit" (click)="editKhach(k)" title="Chỉnh sửa"><i class='bx bx-edit-alt'></i></button>
+                            <button class="btn-icon-action edit" (click)="editKhach(k)" title="Chỉnh sửa"><i
+                                    class='bx bx-edit-alt'></i></button>
                             <ng-container *ngIf="activeTab==='current'">
-                                <button class="btn-icon-action" style="color: #f59e0b" (click)="openModalChuyenPhong(k)" title="Chuyển phòng"><i class='bx bx-transfer'></i></button>
-                                <button class="btn-icon-action" style="color: #ef4444" (click)="openModalTraPhong(k)" title="Trả phòng"><i class='bx bx-log-out-circle'></i></button>
+                                <button class="btn-icon-action" style="color: #f59e0b" (click)="openModalChuyenPhong(k)"
+                                    title="Chuyển phòng"><i class='bx bx-transfer'></i></button>
+                                <button class="btn-icon-action" style="color: #ef4444" (click)="openModalTraPhong(k)"
+                                    title="Trả phòng"><i class='bx bx-log-out-circle'></i></button>
                             </ng-container>
-                            <button class="btn-icon-action delete" (click)="deleteKhach(k.id)"><i class='bx bx-trash'></i></button>
+                            <button class="btn-icon-action delete" (click)="deleteKhach(k.id)"><i
+                                    class='bx bx-trash'></i></button>
                         </td>
                     </tr>
                 </tbody>
@@ -75,7 +98,7 @@
                 <label class="form-label">Họ và tên *</label>
                 <input class="form-control" [(ngModel)]="formData.hoTen" name="hoTen" required>
             </div>
-            <div class="d-flex gap-4"> 
+            <div class="d-flex gap-4">
                 <div class="form-group w-100">
                     <label class="form-label">Số điện thoại</label>
                     <input class="form-control" [(ngModel)]="formData.soDienThoai" name="sdt">
@@ -90,26 +113,28 @@
                 <input class="form-control" [(ngModel)]="formData.email" name="email" type="email">
             </div>
 
-            <div class="d-flex gap-4 align-items-start"> 
+            <div class="d-flex gap-4 align-items-start">
                 <div class="form-group w-100 mb-0">
                     <label class="form-label">Phòng *</label>
-                    <select class="form-control" [(ngModel)]="formData.phongTroId" name="phongId" required (change)="onPhongTroChange()">
+                    <select class="form-control" [(ngModel)]="formData.phongTroId" name="phongId" required
+                        (change)="onPhongTroChange()">
                         <option [ngValue]="null">-- Chọn phòng --</option>
                         <option *ngFor="let p of phongTros" [value]="p.id">{{p.soPhong}} - {{p.tenPhong}}</option>
                     </select>
 
                     <div class="input-helper-box">
-                        <span *ngIf="gioiHanMessage" [class.text-success-bold]="!isRoomFull" [class.text-danger-bold]="isRoomFull">
-                            <i class='bx' [ngClass]="isRoomFull ? 'bx-error-circle' : 'bx-check-circle'"></i> 
+                        <span *ngIf="gioiHanMessage" [class.text-success-bold]="!isRoomFull"
+                            [class.text-danger-bold]="isRoomFull">
+                            <i class='bx' [ngClass]="isRoomFull ? 'bx-error-circle' : 'bx-check-circle'"></i>
                             {{ gioiHanMessage }}
                         </span>
                     </div>
                 </div>
-                    
+
                 <div class="form-group w-100 mb-0">
                     <label class="form-label">Ngày bắt đầu *</label>
                     <input type="date" class="form-control" [(ngModel)]="formData.ngayBatDauThue" name="start" required>
-                    <div class="input-helper-box"></div> 
+                    <div class="input-helper-box"></div>
                 </div>
             </div>
 
@@ -117,7 +142,7 @@
                 <label class="form-label">Địa chỉ thường trú</label>
                 <input class="form-control" [(ngModel)]="formData.diaChiThuongTru" name="dctt">
             </div>
-                
+
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" (click)="closeModal()">Hủy</button>
                 <button type="submit" class="btn btn-primary">Lưu lại</button>
@@ -134,13 +159,16 @@
             <button class="close-btn" (click)="closeModalChuyenPhong()"><i class='bx bx-x'></i></button>
         </div>
         <form (ngSubmit)="saveChuyenPhong()">
-            <div class="form-group"><label class="form-label">Khách thuê</label><input class="form-control" [value]="chuyenPhongData.tenKhach" disabled></div>
-            <div class="form-group"><label class="form-label">Phòng hiện tại</label><input class="form-control" [value]="chuyenPhongData.phongHienTai" disabled></div>
+            <div class="form-group"><label class="form-label">Khách thuê</label><input class="form-control"
+                    [value]="chuyenPhongData.tenKhach" disabled></div>
+            <div class="form-group"><label class="form-label">Phòng hiện tại</label><input class="form-control"
+                    [value]="chuyenPhongData.phongHienTai" disabled></div>
             <div class="form-group">
                 <label class="form-label">Chuyển đến phòng *</label>
                 <select class="form-control" [(ngModel)]="chuyenPhongData.phongTroMoiId" name="phongMoi" required>
                     <option value="">-- Chọn phòng --</option>
-                    <option *ngFor="let p of phongTros" [value]="p.id" [disabled]="p.id===chuyenPhongData.phongTroCuId">{{p.soPhong}} - {{p.tenPhong}}</option>
+                    <option *ngFor="let p of phongTros" [value]="p.id" [disabled]="p.id===chuyenPhongData.phongTroCuId">
+                        {{p.soPhong}} - {{p.tenPhong}}</option>
                 </select>
             </div>
             <div class="modal-footer">
@@ -159,7 +187,8 @@
         </div>
         <form (ngSubmit)="saveTraPhong()">
             <p>Bạn có chắc chắn muốn làm thủ tục trả phòng cho khách <strong>{{traPhongData.tenKhach}}</strong>?</p>
-            <div class="form-group"><label class="form-label">Ngày trả phòng</label><input type="date" class="form-control" [(ngModel)]="traPhongData.ngayTraPhong" name="ngayTra" required></div>
+            <div class="form-group"><label class="form-label">Ngày trả phòng</label><input type="date"
+                    class="form-control" [(ngModel)]="traPhongData.ngayTraPhong" name="ngayTra" required></div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" (click)="closeModalTraPhong()">Hủy</button>
                 <button type="submit" class="btn btn-danger">Xác nhận trả</button>

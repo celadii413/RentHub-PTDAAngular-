@@ -43,7 +43,7 @@ import { filter } from 'rxjs/operators';
           </a>
         </ng-container>
 
-        <!-- MENU CHỦ TRỌ -->
+        <!-- MENU CHỦ  -->
         <ng-container *ngIf="currentUser.vaiTro !== 'Người thuê'">
           <div class="menu-label">QUẢN LÝ CHÍNH</div>
           
@@ -51,10 +51,10 @@ import { filter } from 'rxjs/operators';
             <i class='bx bxs-dashboard'></i> <span>Dashboard</span>
           </a>
           <a routerLink="/day-tro" routerLinkActive="active" class="menu-item">
-            <i class='bx bx-buildings'></i> <span>Dãy trọ</span>
+            <i class='bx bx-buildings'></i> <span>Dãy nhà</span>
           </a>
           <a routerLink="/phong-tro" routerLinkActive="active" class="menu-item">
-            <i class='bx bx-door-open'></i> <span>Phòng trọ</span>
+            <i class='bx bx-door-open'></i> <span>Phòng</span>
           </a>
           <a routerLink="/khach-thue" routerLinkActive="active" class="menu-item">
             <i class='bx bx-user'></i> <span>Khách thuê</span>
@@ -150,30 +150,30 @@ export class NavbarComponent {
   isDarkMode$ = this.themeService.isDarkMode$;
 
   constructor(
-    private authService: AuthService, 
+    private authService: AuthService,
     private router: Router,
     private themeService: ThemeService
   ) {
     this.authService.currentUser$.subscribe(user => this.currentUser = user);
-    
+
     this.router.events.pipe(filter(e => e instanceof NavigationEnd)).subscribe(() => {
-        const url = this.router.url;
-        if(url.includes('view=billing')) this.currentTenantView = 'billing';
-        else if(url.includes('view=requests')) this.currentTenantView = 'requests';
-        else if(url.includes('view=notifications')) this.currentTenantView = 'notifications';
-        else this.currentTenantView = 'overview';
+      const url = this.router.url;
+      if (url.includes('view=billing')) this.currentTenantView = 'billing';
+      else if (url.includes('view=requests')) this.currentTenantView = 'requests';
+      else if (url.includes('view=notifications')) this.currentTenantView = 'notifications';
+      else this.currentTenantView = 'overview';
     });
   }
 
-  get homeLink() { 
-    return this.currentUser?.vaiTro === 'Người thuê' ? '/tenant' : '/dashboard'; 
+  get homeLink() {
+    return this.currentUser?.vaiTro === 'Người thuê' ? '/tenant' : '/dashboard';
   }
 
-  logout() { 
-    this.authService.logout(); this.router.navigate(['/login']); 
+  logout() {
+    this.authService.logout(); this.router.navigate(['/login']);
   }
 
-  toggleTheme() { 
-    this.themeService.toggleTheme(); 
+  toggleTheme() {
+    this.themeService.toggleTheme();
   }
 }

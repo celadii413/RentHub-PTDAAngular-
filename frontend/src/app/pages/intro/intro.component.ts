@@ -5,20 +5,20 @@ import { AuthService } from '../../services/auth.service';
 import { ToastService } from '../../services/toast.service';
 
 @Component({
-  selector: 'app-intro',
-  standalone: true,
-  imports: [CommonModule, RouterLink],
-  templateUrl: './intro.component.html', 
-  styleUrls: ['./intro.component.css']  
+   selector: 'app-intro',
+   standalone: true,
+   imports: [CommonModule, RouterLink],
+   templateUrl: './intro.component.html',
+   styleUrls: ['./intro.component.css']
 })
 export class IntroComponent implements OnInit {
-  isLoggedIn = false;
-  userName = '';
-  userRole = '';
+   isLoggedIn = false;
+   userName = '';
+   userRole = '';
 
-  constructor(private authService: AuthService, private router: Router, private toastService: ToastService ) {}
+   constructor(private authService: AuthService, private router: Router, private toastService: ToastService) { }
 
-  ngOnInit() {
+   ngOnInit() {
       this.isLoggedIn = this.authService.isAuthenticated();
       const user = this.authService.getCurrentUser();
       if (user) {
@@ -27,7 +27,7 @@ export class IntroComponent implements OnInit {
       }
    }
 
-  goToDashboard() {
+   goToDashboard() {
       if (this.userRole === 'Người thuê') {
          this.router.navigate(['/tenant']);
       } else {

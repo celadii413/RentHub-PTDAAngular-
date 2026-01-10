@@ -19,9 +19,9 @@ export interface User {
 
 export interface LoginResponse {
   token: string;
-  Token?: string; 
+  Token?: string;
   user: User;
-  User?: User; 
+  User?: User;
 }
 
 @Injectable({
@@ -134,17 +134,17 @@ export class AuthService {
   }
 
   resetPassword(email: string, otpCode: string, newPassword: string): Observable<any> {
-    return this.http.post(`${environment.apiUrl}/Auth/confirm-change-password`, { 
-      email, 
-      otpCode, 
-      newPassword 
+    return this.http.post(`${environment.apiUrl}/Auth/confirm-change-password`, {
+      email,
+      otpCode,
+      newPassword
     });
   }
-  
+
   updateUserState(user: User): void {
     const storedUser = JSON.parse(localStorage.getItem('user') || '{}');
     const updatedUser = { ...storedUser, ...user };
-    
+
     localStorage.setItem('user', JSON.stringify(updatedUser));
     this.currentUserSubject.next(updatedUser);
     console.log('✅ Đã cập nhật LocalStorage:', updatedUser);

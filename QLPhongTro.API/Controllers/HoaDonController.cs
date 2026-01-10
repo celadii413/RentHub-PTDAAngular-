@@ -243,25 +243,25 @@ public class HoaDonController : ControllerBase
     [Authorize(Roles = "Admin,Chủ trọ,Nhân viên")]
     public async Task<ActionResult<HoaDonDTO>> TuDongTinhHoaDon(int phongTroId, [FromBody] DateTime thangNam)
     {
-        // 1. Lấy thông tin phòng
+        // Lấy thông tin phòng
         var phongTro = await _context.PhongTros
             .Include(p => p.DayTro)
             .FirstOrDefaultAsync(p => p.Id == phongTroId);
 
         if (phongTro == null) return BadRequest(new { message = "Phòng trọ không tồn tại" });
 
-        // 2. Check hóa đơn tồn tại (Giữ nguyên logic cũ)
+        // Check hóa đơn tồn tại
         var hoaDonDaCo = await _context.HoaDons.AnyAsync(h => h.PhongTroId == phongTroId && h.ThangNam.Month == thangNam.Month && h.ThangNam.Year == thangNam.Year);
         if (hoaDonDaCo) return BadRequest(new { message = $"Đã có hóa đơn tháng {thangNam:MM/yyyy}." });
 
-        // 3. Lấy chỉ số Điện & Nước (Giữ nguyên)
+        // Lấy chỉ số Điện & Nước 
         var chiSoDien = await _context.ChiSoCongTos.FirstOrDefaultAsync(c => c.PhongTroId == phongTroId && c.LoaiCongTo == "Điện" && c.ThangNam.Month == thangNam.Month && c.ThangNam.Year == thangNam.Year);
         var chiSoNuoc = await _context.ChiSoCongTos.FirstOrDefaultAsync(c => c.PhongTroId == phongTroId && c.LoaiCongTo == "Nước" && c.ThangNam.Month == thangNam.Month && c.ThangNam.Year == thangNam.Year);
 
         if (chiSoDien == null || chiSoNuoc == null) return BadRequest(new { message = "Chưa có chỉ số Điện hoặc Nước." });
 
 
-        // Bước 4.1: Lấy tất cả dịch vụ có thể áp dụng (Của Phòng OR Của Dãy OR Toàn hệ thống)
+        // Lấy tất cả dịch vụ có thể áp dụng (Của Phòng OR Của Dãy OR Toàn hệ thống)
         var rawServices = await _context.DichVus
             .Where(d => d.IsActive &&
                     (d.PhongTroId == phongTroId ||
@@ -269,25 +269,25 @@ public class HoaDonController : ControllerBase
                         d.DayTroId == null))
             .ToListAsync();
 
-        // Bước 4.2: Lọc trùng (De-duplicate) theo độ ưu tiên: Phòng > Dãy > Hệ thống
+        // Lọc trùng  theo độ ưu tiên: Phòng > Dãy > Hệ thống
         // Ví dụ: Hệ thống có "Gửi xe" 100k, nhưng Phòng này có cấu hình riêng "Gửi xe" 0đ (miễn phí) -> Lấy cái 0đ
         var finalServices = rawServices
             .GroupBy(d => d.TenDichVu.Trim().ToLower()) // Nhóm theo tên (không phân biệt hoa thường)
             .Select(g => g
-                .OrderByDescending(d => d.PhongTroId.HasValue) // Ưu tiên có ID phòng
-                .ThenByDescending(d => d.DayTroId.HasValue)    // Rồi đến ID dãy
-                .First()) // Lấy cái ưu tiên nhất
+                .OrderByDescending(d => d.PhongTroId.HasValue) 
+                .ThenByDescending(d => d.DayTroId.HasValue)   
+                .First()) 
             .ToList();
 
-        // Các biến để lưu vào Database (vì DB có cột riêng cho mấy cái này)
+        // Các biến để lưu vào Database 
         decimal tienDien = 0, tienNuoc = 0, tienInternet = 0, tienVeSinh = 0;
-        decimal tongTienDichVuKhac = 0; // Biến này chứa tiền Gửi xe, Thang máy, v.v.
+        decimal tongTienDichVuKhac = 0; 
 
         // Tạo StringBuilder để ghi chú tự động
         var ghiChuBuilder = new System.Text.StringBuilder();
         ghiChuBuilder.Append($"Điện: {chiSoDien.SoTieuThu} số. Nước: {chiSoNuoc.SoTieuThu} khối. ");
 
-        // Bước 4.3: Duyệt qua từng dịch vụ để tính tiền
+        // Duyệt qua từng dịch vụ để tính tiền
         foreach (var dv in finalServices)
         {
             string tenDv = dv.TenDichVu.Trim().ToLower();
@@ -414,10 +414,8 @@ public class HoaDonController : ControllerBase
 
             if (hoaDonThangSau != null)
             {
-                // Logic:
                 // Nếu hóa đơn hiện tại chuyển thành "Đã thanh toán" -> Trừ bớt nợ ở tháng sau
                 // Nếu hóa đơn hiện tại chuyển ngược về "Chưa thanh toán" -> Cộng thêm nợ vào tháng sau
-
                 if (dto.TrangThai == "Đã thanh toán" && trangThaiCu != "Đã thanh toán")
                 {
                     hoaDonThangSau.CongNoThangTruoc -= hoaDon.TongTien;

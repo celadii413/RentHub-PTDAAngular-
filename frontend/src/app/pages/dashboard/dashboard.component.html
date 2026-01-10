@@ -1,10 +1,11 @@
 <div class="container-fluid">
     <div class="page-header">
-        <h1><i class='bx bxs-dashboard text-gradient'></i> 
+        <h1><i class='bx bxs-dashboard text-gradient'></i>
             Tổng Quan Hoạt Động
         </h1>
         <button class="btn btn-secondary" (click)="refreshData()" [disabled]="isLoading">
-            <i class='bx' [ngClass]="isLoading ? 'bx-loader-alt bx-spin' : 'bx-refresh'"></i> {{ isLoading ? 'Đang tải...' : 'Cập nhật dữ liệu' }}
+            <i class='bx' [ngClass]="isLoading ? 'bx-loader-alt bx-spin' : 'bx-refresh'"></i> {{ isLoading ? 'Đang
+            tải...' : 'Cập nhật dữ liệu' }}
         </button>
     </div>
 
@@ -14,59 +15,59 @@
             <div class="icon-box blue">
                 <i class='bx bx-home'></i>
             </div>
-                <div>
-                    <div class="label">
-                        Tổng số phòng
-                    </div>
-                    <div class="val">
-                        {{ thongKe?.tongSoPhong || 0 }}
-                    </div>
+            <div>
+                <div class="label">
+                    Tổng số phòng
+                </div>
+                <div class="val">
+                    {{ thongKe?.tongSoPhong || 0 }}
                 </div>
             </div>
-            <div class="stat-card">
-                <div class="icon-box green">
-                    <i class='bx bx-check-circle'></i>
+        </div>
+        <div class="stat-card">
+            <div class="icon-box green">
+                <i class='bx bx-check-circle'></i>
+            </div>
+            <div>
+                <div class="label">
+                    Phòng trống
                 </div>
-                <div>
-                    <div class="label">
-                        Phòng trống
-                    </div>
-                    <div class="val">
-                        {{ thongKe?.phongTrong || 0 }}
-                    </div>
+                <div class="val">
+                    {{ thongKe?.phongTrong || 0 }}
                 </div>
             </div>
-            <div class="stat-card">
-                <div class="icon-box purple">
-                    <i class='bx bx-user-check'></i>
+        </div>
+        <div class="stat-card">
+            <div class="icon-box purple">
+                <i class='bx bx-user-check'></i>
+            </div>
+            <div>
+                <div class="label">
+                    Đã cho thuê
                 </div>
-                <div>
-                    <div class="label">
-                        Đã cho thuê
-                    </div>
-                    <div class="val">
-                        {{ thongKe?.phongDaThue || 0 }}
-                    </div>
+                <div class="val">
+                    {{ thongKe?.phongDaThue || 0 }}
                 </div>
             </div>
-            <div class="stat-card">
-                <div class="icon-box orange">
-                    <i class='bx bx-coin-stack'></i>
+        </div>
+        <div class="stat-card">
+            <div class="icon-box orange">
+                <i class='bx bx-coin-stack'></i>
+            </div>
+            <div>
+                <div class="label">
+                    Doanh thu tháng
                 </div>
-                <div>
-                    <div class="label">
-                        Doanh thu tháng
-                    </div>
-                    <div class="val">
-                        {{ (thongKe?.doanhThuThang || 0) | number }} đ
-                    </div>
+                <div class="val">
+                    {{ (thongKe?.doanhThuThang || 0) | number }} đ
                 </div>
             </div>
-            <div class="stat-card">
+        </div>
+        <div class="stat-card">
             <div class="icon-box red">
                 <i class='bx bx-error-circle'></i>
             </div>
-                <div>
+            <div>
                 <div class="label">
                     Chưa thanh toán
                 </div>
@@ -82,32 +83,34 @@
         <!-- Chart -->
         <div class="card chart-card">
             <h3 class="card-title">
-                <i class='bx bx-bar-chart-alt-2'></i> Doanh thu 12 tháng gần nhất</h3>
-                
-                <div *ngIf="isLoading" class="loading-overlay">
-                    <i class='bx bx-loader-alt bx-spin'></i> Đang tải biểu đồ...
-                </div>
+                <i class='bx bx-bar-chart-alt-2'></i> Doanh thu 12 tháng gần nhất
+            </h3>
 
-                <div class="chart-wrapper" *ngIf="!isLoading">
-                    <div class="bar-group" *ngFor="let item of doanhThu12Thang">
-                        <div class="tooltip">
-                            {{ (item.doanhThu / 1000000) | number:'1.1-1' }}M
-                        </div>
-                        <div class="bar" [style.height.%]="getBarHeight(item.doanhThu)"></div>
-                        <div class="bar-label">
-                            T{{ item.thang }}
-                        </div>
+            <div *ngIf="isLoading" class="loading-overlay">
+                <i class='bx bx-loader-alt bx-spin'></i> Đang tải biểu đồ...
+            </div>
+
+            <div class="chart-wrapper" *ngIf="!isLoading">
+                <div class="bar-group" *ngFor="let item of doanhThu12Thang">
+                    <div class="tooltip">
+                        {{ (item.doanhThu / 1000000) | number:'1.1-1' }}M
                     </div>
-                    <div *ngIf="doanhThu12Thang.length === 0" class="text-muted text-center w-100">
-                        Chưa có dữ liệu doanh thu
+                    <div class="bar" [style.height.%]="getBarHeight(item.doanhThu)"></div>
+                    <div class="bar-label">
+                        T{{ item.thang }}
                     </div>
                 </div>
+                <div *ngIf="doanhThu12Thang.length === 0" class="text-muted text-center w-100">
+                    Chưa có dữ liệu doanh thu
+                </div>
+            </div>
         </div>
 
         <!-- Contracts Warning -->
         <div class="card warning-card">
             <h3 class="card-title text-warning">
-            <i class='bx bx-time-five'></i> Hợp đồng sắp hết hạn</h3>
+                <i class='bx bx-time-five'></i> Hợp đồng sắp hết hạn
+            </h3>
             <div class="contract-list">
                 <div class="contract-item" *ngFor="let c of expiringContracts">
                     <div class="info">

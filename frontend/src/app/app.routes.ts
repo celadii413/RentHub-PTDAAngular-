@@ -17,7 +17,7 @@ const authGuard = () => {
 export const routes: Routes = [
   {
     path: '', // Route gốc
-    loadComponent: () => import('./pages/intro/intro.component').then(m => m.IntroComponent) // Trỏ về trang giới thiệu
+    loadComponent: () => import('./pages/intro/intro.component').then(m => m.IntroComponent)
   },
   {
     path: 'login',
