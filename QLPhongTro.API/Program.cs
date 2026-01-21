@@ -114,17 +114,13 @@ app.UseSwaggerUI(c =>
 app.UseCors("AllowAngularApp");
 
 // Enable static files để serve ảnh từ thư mục wwwroot
-var staticFilesPath = Path.Combine(builder.Environment.ContentRootPath, "wwwroot");
-if (!Directory.Exists(staticFilesPath))
+var uploadPath = Path.Combine(builder.Environment.ContentRootPath, "wwwroot", "uploads");
+if (!Directory.Exists(uploadPath))
 {
-    Directory.CreateDirectory(staticFilesPath);
+    Directory.CreateDirectory(uploadPath);
 }
 
-app.UseStaticFiles(new StaticFileOptions
-{
-    FileProvider = new Microsoft.Extensions.FileProviders.PhysicalFileProvider(staticFilesPath),
-    RequestPath = ""
-});
+app.UseStaticFiles();
 
 app.UseAuthentication();
 app.UseAuthorization();

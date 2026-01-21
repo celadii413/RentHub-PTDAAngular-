@@ -110,16 +110,16 @@ public class FileService : IFileService
 
     public string GetImageUrl(string filePath)
     {
-        if (string.IsNullOrEmpty(filePath))
-            return string.Empty;
+        if (string.IsNullOrEmpty(filePath)) return string.Empty;
+        if (filePath.StartsWith("http")) return filePath;
 
-        // Nếu đã là URL đầy đủ thì trả về luôn
-        if (filePath.StartsWith("http://") || filePath.StartsWith("https://"))
-            return filePath;
+        var relativePath = filePath.Replace("\\", "/").TrimStart('/');
 
-        // Trả về URL tương đối
+        // Lấy BaseUrl từ appsettings hoặc hardcode đúng port backend đang chạy
         var baseUrl = _configuration["BaseUrl"] ?? "http://localhost:5000";
-        return $"{baseUrl}/{filePath.Replace("\\", "/")}";
+
+        // Kết quả phải là: http://localhost:5000/uploads/folder/file.jpg
+        return $"{baseUrl}/{relativePath}";
     }
 }
 

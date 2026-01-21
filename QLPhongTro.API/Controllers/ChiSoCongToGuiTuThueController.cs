@@ -115,4 +115,31 @@ public class ChiSoCongToGuiTuThueController : ControllerBase
         await _context.SaveChangesAsync();
         return Ok(new { message = "Đã từ chối chỉ số công tơ" });
     }
+
+    [HttpDelete("{id}")]
+    [Authorize(Roles = "Admin,Chủ trọ")]
+    public async Task<IActionResult> Delete(int id)
+    {
+        var chiSo = await _context.ChiSoCongToGuiTuThues
+            .Include(c => c.PhongTro).ThenInclude(p => p!.DayTro)
+            .FirstOrDefaultAsync(c => c.Id == id);
+
+        if (chiSo == null) return NotFound(new { message = "Không tìm thấy phiếu ghi" });
+
+        var userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)!.Value);
+        var userRole = User.FindFirst(ClaimTypes.Role)?.Value;
+
+        if (userRole == "Chủ trọ")
+        {
+            if (chiSo.PhongTro?.DayTro?.UserId != userId)
+            {
+                return Forbid(); 
+            }
+        }
+
+        _context.ChiSoCongToGuiTuThues.Remove(chiSo);
+        await _context.SaveChangesAsync();
+
+        return Ok(new { message = "Đã xóa phiếu gửi chỉ số thành công" });
+    }
 }

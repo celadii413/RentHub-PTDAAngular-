@@ -54,19 +54,18 @@ public class DashboardController : ControllerBase
     [HttpGet("thong-ke")]
     public async Task<ActionResult<ThongKeDTO>> GetThongKe()
     {
-        var (isAdmin, dayTroId) = await GetUserScopeAsync();
+        var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier);
+        if (userIdClaim == null) return Unauthorized();
+        var userId = int.Parse(userIdClaim.Value);
 
-        if (!isAdmin && !dayTroId.HasValue)
+        var userRole = User.FindFirst(ClaimTypes.Role)?.Value;
+        bool isAdmin = userRole == "Admin" || userRole == "Administrator";
+
+        var phongTroQuery = _context.PhongTros.Include(p => p.DayTro).AsQueryable();
+
+        if (!isAdmin)
         {
-            return Ok(CreateEmptyThongKe());
-        }
-
-        // Query base cho phòng trọ
-        var phongTroQuery = _context.PhongTros.AsQueryable();
-
-        if (!isAdmin && dayTroId.HasValue)
-        {
-            phongTroQuery = phongTroQuery.Where(p => p.DayTroId == dayTroId.Value);
+            phongTroQuery = phongTroQuery.Where(p => p.DayTro.UserId == userId);
         }
 
         var tongSoPhong = await phongTroQuery.CountAsync();
@@ -74,15 +73,15 @@ public class DashboardController : ControllerBase
         var phongDaThue = await phongTroQuery.CountAsync(p => p.TrangThai == "Đã thuê");
         var phongDangSua = await phongTroQuery.CountAsync(p => p.TrangThai == "Đang sửa chữa");
 
-        // Query base cho hóa đơn
-        var hoaDonQuery = _context.HoaDons.Include(h => h.PhongTro).AsQueryable();
+        var hoaDonQuery = _context.HoaDons.Include(h => h.PhongTro).ThenInclude(p => p.DayTro).AsQueryable();
 
-        if (!isAdmin && dayTroId.HasValue)
+        if (!isAdmin)
         {
-            hoaDonQuery = hoaDonQuery.Where(h => h.PhongTro != null && h.PhongTro.DayTroId == dayTroId.Value);
+            hoaDonQuery = hoaDonQuery.Where(h => h.PhongTro.DayTro.UserId == userId);
         }
 
         var thangHienTai = DateTime.Now;
+
         var doanhThuThang = await hoaDonQuery
             .Where(h => h.ThangNam.Month == thangHienTai.Month &&
                        h.ThangNam.Year == thangHienTai.Year &&
@@ -96,7 +95,16 @@ public class DashboardController : ControllerBase
         var hoaDonChuaThanhToan = await hoaDonQuery
             .CountAsync(h => h.TrangThai != "Đã thanh toán");
 
-        var thongKe = new ThongKeDTO
+        var chiPhiQuery = _context.ChiPhis.AsQueryable();
+        if (!isAdmin)
+        {
+            chiPhiQuery = chiPhiQuery.Where(c => c.UserId == userId);
+        }
+        var tongChiPhi = await chiPhiQuery
+            .Where(c => c.NgayChi.Month == thangHienTai.Month && c.NgayChi.Year == thangHienTai.Year)
+            .SumAsync(c => c.SoTien);
+
+        return Ok(new ThongKeDTO
         {
             TongSoPhong = tongSoPhong,
             PhongTrong = phongTrong,
@@ -104,21 +112,17 @@ public class DashboardController : ControllerBase
             PhongDangSua = phongDangSua,
             DoanhThuThang = doanhThuThang,
             TongCongNo = tongCongNo,
-            HoaDonChuaThanhToan = hoaDonChuaThanhToan
-        };
-
-        return Ok(thongKe);
+            HoaDonChuaThanhToan = hoaDonChuaThanhToan,
+            TongChiPhiThang = tongChiPhi 
+        });
     }
 
     [HttpGet("doanh-thu-12-thang")]
     public async Task<ActionResult<IEnumerable<DoanhThuThangDTO>>> GetDoanhThu12Thang()
     {
-        var (isAdmin, dayTroId) = await GetUserScopeAsync();
-
-        if (!isAdmin && !dayTroId.HasValue)
-        {
-            return Ok(new List<DoanhThuThangDTO>());
-        }
+        var userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)!.Value);
+        var userRole = User.FindFirst(ClaimTypes.Role)?.Value;
+        bool isAdmin = userRole == "Admin" || userRole == "Administrator";
 
         var thangHienTai = DateTime.Now;
         var doanhThu12Thang = new List<DoanhThuThangDTO>();
@@ -126,18 +130,19 @@ public class DashboardController : ControllerBase
         for (int i = 11; i >= 0; i--)
         {
             var thang = thangHienTai.AddMonths(-i);
-            var hoaDonQuery = _context.HoaDons
-                .Include(h => h.PhongTro)
+
+            var query = _context.HoaDons
+                .Include(h => h.PhongTro).ThenInclude(p => p.DayTro)
                 .Where(h => h.ThangNam.Month == thang.Month &&
                            h.ThangNam.Year == thang.Year &&
                            h.TrangThai == "Đã thanh toán");
 
-            if (!isAdmin && dayTroId.HasValue)
+            if (!isAdmin)
             {
-                hoaDonQuery = hoaDonQuery.Where(h => h.PhongTro != null && h.PhongTro.DayTroId == dayTroId.Value);
+                query = query.Where(h => h.PhongTro.DayTro.UserId == userId);
             }
 
-            var doanhThu = await hoaDonQuery.SumAsync(h => h.TongTien);
+            var doanhThu = await query.SumAsync(h => h.TongTien);
 
             doanhThu12Thang.Add(new DoanhThuThangDTO
             {
@@ -274,6 +279,41 @@ public class DashboardController : ControllerBase
         .ToList();
 
         return Ok(result);
+    }
+
+    [HttpGet("tong-tieu-thu-thang")]
+    public async Task<IActionResult> GetTongTieuThuThang()
+    {
+        var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier);
+        var userId = int.Parse(userIdClaim.Value);
+        var user = await _context.Users.FindAsync(userId);
+        bool isAdmin = user.VaiTro == "Admin";
+        int? dayTroId = null;
+        if (!isAdmin)
+        {
+            var day = await _context.DayTros.FirstOrDefaultAsync(d => d.UserId == userId);
+            dayTroId = day?.Id;
+        }
+
+        var thangNay = DateTime.Now;
+        var query = _context.ChiSoCongTos.Include(c => c.PhongTro).AsQueryable();
+
+        if (!isAdmin && dayTroId.HasValue)
+            query = query.Where(c => c.PhongTro.DayTroId == dayTroId.Value);
+
+        var data = await query
+            .Where(c => c.ThangNam.Month == thangNay.Month && c.ThangNam.Year == thangNay.Year)
+            .GroupBy(c => c.LoaiCongTo)
+            .Select(g => new {
+                Loai = g.Key,
+                Tong = g.Sum(x => x.SoTieuThu)
+            }).ToListAsync();
+
+        return Ok(new
+        {
+            Dien = data.FirstOrDefault(x => x.Loai == "Điện")?.Tong ?? 0,
+            Nuoc = data.FirstOrDefault(x => x.Loai == "Nước")?.Tong ?? 0
+        });
     }
 }
 

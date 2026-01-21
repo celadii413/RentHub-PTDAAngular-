@@ -19,6 +19,8 @@ export class DashboardComponent implements OnInit {
   doanhThu12Thang: DoanhThuThang[] = [];
   expiringContracts: any[] = [];
   isLoading = false;
+  tongDien: number = 0;
+  tongNuoc: number = 0;
 
   constructor(private apiService: ApiService, private authService: AuthService, private router: Router, private toastService: ToastService) { }
 
@@ -32,15 +34,19 @@ export class DashboardComponent implements OnInit {
 
   refreshData() {
     this.isLoading = true;
+    
     forkJoin({
       thongKe: this.apiService.getThongKe(),
       doanhThu: this.apiService.getDoanhThu12Thang(),
-      hopDong: this.apiService.getHopDongSapHetHan()
+      hopDong: this.apiService.getHopDongSapHetHan(),
+      tieuThu: this.apiService.getTongTieuThuThang()
     }).pipe(finalize(() => this.isLoading = false)).subscribe({
       next: (res) => {
         this.thongKe = res.thongKe;
         this.doanhThu12Thang = res.doanhThu;
         this.expiringContracts = res.hopDong;
+        this.tongDien = res.tieuThu.dien; 
+        this.tongNuoc = res.tieuThu.nuoc;
       },
       error: (err) => {
         console.error('Lỗi tải dữ liệu Dashboard', err);

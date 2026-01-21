@@ -16,7 +16,8 @@
                         <th>Tên Dãy Nhà</th>
                         <th>Địa Chỉ</th>
                         <th>Quy Mô</th>
-                        <th>Tổng Phòng</th>
+                        <th>Đang thuê</th>
+                        <th>Tiêu thụ tháng này</th>
                         <th class="text-right">Hành động</th>
                     </tr>
                 </thead>
@@ -40,6 +41,14 @@
                         </td>
                         <td>
                             <span class="badge badge-info">{{ day.tongSoPhong }} phòng</span>
+                        </td>
+                        <td>
+                            <div style="font-size: 13px;">
+                                <div><i class='bx bxs-bolt text-warning'></i> Điện: <strong>{{ day.tongDienThangNay |
+                                        number }}</strong></div>
+                                <div class="mt-1"><i class='bx bxs-droplet text-info'></i> Nước: <strong>{{
+                                        day.tongNuocThangNay | number }}</strong></div>
+                            </div>
                         </td>
                         <td class="text-right">
                             <button class="btn-icon-action edit" (click)="editDay(day)" title="Sửa"><i

@@ -10,8 +10,8 @@ import { ToastService } from '../../services/toast.service';
   selector: 'app-register-tenant',
   standalone: true,
   imports: [CommonModule, FormsModule, RouterLink],
-  templateUrl: './register-tenant.component.html', 
-  styleUrls: ['./register-tenant.component.css']   
+  templateUrl: './register-tenant.component.html',
+  styleUrls: ['./register-tenant.component.css']
 })
 export class RegisterTenantComponent {
   step = 1;
@@ -39,7 +39,7 @@ export class RegisterTenantComponent {
     private authService: AuthService,
     private otpService: OtpService,
     private router: Router,
-    private toastService: ToastService 
+    private toastService: ToastService
   ) {
     if (this.authService.isAuthenticated()) {
       this.router.navigate(['/dashboard']);

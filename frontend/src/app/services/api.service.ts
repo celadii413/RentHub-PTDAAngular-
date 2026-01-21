@@ -12,6 +12,8 @@ export interface DayTro {
   moTa: string;
   ngayTao: string;
   tongSoPhong: number;
+  tongDienThangNay?: number;
+  tongNuocThangNay?: number;
 }
 
 export interface PhongTro {
@@ -32,6 +34,8 @@ export interface PhongTro {
   hinhAnh2?: string;
   hinhAnh3?: string;
   gioiHanSoNguoi: number;
+  chiSoDienMoiNhat?: number;
+  chiSoNuocMoiNhat?: number;
 }
 
 export interface User {
@@ -142,6 +146,7 @@ export interface ThongKe {
   doanhThuThang: number;
   tongCongNo: number;
   hoaDonChuaThanhToan: number;
+  tongChiPhiThang: number; 
 }
 
 export interface DoanhThuThang {
@@ -186,6 +191,17 @@ export interface ThongBao {
   phongTroId?: number | null;
   ngayTao: string;
   daDoc: boolean;
+}
+
+export interface ChiPhi {
+  id: number;
+  tenChiPhi: string;
+  soTien: number;
+  loaiChiPhi: string;
+  ngayChi: string;
+  ghiChu: string;
+  dayTroId: number | null;
+  tenDayTro: string;
 }
 
 @Injectable({
@@ -597,6 +613,22 @@ export class ApiService {
 
   deleteMeterReading(id: number) {
     return this.http.delete(`${this.baseUrl}/ChiSoCongToGuiTuThue/${id}`);
+  }
+
+  getChiPhis(): Observable<ChiPhi[]> {
+    return this.http.get<ChiPhi[]>(`${this.baseUrl}/ChiPhi`);
+  }
+
+  createChiPhi(data: any): Observable<any> {
+    return this.http.post(`${this.baseUrl}/ChiPhi`, data);
+  }
+
+  deleteChiPhi(id: number): Observable<any> {
+    return this.http.delete(`${this.baseUrl}/ChiPhi/${id}`);
+  }
+
+  getTongTieuThuThang(): Observable<any> {
+    return this.http.get<any>(`${this.baseUrl}/Dashboard/tong-tieu-thu-thang`);
   }
 }
 

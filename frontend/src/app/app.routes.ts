@@ -95,6 +95,11 @@ export const routes: Routes = [
     path: 'bieu-mau',
     loadComponent: () => import('./pages/bieu-mau/bieu-mau.component').then(m => m.BieuMauComponent),
     canActivate: [authGuard]
+  },
+  {
+    path: 'chi-phi',
+    loadComponent: () => import('./pages/chi-phi/chi-phi.component').then(m => m.ChiPhiComponent),
+    canActivate: [authGuard]
   }
 ];
 

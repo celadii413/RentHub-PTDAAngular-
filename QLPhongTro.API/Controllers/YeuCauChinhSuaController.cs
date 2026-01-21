@@ -98,4 +98,33 @@ public class YeuCauChinhSuaController : ControllerBase
         await _context.SaveChangesAsync();
         return Ok(new { message = "Đã cập nhật phản hồi" });
     }
+
+    [HttpDelete("{id}")]
+    [Authorize(Roles = "Admin,Chủ trọ")]
+    public async Task<IActionResult> Delete(int id)
+    {
+        var yeuCau = await _context.YeuCauChinhSuas
+            .Include(y => y.PhongTro).ThenInclude(p => p.DayTro)
+            .FirstOrDefaultAsync(y => y.Id == id);
+
+        if (yeuCau == null) return NotFound(new { message = "Không tìm thấy yêu cầu" });
+
+        var userIdStr = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+        if (!string.IsNullOrEmpty(userIdStr))
+        {
+            var userId = int.Parse(userIdStr);
+            var user = await _context.Users.FindAsync(userId);
+            if (user?.VaiTro == "Chủ trọ")
+            {
+                if (yeuCau.PhongTro?.DayTro?.UserId != userId)
+                {
+                    return Forbid();
+                }
+            }
+        }
+
+        _context.YeuCauChinhSuas.Remove(yeuCau);
+        await _context.SaveChangesAsync();
+        return Ok(new { message = "Đã xóa yêu cầu thành công" });
+    }
 }

@@ -50,17 +50,10 @@ public class PhongTroController : ControllerBase
         // Nếu là chủ trọ, tự động filter theo DayTro của mình
         if (IsOwner())
         {
-            var userDayTroId = await GetUserDayTroIdAsync();
-            if (userDayTroId.HasValue)
-            {
-                query = query.Where(p => p.DayTroId == userDayTroId.Value);
-            }
-            else
-            {
-                // Chủ trọ chưa có nhà trọ
-                return Ok(new List<PhongTroDTO>());
-            }
+            var userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)!.Value);
+            query = query.Where(p => p.DayTro.UserId == userId);
         }
+
         else if (dayTroId.HasValue)
         {
             // Admin có thể filter theo dayTroId
@@ -92,7 +85,13 @@ public class PhongTroController : ControllerBase
                 HinhAnh1 = p.HinhAnh1,
                 HinhAnh2 = p.HinhAnh2,
                 HinhAnh3 = p.HinhAnh3,
-                GioiHanSoNguoi = p.GioiHanSoNguoi
+                GioiHanSoNguoi = p.GioiHanSoNguoi,
+                ChiSoDienMoiNhat = _context.ChiSoCongTos
+                .Where(c => c.PhongTroId == p.Id && c.LoaiCongTo == "Điện")
+                .OrderByDescending(c => c.ThangNam).Select(c => c.ChiSoMoi).FirstOrDefault(),
+                ChiSoNuocMoiNhat = _context.ChiSoCongTos
+                .Where(c => c.PhongTroId == p.Id && c.LoaiCongTo == "Nước")
+                .OrderByDescending(c => c.ThangNam).Select(c => c.ChiSoMoi).FirstOrDefault()
             })
             .ToListAsync();
 
@@ -139,7 +138,13 @@ public class PhongTroController : ControllerBase
                 HinhAnh1 = p.HinhAnh1,
                 HinhAnh2 = p.HinhAnh2,
                 HinhAnh3 = p.HinhAnh3,
-                GioiHanSoNguoi = p.GioiHanSoNguoi
+                GioiHanSoNguoi = p.GioiHanSoNguoi,
+                ChiSoDienMoiNhat = _context.ChiSoCongTos
+                .Where(c => c.PhongTroId == p.Id && c.LoaiCongTo == "Điện")
+                .OrderByDescending(c => c.ThangNam).Select(c => c.ChiSoMoi).FirstOrDefault(),
+                ChiSoNuocMoiNhat = _context.ChiSoCongTos
+                .Where(c => c.PhongTroId == p.Id && c.LoaiCongTo == "Nước")
+                .OrderByDescending(c => c.ThangNam).Select(c => c.ChiSoMoi).FirstOrDefault()
             })
             .FirstOrDefaultAsync();
 
@@ -158,12 +163,9 @@ public class PhongTroController : ControllerBase
         // Nếu là chủ trọ, tự động gán DayTroId của mình
         if (IsOwner())
         {
-            var userDayTroId = await GetUserDayTroIdAsync();
-            if (!userDayTroId.HasValue)
-            {
-                return BadRequest(new { message = "Bạn chưa có nhà trọ. Vui lòng tạo nhà trọ trước." });
-            }
-            dto.DayTroId = userDayTroId.Value; // Ghi đè DayTroId để đảm bảo phòng thuộc về nhà trọ của user
+            var userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)!.Value);
+            var isMine = await _context.DayTros.AnyAsync(d => d.Id == dto.DayTroId && d.UserId == userId);
+            if (!isMine) return BadRequest(new { message = "Dãy trọ không hợp lệ hoặc không thuộc quyền quản lý của bạn." });
         }
 
         if (await _context.PhongTros.AnyAsync(p => p.SoPhong == dto.SoPhong && p.DayTroId == dto.DayTroId))
@@ -220,7 +222,7 @@ public class PhongTroController : ControllerBase
     [Authorize(Roles = "Admin,Chủ trọ")]
     public async Task<IActionResult> UpdatePhongTro(int id, UpdatePhongTroDTO dto)
     {
-        var phongTro = await _context.PhongTros.FindAsync(id);
+        var phongTro = await _context.PhongTros.Include(p => p.DayTro).FirstOrDefaultAsync(p => p.Id == id);
         if (phongTro == null)
         {
             return NotFound();
@@ -229,13 +231,13 @@ public class PhongTroController : ControllerBase
         // Nếu là chủ trọ, chỉ được sửa phòng trong nhà trọ của mình
         if (IsOwner())
         {
-            var userDayTroId = await GetUserDayTroIdAsync();
-            if (!userDayTroId.HasValue || phongTro.DayTroId != userDayTroId.Value)
+            var userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)!.Value);
+            if (phongTro.DayTro.UserId != userId) return Forbid();
+            if (phongTro.DayTroId != dto.DayTroId)
             {
-                return Forbid();
+                var isNewDayMine = await _context.DayTros.AnyAsync(d => d.Id == dto.DayTroId && d.UserId == userId);
+                if (!isNewDayMine) return BadRequest(new { message = "Dãy trọ mới không hợp lệ." });
             }
-            // Đảm bảo không thể chuyển phòng sang nhà trọ khác
-            dto.DayTroId = userDayTroId.Value;
         }
 
         if (!await _context.DayTros.AnyAsync(d => d.Id == dto.DayTroId))
@@ -340,5 +342,6 @@ public class PhongTroController : ControllerBase
 
         return Ok(phongTros);
     }
+
 }
 

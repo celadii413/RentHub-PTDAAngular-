@@ -10,6 +10,9 @@ public class DayTroDTO
     public string MoTa { get; set; } = string.Empty;
     public DateTime NgayTao { get; set; }
     public int TongSoPhong { get; set; }
+
+    public int TongDienThangNay { get; set; } 
+    public int TongNuocThangNay { get; set; } 
 }
 
 public class CreateDayTroDTO

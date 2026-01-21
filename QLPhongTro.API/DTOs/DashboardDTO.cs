@@ -9,6 +9,8 @@ public class ThongKeDTO
     public decimal DoanhThuThang { get; set; }
     public decimal TongCongNo { get; set; }
     public int HoaDonChuaThanhToan { get; set; }
+
+    public decimal TongChiPhiThang { get; set; }
 }
 
 public class DoanhThuThangDTO

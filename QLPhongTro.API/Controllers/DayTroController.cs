@@ -45,24 +45,20 @@ public class DayTroController : ControllerBase
     [HttpGet]
     public async Task<ActionResult<IEnumerable<DayTroDTO>>> GetDayTros()
     {
-        var query = _context.DayTros.AsQueryable();
-        
-        // Nếu là chủ trọ, chỉ trả về nhà trọ của mình
-        if (IsOwner())
+        var userIdString = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+        if (string.IsNullOrEmpty(userIdString))
         {
-            var dayTroId = await GetUserDayTroIdAsync();
-            if (dayTroId.HasValue)
-            {
-                query = query.Where(d => d.Id == dayTroId.Value);
-            }
-            else
-            {
-                // Chủ trọ chưa có nhà trọ
-                return Ok(new List<DayTroDTO>());
-            }
+            return Unauthorized(new { message = "Không tìm thấy thông tin người dùng" });
         }
 
-        var dayTros = await query
+        var userId = int.Parse(userIdString);
+
+        var thangNay = DateTime.Now;
+
+        var dayTros = await _context.DayTros
+            .Where(d => d.UserId == userId)
+            .OrderByDescending(d => d.NgayTao)
             .Select(d => new DayTroDTO
             {
                 Id = d.Id,
@@ -72,7 +68,17 @@ public class DayTroController : ControllerBase
                 SoPhongMoiTang = d.SoPhongMoiTang,
                 MoTa = d.MoTa,
                 NgayTao = d.NgayTao,
-                TongSoPhong = d.PhongTros != null ? d.PhongTros.Count : 0
+                TongSoPhong = _context.PhongTros.Count(p => p.DayTroId == d.Id),
+
+                TongDienThangNay = _context.ChiSoCongTos
+                    .Where(c => c.PhongTro.DayTroId == d.Id && c.LoaiCongTo == "Điện"
+                                && c.ThangNam.Month == thangNay.Month && c.ThangNam.Year == thangNay.Year)
+                    .Sum(c => c.SoTieuThu),
+
+                TongNuocThangNay = _context.ChiSoCongTos
+                    .Where(c => c.PhongTro.DayTroId == d.Id && c.LoaiCongTo == "Nước"
+                                && c.ThangNam.Month == thangNay.Month && c.ThangNam.Year == thangNay.Year)
+                    .Sum(c => c.SoTieuThu)
             })
             .ToListAsync();
 
@@ -120,22 +126,11 @@ public class DayTroController : ControllerBase
     {
         var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier);
         int? userId = null;
-        
-        // Nếu là chủ trọ, tự động gán UserId và kiểm tra đã có nhà trọ chưa
-        if (IsOwner())
+
+        if (userIdClaim != null && int.TryParse(userIdClaim.Value, out int parsedId))
         {
-            if (userIdClaim != null)
-            {
-                userId = int.Parse(userIdClaim.Value);
-                // Kiểm tra chủ trọ đã có nhà trọ chưa
-                var existingDayTro = await _context.DayTros.FirstOrDefaultAsync(d => d.UserId == userId);
-                if (existingDayTro != null)
-                {
-                    return BadRequest(new { message = "Bạn đã có nhà trọ. Mỗi chủ trọ chỉ được quản lý 1 nhà trọ." });
-                }
-            }
+            userId = parsedId;
         }
-        // Admin có thể tạo nhà trọ không gán cho ai (UserId = null)
 
         var dayTro = new DayTro
         {
@@ -208,5 +203,6 @@ public class DayTroController : ControllerBase
 
         return NoContent();
     }
+
 }
 

@@ -25,6 +25,7 @@ public class ApplicationDbContext : DbContext
     public DbSet<YeuCauChinhSua> YeuCauChinhSuas { get; set; }
     public DbSet<ChiSoCongToGuiTuThue> ChiSoCongToGuiTuThues { get; set; }
     public DbSet<BieuMau> BieuMaus { get; set; }
+    public DbSet<ChiPhi> ChiPhis { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -259,6 +260,21 @@ public class ApplicationDbContext : DbContext
                   .WithMany()
                   .HasForeignKey(e => e.UserId)
                   .OnDelete(DeleteBehavior.Cascade);
+        });
+
+        modelBuilder.Entity<ChiPhi>(entity =>
+        {
+            entity.HasKey(e => e.Id);
+            entity.Property(e => e.TenChiPhi).IsRequired().HasMaxLength(200);
+            entity.Property(e => e.SoTien).HasColumnType("decimal(18,2)");
+            entity.HasOne(e => e.DayTro)
+                  .WithMany()
+                  .HasForeignKey(e => e.DayTroId)
+                  .OnDelete(DeleteBehavior.SetNull);
+            entity.HasOne(e => e.User)
+                  .WithMany()
+                  .HasForeignKey(e => e.UserId)
+                  .OnDelete(DeleteBehavior.Restrict);
         });
     }
 }

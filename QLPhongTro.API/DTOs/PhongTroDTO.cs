@@ -20,6 +20,9 @@ public class PhongTroDTO
     public string? HinhAnh3 { get; set; }
 
     public int GioiHanSoNguoi { get; set; }
+
+    public int ChiSoDienMoiNhat { get; set; } 
+    public int ChiSoNuocMoiNhat { get; set; }
 }
 
 public class CreatePhongTroDTO

@@ -65,6 +65,9 @@ import { filter } from 'rxjs/operators';
           <a routerLink="/hoa-don" routerLinkActive="active" class="menu-item">
             <i class='bx bx-receipt'></i> <span>Hóa đơn</span>
           </a>
+          <a routerLink="/chi-phi" routerLinkActive="active" class="menu-item">
+            <i class='bx bx-wallet'></i> <span>Quản lý chi tiêu</span>
+          </a>
 
           <div class="menu-label mt-4">TIỆN ÍCH & CẤU HÌNH</div>
           <a routerLink="/chi-so-cong-to" routerLinkActive="active" class="menu-item">

@@ -425,6 +425,7 @@ public class HopDongController : ControllerBase
         var hopDong = await _context.HopDongs
             .Include(h => h.KhachThue)
             .Include(h => h.PhongTro)
+            .ThenInclude(p => p.DayTro)
             .FirstOrDefaultAsync(h => h.Id == id);
 
         if (hopDong == null) return NotFound(new { message = "Hợp đồng không tồn tại" });

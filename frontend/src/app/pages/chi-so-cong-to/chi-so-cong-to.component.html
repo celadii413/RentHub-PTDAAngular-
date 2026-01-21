@@ -49,8 +49,10 @@
                     <tr *ngFor="let item of chiSoCongTos">
                         <td><strong>{{ item.soPhong }}</strong></td>
                         <td>
-                            <span class="badge" [class.badge-warning]="item.loaiCongTo==='Điện'" [class.badge-info]="item.loaiCongTo==='Nước'">
-                                <i class='bx' [class.bxs-bolt]="item.loaiCongTo==='Điện'" [class.bxs-droplet]="item.loaiCongTo==='Nước'"></i> {{ item.loaiCongTo }}
+                            <span class="badge" [class.badge-warning]="item.loaiCongTo==='Điện'"
+                                [class.badge-info]="item.loaiCongTo==='Nước'">
+                                <i class='bx' [class.bxs-bolt]="item.loaiCongTo==='Điện'"
+                                    [class.bxs-droplet]="item.loaiCongTo==='Nước'"></i> {{ item.loaiCongTo }}
                             </span>
                         </td>
                         <td>{{ item.thangNam | date:'MM/yyyy' }}</td>
@@ -58,8 +60,10 @@
                         <td style="font-weight: 700;">{{ item.chiSoMoi | number }}</td>
                         <td><strong class="text-success">{{ item.soTieuThu | number }}</strong></td>
                         <td class="text-right">
-                            <button class="btn-icon-action edit" (click)="editChiSo(item)"><i class='bx bx-edit-alt'></i></button>
-                            <button class="btn-icon-action delete" (click)="deleteChiSo(item.id)"><i class='bx bx-trash'></i></button>
+                            <button class="btn-icon-action edit" (click)="editChiSo(item)"><i
+                                    class='bx bx-edit-alt'></i></button>
+                            <button class="btn-icon-action delete" (click)="deleteChiSo(item.id)"><i
+                                    class='bx bx-trash'></i></button>
                         </td>
                     </tr>
                 </tbody>
@@ -78,37 +82,42 @@
         <form (ngSubmit)="saveChiSo()">
             <div class="form-group">
                 <label class="form-label">Phòng *</label>
-                <select class="form-control" [(ngModel)]="formData.phongTroId" name="phongTroId" required (change)="loadGoiYChiSo()">
+                <select class="form-control" [(ngModel)]="formData.phongTroId" name="phongTroId" required
+                    (change)="loadGoiYChiSo()">
                     <option value="">-- Chọn phòng --</option>
                     <option *ngFor="let p of phongTros" [value]="p.id">{{ p.soPhong }} - {{ p.tenPhong }}</option>
                 </select>
             </div>
             <div class="form-group">
                 <label class="form-label">Loại công tơ *</label>
-                <select class="form-control" [(ngModel)]="formData.loaiCongTo" name="loaiCongTo" required (change)="loadGoiYChiSo()">
+                <select class="form-control" [(ngModel)]="formData.loaiCongTo" name="loaiCongTo" required
+                    (change)="loadGoiYChiSo()">
                     <option value="Điện">Điện</option>
                     <option value="Nước">Nước</option>
                 </select>
             </div>
-            <div class="d-flex gap-3 mb-4"> 
-                <div class="form-group w-100" style="position: relative;"> 
+            <div class="d-flex gap-3 mb-4">
+                <div class="form-group w-100" style="position: relative;">
                     <label class="form-label">
                         Chỉ số cũ
                     </label>
-                    <input type="number" class="form-control" [(ngModel)]="formData.chiSoCu" name="chiSoCu" [readonly]="goiYChiSo.chiSoCu > 0">
-                    <small *ngIf="goiYChiSo.chiSoCu > 0" class="text-muted" style="position: absolute; top: 100%; left: 0; margin-top: 4px; font-size: 12px; white-space: nowrap;">
+                    <input type="number" class="form-control" [(ngModel)]="formData.chiSoCu" name="chiSoCu"
+                        [readonly]="goiYChiSo.chiSoCu > 0">
+                    <small *ngIf="goiYChiSo.chiSoCu > 0" class="text-muted"
+                        style="position: absolute; top: 100%; left: 0; margin-top: 4px; font-size: 12px; white-space: nowrap;">
                         Gợi ý từ tháng trước: {{goiYChiSo.chiSoCu}}
                     </small>
                 </div>
 
                 <div class="form-group w-100">
                     <label class="form-label">Chỉ số mới *</label>
-                    <input type="number" class="form-control" [(ngModel)]="formData.chiSoMoi" name="chiSoMoi" required (change)="calculateSoTieuThu()" (keyup)="calculateSoTieuThu()">
+                    <input type="number" class="form-control" [(ngModel)]="formData.chiSoMoi" name="chiSoMoi" required
+                        (change)="calculateSoTieuThu()" (keyup)="calculateSoTieuThu()">
                 </div>
             </div>
             <div class="form-group">
                 <label class="form-label">Kỳ ghi (Tháng/Năm) *</label>
-                    <input type="month" class="form-control" [(ngModel)]="formData.thangNam" name="thangNam" required>
+                <input type="month" class="form-control" [(ngModel)]="formData.thangNam" name="thangNam" required>
             </div>
             <div class="form-group">
                 <label class="form-label">Ghi chú</label>

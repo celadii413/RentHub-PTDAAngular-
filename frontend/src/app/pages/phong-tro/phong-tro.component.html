@@ -44,6 +44,7 @@
                         <th>Dãy nhà</th>
                         <th>Giá & Cọc</th>
                         <th>Khách / Giới hạn</th>
+                        <th>Chỉ số mới nhất</th>
                         <th>Trạng thái</th>
                         <th class="text-right">Thao tác</th>
                     </tr>
@@ -63,6 +64,12 @@
                         <td>
                             <span class="d-flex"><i class='bx bxs-user'></i> {{ phong.soKhachThue }} / {{
                                 phong.gioiHanSoNguoi }}</span>
+                        </td>
+                        <td>
+                            <div style="font-size: 13px;">
+                                <div title="Chỉ số điện mới nhất"><i class='bx bxs-bolt text-warning'></i> {{ phong.chiSoDienMoiNhat | number }}</div>
+                                <div class="mt-1" title="Chỉ số nước mới nhất"><i class='bx bxs-droplet text-info'></i> {{ phong.chiSoNuocMoiNhat | number }}</div>
+                            </div>
                         </td>
                         <td>
                             <span class="badge" [ngClass]="{
@@ -99,6 +106,16 @@
                         }}</strong></div>
                 <div class="d-flex justify-content-between"><span>Khách:</span> <span>{{ phong.soKhachThue }}/{{
                         phong.gioiHanSoNguoi }}</span></div>
+            </div>
+            <div class="mt-2 p-2 bg-light rounded" style="font-size: 12px; background: #f9fafb; border: 1px solid #eee;">
+                <div class="d-flex justify-content-between mb-1">
+                    <span><i class='bx bxs-bolt text-warning'></i> Điện (Mới nhất):</span>
+                    <strong class="text-dark">{{ phong.chiSoDienMoiNhat | number }}</strong>
+                </div>
+                <div class="d-flex justify-content-between">
+                    <span><i class='bx bxs-droplet text-info'></i> Nước (Mới nhất):</span>
+                    <strong class="text-dark">{{ phong.chiSoNuocMoiNhat | number }}</strong>
+                </div>
             </div>
             <div class="d-flex" style="margin-top: 15px;">
                 <button class="btn btn-outline w-100" (click)="editPhong(phong)">Sửa</button>
@@ -167,7 +184,7 @@
                     <option value="Đang sửa chữa">Đang sửa chữa</option>
                 </select>
             </div>
-            <div class="form-group">
+            <!-- <div class="form-group">
                 <label class="form-label">Hình Ảnh (Tối đa 3)</label>
                 <div class="d-flex gap-2" style="flex-wrap: wrap;">
                     <div *ngFor="let key of ['hinhAnh1', 'hinhAnh2', 'hinhAnh3']" style="flex: 1; min-width: 100px;">
@@ -182,7 +199,7 @@
                     </div>
                 </div>
                 <small *ngIf="imageUploading" style="color: var(--info)">Đang upload ảnh...</small>
-            </div>
+            </div> -->
 
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" (click)="closeModal()">Hủy</button>
