@@ -36,15 +36,12 @@ public class KhachThueController : ControllerBase
     [HttpGet]
     public async Task<ActionResult<IEnumerable<KhachThueDTO>>> GetKhachThues([FromQuery] string? search = null)
     {
-        var query = _context.KhachThues.Include(k => k.PhongTro).AsQueryable();
+        var userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)!.Value);
+        var query = _context.KhachThues.Include(k => k.PhongTro).ThenInclude(p => p.DayTro).AsQueryable();
 
         if (IsOwner())
         {
-            var userDayTroId = await GetUserDayTroIdAsync();
-            if (userDayTroId.HasValue)
-                query = query.Where(k => k.PhongTro != null && k.PhongTro.DayTroId == userDayTroId.Value);
-            else
-                return Ok(new List<KhachThueDTO>());
+            query = query.Where(k => k.PhongTro != null && k.PhongTro.DayTro.UserId == userId);
         }
 
         if (!string.IsNullOrWhiteSpace(search))
@@ -101,14 +98,18 @@ public class KhachThueController : ControllerBase
     [HttpPost]
     public async Task<ActionResult<KhachThueDTO>> CreateKhachThue(CreateKhachThueDTO dto)
     {
+        var userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)!.Value);
+        var phongTro = await _context.PhongTros.Include(p => p.DayTro).FirstOrDefaultAsync(p => p.Id == dto.PhongTroId);
+
+        if (phongTro == null) return BadRequest(new { message = "Phòng trọ không tồn tại" });
+
+        if (IsOwner() && phongTro.DayTro.UserId != userId) return Forbid();
+
         if (!string.IsNullOrWhiteSpace(dto.Email))
         {
             if (await _context.KhachThues.AnyAsync(k => k.Email == dto.Email && k.NgayKetThucThue == null))
                 return BadRequest(new { message = "Email này đang được sử dụng bởi khách thuê khác." });
         }
-
-        var phongTro = await _context.PhongTros.Include(p => p.DayTro).FirstOrDefaultAsync(p => p.Id == dto.PhongTroId);
-        if (phongTro == null) return BadRequest(new { message = "Phòng trọ không tồn tại" });
 
         var soNguoiHienTai = await _context.KhachThues
         .CountAsync(k => k.PhongTroId == dto.PhongTroId && k.NgayKetThucThue == null);

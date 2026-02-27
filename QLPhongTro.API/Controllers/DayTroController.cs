@@ -165,19 +165,10 @@ public class DayTroController : ControllerBase
     [Authorize(Roles = "Admin,Chủ trọ")]
     public async Task<IActionResult> UpdateDayTro(int id, UpdateDayTroDTO dto)
     {
-        var dayTro = await _context.DayTros.FindAsync(id);
-        if (dayTro == null)
-            return NotFound();
+        var userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)!.Value);
+        var dayTro = await _context.DayTros.FirstOrDefaultAsync(d => d.Id == id && d.UserId == userId);
 
-        // Nếu là chủ trọ, chỉ được sửa nhà trọ của mình
-        if (IsOwner())
-        {
-            var dayTroId = await GetUserDayTroIdAsync();
-            if (!dayTroId.HasValue || dayTroId.Value != id)
-            {
-                return Forbid();
-            }
-        }
+        if (dayTro == null) return Forbid();
 
         dayTro.TenDayTro = dto.TenDayTro;
         dayTro.DiaChi = dto.DiaChi;
@@ -191,18 +182,40 @@ public class DayTroController : ControllerBase
     }
 
     [HttpDelete("{id}")]
-    [Authorize(Roles = "Admin")]
+    [Authorize(Roles = "Admin,Chủ trọ")]
     public async Task<IActionResult> DeleteDayTro(int id)
     {
-        var dayTro = await _context.DayTros.FindAsync(id);
-        if (dayTro == null)
-            return NotFound();
+        try
+        {
+            var userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)!.Value);
 
-        _context.DayTros.Remove(dayTro);
-        await _context.SaveChangesAsync();
+            // Tìm dãy trọ đảm bảo đúng quyền sở hữu
+            var dayTro = await _context.DayTros
+                .FirstOrDefaultAsync(d => d.Id == id && (d.UserId == userId || User.IsInRole("Admin")));
 
-        return NoContent();
+            if (dayTro == null) return NotFound(new { message = "Không tìm thấy dãy trọ hoặc bạn không có quyền." });
+
+            // KIỂM TRA RÀNG BUỘC: Nếu còn phòng trọ thì không cho xóa
+            var hasRooms = await _context.PhongTros.AnyAsync(p => p.DayTroId == id);
+            if (hasRooms)
+            {
+                return BadRequest(new { message = "Không thể xóa dãy trọ vì vẫn còn các phòng trọ bên trong. Hãy xóa các phòng trước." });
+            }
+
+            var hasExpenses = await _context.ChiPhis.AnyAsync(c => c.DayTroId == id);
+            if (hasExpenses)
+            {
+                return BadRequest(new { message = "Không thể xóa vì dãy trọ này có dữ liệu chi phí liên quan." });
+            }
+
+            _context.DayTros.Remove(dayTro);
+            await _context.SaveChangesAsync();
+            return NoContent();
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(500, new { message = "Lỗi hệ thống: " + ex.Message });
+        }
     }
-
 }
 

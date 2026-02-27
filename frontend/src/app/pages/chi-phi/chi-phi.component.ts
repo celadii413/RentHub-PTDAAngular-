@@ -31,15 +31,20 @@ import { ToastService } from '../../services/toast.service';
             <tbody>
               <tr *ngFor="let item of chiPhis">
                 <td>
-                    <div style="font-weight: 600;">{{item.tenChiPhi}}</div>
+                    <div class="text-main" style="font-weight: 600;">{{item.tenChiPhi}}</div>
                     <small class="text-muted">{{item.ghiChu}}</small>
                 </td>
-                <td style="color: #ef4444; font-weight: bold;">-{{item.soTien | number}} đ</td>
-                <td><span class="badge badge-secondary" style="background: #e5e7eb; color: #374151;">{{item.loaiChiPhi}}</span></td>
+                <td class="text-danger-bold">-{{item.soTien | number}} đ</td>
+                <td><span class="badge badge-secondary">{{item.loaiChiPhi}}</span></td>
                 <td>{{item.tenDayTro}}</td>
                 <td>{{item.ngayChi | date:'dd/MM/yyyy'}}</td>
                 <td class="text-right">
-                  <button class="btn-icon-action delete" (click)="deleteChiPhi(item.id)" style="color:red; border:none; background:none; cursor:pointer;"><i class='bx bx-trash' style="font-size:18px;"></i></button>
+                  <button class="btn-icon-action edit" (click)="editChiPhi(item)" style="margin-right: 8px;">
+                    <i class='bx bx-edit-alt'></i>
+                  </button>
+                  <button class="btn-icon-action delete" (click)="deleteChiPhi(item.id)">
+                    <i class='bx bx-trash'></i>
+                  </button>
                 </td>
               </tr>
               <tr *ngIf="chiPhis.length === 0">
@@ -51,26 +56,25 @@ import { ToastService } from '../../services/toast.service';
       </div>
     </div>
 
-    <!-- Modal -->
-    <div class="modal" *ngIf="showModal" (click)="closeModal($event)" style="display: flex; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); align-items: center; justify-content: center; z-index: 1000;">
-      <div class="modal-content" style="background: white; padding: 20px; border-radius: 8px; width: 90%; max-width: 500px;">
-        <div class="modal-header" style="display: flex; justify-content: space-between; margin-bottom: 20px;">
-            <h3 style="margin: 0;">Thêm Khoản Chi</h3>
-            <button (click)="closeModal()" style="border: none; background: none; font-size: 20px; cursor: pointer;">&times;</button>
+    <div class="modal" *ngIf="showModal" (click)="closeModal($event)">
+      <div class="modal-content" (click)="$event.stopPropagation()">
+        <div class="modal-header">
+            <h3 class="modal-title">{{ isEdit ? 'Sửa Khoản Chi' : 'Thêm Khoản Chi' }}</h3>
+            <button class="close-btn" (click)="closeModal()">&times;</button>
         </div>
         <form (ngSubmit)="saveChiPhi()">
-          <div class="form-group mb-3">
-            <label style="display: block; margin-bottom: 5px; font-weight: 500;">Tên khoản chi *</label>
-            <input class="form-control" [(ngModel)]="formData.tenChiPhi" name="ten" required style="width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 4px;">
+          <div class="form-group">
+            <label class="form-label">Tên khoản chi *</label>
+            <input class="form-control" [(ngModel)]="formData.tenChiPhi" name="ten" required placeholder="Nhập tên khoản chi...">
           </div>
-          <div class="d-flex gap-2 mb-3" style="display: flex; gap: 10px;">
-             <div class="w-100" style="flex: 1;">
-                <label style="display: block; margin-bottom: 5px; font-weight: 500;">Số tiền *</label>
-                <input type="number" class="form-control" [(ngModel)]="formData.soTien" name="tien" required style="width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 4px;">
+          <div class="d-flex gap-3">
+             <div style="flex: 1;">
+                <label class="form-label">Số tiền *</label>
+                <input type="number" class="form-control" [(ngModel)]="formData.soTien" name="tien" required>
              </div>
-             <div class="w-100" style="flex: 1;">
-                <label style="display: block; margin-bottom: 5px; font-weight: 500;">Loại chi phí</label>
-                <select class="form-control" [(ngModel)]="formData.loaiChiPhi" name="loai" style="width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 4px;">
+             <div style="flex: 1;">
+                <label class="form-label">Loại chi phí</label>
+                <select class="form-control" [(ngModel)]="formData.loaiChiPhi" name="loai">
                     <option value="Sửa chữa">Sửa chữa</option>
                     <option value="Điện lực">Tiền điện</option>
                     <option value="Nước">Tiền nước</option>
@@ -80,24 +84,24 @@ import { ToastService } from '../../services/toast.service';
                 </select>
              </div>
           </div>
-          <div class="form-group mb-3">
-            <label style="display: block; margin-bottom: 5px; font-weight: 500;">Chi cho dãy nào?</label>
-            <select class="form-control" [(ngModel)]="formData.dayTroId" name="day" style="width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 4px;">
+          <div class="form-group mt-3">
+            <label class="form-label">Chi cho dãy nào?</label>
+            <select class="form-control" [(ngModel)]="formData.dayTroId" name="day">
                 <option [ngValue]="null">-- Chi chung (Tất cả) --</option>
                 <option *ngFor="let d of dayTros" [ngValue]="d.id">{{d.tenDayTro}}</option>
             </select>
           </div>
-          <div class="form-group mb-3">
-            <label style="display: block; margin-bottom: 5px; font-weight: 500;">Ngày chi</label>
-            <input type="date" class="form-control" [(ngModel)]="formData.ngayChi" name="ngay" required style="width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 4px;">
+          <div class="form-group">
+            <label class="form-label">Ngày chi</label>
+            <input type="date" class="form-control" [(ngModel)]="formData.ngayChi" name="ngay" required>
           </div>
-          <div class="form-group mb-4">
-            <label style="display: block; margin-bottom: 5px; font-weight: 500;">Ghi chú</label>
-            <textarea class="form-control" [(ngModel)]="formData.ghiChu" name="gc" style="width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 4px;"></textarea>
+          <div class="form-group">
+            <label class="form-label">Ghi chú</label>
+            <textarea class="form-control" [(ngModel)]="formData.ghiChu" name="gc" rows="2"></textarea>
           </div>
-          <div class="modal-footer" style="text-align: right;">
-             <button type="button" (click)="closeModal()" style="margin-right: 10px; padding: 8px 16px; border: 1px solid #ddd; background: white; border-radius: 4px; cursor: pointer;">Hủy</button>
-             <button type="submit" class="btn btn-primary" style="padding: 8px 16px; background: #6366f1; color: white; border: none; border-radius: 4px; cursor: pointer;">Lưu</button>
+          <div class="modal-footer">
+             <button type="button" class="btn btn-secondary" (click)="closeModal()">Hủy</button>
+             <button type="submit" class="btn btn-primary">Lưu khoản chi</button>
           </div>
         </form>
       </div>
@@ -108,9 +112,11 @@ export class ChiPhiComponent implements OnInit {
   chiPhis: ChiPhi[] = [];
   dayTros: DayTro[] = [];
   showModal = false;
+  isEdit = false;
+  editingId: number | null = null;
   formData: any = {};
 
-  constructor(private api: ApiService, private toast: ToastService) {}
+  constructor(private api: ApiService, private toast: ToastService) { }
 
   ngOnInit() {
     this.loadData();
@@ -125,22 +131,37 @@ export class ChiPhiComponent implements OnInit {
     this.formData = { tenChiPhi: '', soTien: 0, loaiChiPhi: 'Khác', dayTroId: null, ngayChi: new Date().toISOString().split('T')[0], ghiChu: '' };
     this.showModal = true;
   }
-  
-  closeModal(e?: any) { if(!e || e.target===e.currentTarget) this.showModal = false; }
+
+  closeModal(e?: any) { if (!e || e.target === e.currentTarget) this.showModal = false; }
+
+  editChiPhi(item: any) {
+    this.isEdit = true;
+    this.editingId = item.id;
+    this.formData = { ...item, ngayChi: item.ngayChi.split('T')[0] };
+    this.showModal = true;
+  }
 
   saveChiPhi() {
-    this.api.createChiPhi(this.formData).subscribe({
-      next: () => { this.toast.success('Đã thêm khoản chi'); this.showModal = false; this.loadData(); },
-      error: (e) => this.toast.error('Lỗi: ' + (e.error?.message || 'Không thể lưu'))
+    const request = this.isEdit
+      ? this.api.updateChiPhi(this.editingId!, this.formData)
+      : this.api.createChiPhi(this.formData);
+
+    request.subscribe({
+      next: () => {
+        this.toast.success(this.isEdit ? 'Đã cập nhật' : 'Đã thêm');
+        this.showModal = false;
+        this.loadData();
+      },
+      error: (e) => this.toast.error('Lỗi: ' + e.error?.message)
     });
   }
 
   deleteChiPhi(id: number) {
-    if(confirm('Xóa khoản chi này?')) {
-        this.api.deleteChiPhi(id).subscribe({
-            next: () => { this.toast.success('Đã xóa'); this.loadData(); },
-            error: () => this.toast.error('Lỗi xóa')
-        });
+    if (confirm('Xóa khoản chi này?')) {
+      this.api.deleteChiPhi(id).subscribe({
+        next: () => { this.toast.success('Đã xóa'); this.loadData(); },
+        error: () => this.toast.error('Lỗi xóa')
+      });
     }
   }
 }

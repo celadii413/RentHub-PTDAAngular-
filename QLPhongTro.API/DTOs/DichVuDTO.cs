@@ -32,5 +32,7 @@ public class UpdateDichVuDTO
     public decimal GiaMacDinh { get; set; }
     public string LoaiGia { get; set; } = string.Empty;
     public bool IsActive { get; set; }
+    public int? DayTroId { get; set; }
+    public int? PhongTroId { get; set; }
 }
 

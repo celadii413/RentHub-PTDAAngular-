@@ -144,48 +144,24 @@ public class DichVuController : ControllerBase
     [Authorize(Roles = "Admin,Chủ trọ")]
     public async Task<ActionResult<DichVuDTO>> CreateDichVu(CreateDichVuDTO dto)
     {
-        // Nếu là chủ trọ, tự động gán DayTroId của mình
+        var userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)!.Value);
+
         if (IsOwner())
         {
-            var userDayTroId = await GetUserDayTroIdAsync();
-            if (!userDayTroId.HasValue)
+            // 1. Nếu chọn theo PHÒNG: Tự tìm DayTroId và kiểm tra quyền
+            if (dto.PhongTroId.HasValue)
             {
-                return BadRequest(new { message = "Bạn chưa có nhà trọ. Vui lòng tạo nhà trọ trước." });
-            }
-            
-            // Nếu có DayTroId, đảm bảo nó thuộc về user
-            if (dto.DayTroId.HasValue && dto.DayTroId.Value != userDayTroId.Value)
-            {
-                return Forbid();
-            }
-            
-            // Nếu không có DayTroId, tự động gán
-            if (!dto.DayTroId.HasValue)
-            {
-                dto.DayTroId = userDayTroId.Value;
-            }
-        }
+                var phong = await _context.PhongTros.Include(p => p.DayTro).FirstOrDefaultAsync(p => p.Id == dto.PhongTroId);
+                if (phong == null) return BadRequest(new { message = "Phòng không tồn tại" });
+                if (phong.DayTro.UserId != userId) return Forbid();
 
-        if (dto.DayTroId.HasValue && !await _context.DayTros.AnyAsync(d => d.Id == dto.DayTroId.Value))
-            return BadRequest(new { message = "Dãy trọ không tồn tại" });
-
-        if (dto.PhongTroId.HasValue)
-        {
-            var phongTro = await _context.PhongTros
-                .Include(p => p.DayTro)
-                .FirstOrDefaultAsync(p => p.Id == dto.PhongTroId.Value);
-            
-            if (phongTro == null)
-                return BadRequest(new { message = "Phòng trọ không tồn tại" });
-
-            // Nếu là chủ trọ, kiểm tra phòng có thuộc nhà trọ của mình không
-            if (IsOwner())
+                dto.DayTroId = phong.DayTroId;
+            }
+            // 2. Nếu chọn theo DÃY: Kiểm tra dãy đó có phải của mình không
+            else if (dto.DayTroId.HasValue)
             {
-                var userDayTroId = await GetUserDayTroIdAsync();
-                if (userDayTroId.HasValue && phongTro.DayTroId != userDayTroId.Value)
-                {
-                    return Forbid();
-                }
+                var isMine = await _context.DayTros.AnyAsync(d => d.Id == dto.DayTroId && d.UserId == userId);
+                if (!isMine) return Forbid();
             }
         }
 
@@ -229,29 +205,30 @@ public class DichVuController : ControllerBase
     [Authorize(Roles = "Admin,Chủ trọ")]
     public async Task<IActionResult> UpdateDichVu(int id, UpdateDichVuDTO dto)
     {
+        var userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)!.Value);
+
         var dichVu = await _context.DichVus
-            .Include(d => d.DayTro)
-            .Include(d => d.PhongTro)
-            .FirstOrDefaultAsync(d => d.Id == id);
-        
+        .Include(d => d.DayTro)
+        .Include(d => d.PhongTro).ThenInclude(p => p!.DayTro)
+        .FirstOrDefaultAsync(d => d.Id == id);
+
         if (dichVu == null)
             return NotFound();
 
         // Nếu là chủ trọ, chỉ được sửa dịch vụ của nhà trọ của mình
         if (IsOwner())
         {
-            var userDayTroId = await GetUserDayTroIdAsync();
-            if (!userDayTroId.HasValue)
-            {
-                return Forbid();
-            }
+            // Kiểm tra quyền dãy cũ
+            bool isOldMine = (dichVu.DayTro != null && dichVu.DayTro.UserId == userId) ||
+                             (dichVu.PhongTro != null && dichVu.PhongTro.DayTro.UserId == userId);
+            if (!isOldMine) return Forbid();
 
-            bool isOwnerDichVu = (dichVu.DayTroId.HasValue && dichVu.DayTroId.Value == userDayTroId.Value) ||
-                                 (dichVu.PhongTro != null && dichVu.PhongTro.DayTroId == userDayTroId.Value);
-            
-            if (!isOwnerDichVu)
+            // Nếu chuyển dịch vụ sang phòng/dãy khác, kiểm tra quyền ở đích đến
+            if (dto.PhongTroId.HasValue)
             {
-                return Forbid();
+                var p = await _context.PhongTros.Include(pt => pt.DayTro).FirstOrDefaultAsync(pt => pt.Id == dto.PhongTroId);
+                if (p == null || p.DayTro.UserId != userId) return BadRequest(new { message = "Phòng không hợp lệ" });
+                dto.DayTroId = p.DayTroId;
             }
         }
 
@@ -260,6 +237,11 @@ public class DichVuController : ControllerBase
         dichVu.GiaMacDinh = dto.GiaMacDinh;
         dichVu.LoaiGia = dto.LoaiGia;
         dichVu.IsActive = dto.IsActive;
+
+        dichVu.DayTroId = dto.DayTroId;
+        dichVu.PhongTroId = dto.PhongTroId;
+
+        dichVu.NgayCapNhat = DateTime.Now;
         dichVu.NgayCapNhat = DateTime.Now;
 
         await _context.SaveChangesAsync();

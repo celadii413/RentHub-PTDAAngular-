@@ -51,29 +51,11 @@ public class HopDongController : ControllerBase
     [HttpGet]
     public async Task<ActionResult<IEnumerable<HopDongDTO>>> GetHopDongs([FromQuery] int? phongTroId, [FromQuery] int? khachThueId, [FromQuery] string? trangThai)
     {
-        var query = _context.HopDongs
-            .Include(h => h.PhongTro)
-            .Include(h => h.KhachThue)
-            .AsQueryable();
+        var userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)!.Value);
+        var query = _context.HopDongs.Include(h => h.PhongTro).ThenInclude(p => p.DayTro).Include(h => h.KhachThue).AsQueryable();
 
-        // Nếu là chủ trọ, chỉ trả về hợp đồng của phòng trong nhà trọ của mình
         if (IsOwner())
-        {
-            var userDayTroId = await GetUserDayTroIdAsync();
-            if (userDayTroId.HasValue)
-            {
-                query = query.Where(h => h.PhongTro != null && h.PhongTro.DayTroId == userDayTroId.Value);
-            }
-            else
-            {
-                return Ok(new List<HopDongDTO>());
-            }
-        }
-        else if (phongTroId.HasValue)
-        {
-            // Admin có thể filter theo phongTroId
-            query = query.Where(h => h.PhongTroId == phongTroId.Value);
-        }
+            query = query.Where(h => h.PhongTro.DayTro.UserId == userId);
 
         if (khachThueId.HasValue)
             query = query.Where(h => h.KhachThueId == khachThueId.Value);
@@ -157,6 +139,7 @@ public class HopDongController : ControllerBase
     [Authorize(Roles = "Admin,Chủ trọ")]
     public async Task<ActionResult<HopDongDTO>> CreateHopDong(CreateHopDongDTO dto)
     {
+        var userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)!.Value);
         var phongTro = await _context.PhongTros
             .Include(p => p.DayTro)
             .FirstOrDefaultAsync(p => p.Id == dto.PhongTroId);
@@ -164,15 +147,7 @@ public class HopDongController : ControllerBase
         if (phongTro == null)
             return BadRequest(new { message = "Phòng trọ không tồn tại" });
 
-        // Nếu là chủ trọ, chỉ được tạo hợp đồng cho phòng trong nhà trọ của mình
-        if (IsOwner())
-        {
-            var userDayTroId = await GetUserDayTroIdAsync();
-            if (!userDayTroId.HasValue || phongTro.DayTroId != userDayTroId.Value)
-            {
-                return Forbid();
-            }
-        }
+        if (IsOwner() && phongTro.DayTro.UserId != userId) return Forbid();
 
         var khachThue = await _context.KhachThues.FindAsync(dto.KhachThueId);
         if (khachThue == null)
@@ -243,22 +218,17 @@ public class HopDongController : ControllerBase
     [Authorize(Roles = "Admin,Chủ trọ")]
     public async Task<IActionResult> UpdateHopDong(int id, UpdateHopDongDTO dto)
     {
+        var userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)!.Value);
         var hopDong = await _context.HopDongs
-            .Include(h => h.PhongTro)
-            .FirstOrDefaultAsync(h => h.Id == id);
-        
+           .Include(h => h.PhongTro)
+               .ThenInclude(p => p.DayTro)
+           .FirstOrDefaultAsync(h => h.Id == id);
+
         if (hopDong == null)
             return NotFound();
 
         // Nếu là chủ trọ, chỉ được sửa hợp đồng của phòng trong nhà trọ của mình
-        if (IsOwner())
-        {
-            var userDayTroId = await GetUserDayTroIdAsync();
-            if (!userDayTroId.HasValue || hopDong.PhongTro == null || hopDong.PhongTro.DayTroId != userDayTroId.Value)
-            {
-                return Forbid();
-            }
-        }
+        if (IsOwner() && hopDong.PhongTro.DayTro.UserId != userId) return Forbid();
 
         hopDong.NgayBatDau = dto.NgayBatDau;
         hopDong.NgayKetThuc = dto.NgayKetThuc;
@@ -308,6 +278,7 @@ public class HopDongController : ControllerBase
     [Authorize(Roles = "Admin,Chủ trọ")]
     public async Task<IActionResult> KetThucHopDong(int id)
     {
+        var userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)!.Value);
         var hopDong = await _context.HopDongs
             .Include(h => h.PhongTro)
             .ThenInclude(p => p!.DayTro)
@@ -317,14 +288,7 @@ public class HopDongController : ControllerBase
             return NotFound();
 
         // Nếu là chủ trọ, chỉ được kết thúc hợp đồng của phòng trong nhà trọ của mình
-        if (IsOwner())
-        {
-            var userDayTroId = await GetUserDayTroIdAsync();
-            if (!userDayTroId.HasValue || hopDong.PhongTro == null || hopDong.PhongTro.DayTroId != userDayTroId.Value)
-            {
-                return Forbid();
-            }
-        }
+        if (IsOwner() && hopDong.PhongTro.DayTro.UserId != userId) return Forbid();
 
         hopDong.TrangThai = "Đã kết thúc";
         hopDong.NgayCapNhat = DateTime.Now;

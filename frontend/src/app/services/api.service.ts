@@ -623,6 +623,10 @@ export class ApiService {
     return this.http.post(`${this.baseUrl}/ChiPhi`, data);
   }
 
+  updateChiPhi(id: number, data: any): Observable<any> {
+    return this.http.put(`${this.baseUrl}/ChiPhi/${id}`, data);
+  }
+
   deleteChiPhi(id: number): Observable<any> {
     return this.http.delete(`${this.baseUrl}/ChiPhi/${id}`);
   }

@@ -45,19 +45,17 @@ public class PhongTroController : ControllerBase
     [HttpGet]
     public async Task<ActionResult<IEnumerable<PhongTroDTO>>> GetPhongTros([FromQuery] int? dayTroId, [FromQuery] int? tang, [FromQuery] string? trangThai)
     {
+        var userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)!.Value);
         var query = _context.PhongTros.Include(p => p.DayTro).AsQueryable();
 
-        // Nếu là chủ trọ, tự động filter theo DayTro của mình
         if (IsOwner())
         {
-            var userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)!.Value);
             query = query.Where(p => p.DayTro.UserId == userId);
-        }
 
-        else if (dayTroId.HasValue)
-        {
-            // Admin có thể filter theo dayTroId
-            query = query.Where(p => p.DayTroId == dayTroId.Value);
+            if (dayTroId.HasValue)
+            {
+                query = query.Where(p => p.DayTroId == dayTroId.Value);
+            }
         }
 
         if (tang.HasValue)
@@ -268,21 +266,12 @@ public class PhongTroController : ControllerBase
     [Authorize(Roles = "Admin,Chủ trọ")]
     public async Task<IActionResult> DeletePhongTro(int id)
     {
-        var phongTro = await _context.PhongTros.FindAsync(id);
-        if (phongTro == null)
-        {
-            return NotFound();
-        }
+        var userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)!.Value);
+        var phongTro = await _context.PhongTros.Include(p => p.DayTro).FirstOrDefaultAsync(p => p.Id == id);
 
-        // Nếu là chủ trọ, chỉ được xóa phòng trong nhà trọ của mình
-        if (IsOwner())
-        {
-            var userDayTroId = await GetUserDayTroIdAsync();
-            if (!userDayTroId.HasValue || phongTro.DayTroId != userDayTroId.Value)
-            {
-                return Forbid();
-            }
-        }
+        if (phongTro == null) return NotFound();
+
+        if (IsOwner() && phongTro.DayTro.UserId != userId) return Forbid();
 
         var coKhach = await _context.KhachThues.AnyAsync(k => k.PhongTroId == id);
         var coHopDong = await _context.HopDongs.AnyAsync(h => h.PhongTroId == id);

@@ -19,6 +19,11 @@ public class ChiSoCongToController : ControllerBase
     {
         _context = context;
     }
+    private async Task<bool> IsRoomOwner(int phongTroId)
+    {
+        var userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)!.Value);
+        return await _context.PhongTros.AnyAsync(p => p.Id == phongTroId && p.DayTro.UserId == userId);
+    }
 
     // Lấy DayTroId của user hiện tại
     private async Task<int?> GetUserDayTroIdAsync()
@@ -43,29 +48,13 @@ public class ChiSoCongToController : ControllerBase
     }
 
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<ChiSoCongToDTO>>> GetChiSoCongTos(
-        [FromQuery] int? phongTroId, 
-        [FromQuery] string? loaiCongTo,
-        [FromQuery] DateTime? thangNam)
+    public async Task<ActionResult<IEnumerable<ChiSoCongToDTO>>> GetChiSoCongTos([FromQuery] int? phongTroId, [FromQuery] string? loaiCongTo, [FromQuery] DateTime? thangNam)
     {
-        var query = _context.ChiSoCongTos
-            .Include(c => c.PhongTro)
-            .ThenInclude(p => p!.DayTro)
-            .AsQueryable();
+        var userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)!.Value);
+        var query = _context.ChiSoCongTos.Include(c => c.PhongTro).ThenInclude(p => p!.DayTro).AsQueryable();
 
-        // Nếu là chủ trọ, tự động filter theo DayTro của mình
-        if (IsOwner())
-        {
-            var userDayTroId = await GetUserDayTroIdAsync();
-            if (userDayTroId.HasValue)
-            {
-                query = query.Where(c => c.PhongTro != null && c.PhongTro.DayTroId == userDayTroId.Value);
-            }
-            else
-            {
-                return Ok(new List<ChiSoCongToDTO>());
-            }
-        }
+        if (User.FindFirst(ClaimTypes.Role)?.Value == "Chủ trọ")
+            query = query.Where(c => c.PhongTro.DayTro.UserId == userId);
 
         if (phongTroId.HasValue)
             query = query.Where(c => c.PhongTroId == phongTroId.Value);
@@ -156,15 +145,7 @@ public class ChiSoCongToController : ControllerBase
         if (phongTro == null)
             return BadRequest(new { message = "Phòng trọ không tồn tại" });
 
-        // Nếu là chủ trọ, chỉ được tạo chỉ số cho phòng trong nhà trọ của mình
-        if (IsOwner())
-        {
-            var userDayTroId = await GetUserDayTroIdAsync();
-            if (!userDayTroId.HasValue || phongTro.DayTroId != userDayTroId.Value)
-            {
-                return Forbid();
-            }
-        }
+        if (!await IsRoomOwner(dto.PhongTroId)) return Forbid();
 
         var daCoChiSo = await _context.ChiSoCongTos
         .AnyAsync(c => c.PhongTroId == dto.PhongTroId &&
@@ -296,22 +277,7 @@ public class ChiSoCongToController : ControllerBase
     [HttpGet("goi-y/{phongTroId}/{loaiCongTo}")]
     public async Task<ActionResult<GoiYChiSoDTO>> GetGoiYChiSo(int phongTroId, string loaiCongTo)
     {
-        // Nếu là chủ trọ, kiểm tra phòng có thuộc nhà trọ của mình không
-        if (IsOwner())
-        {
-            var phongTro = await _context.PhongTros
-                .Include(p => p.DayTro)
-                .FirstOrDefaultAsync(p => p.Id == phongTroId);
-            
-            if (phongTro != null)
-            {
-                var userDayTroId = await GetUserDayTroIdAsync();
-                if (!userDayTroId.HasValue || phongTro.DayTroId != userDayTroId.Value)
-                {
-                    return Forbid();
-                }
-            }
-        }
+        if (!await IsRoomOwner(phongTroId)) return Forbid();
 
         var chiSoThangTruoc = await _context.ChiSoCongTos
             .Where(c => c.PhongTroId == phongTroId && c.LoaiCongTo == loaiCongTo)

@@ -243,126 +243,104 @@ public class HoaDonController : ControllerBase
     [Authorize(Roles = "Admin,Chủ trọ,Nhân viên")]
     public async Task<ActionResult<HoaDonDTO>> TuDongTinhHoaDon(int phongTroId, [FromBody] DateTime thangNam)
     {
-        // Lấy thông tin phòng
+        // 1. Lấy thông tin phòng và dãy trọ
         var phongTro = await _context.PhongTros
             .Include(p => p.DayTro)
             .FirstOrDefaultAsync(p => p.Id == phongTroId);
 
         if (phongTro == null) return BadRequest(new { message = "Phòng trọ không tồn tại" });
 
-        // Check hóa đơn tồn tại
+        // 2. Kiểm tra hóa đơn tháng này đã tồn tại chưa
         var hoaDonDaCo = await _context.HoaDons.AnyAsync(h => h.PhongTroId == phongTroId && h.ThangNam.Month == thangNam.Month && h.ThangNam.Year == thangNam.Year);
         if (hoaDonDaCo) return BadRequest(new { message = $"Đã có hóa đơn tháng {thangNam:MM/yyyy}." });
 
-        // Lấy chỉ số Điện & Nước 
+        // 3. Lấy chỉ số Điện & Nước
         var chiSoDien = await _context.ChiSoCongTos.FirstOrDefaultAsync(c => c.PhongTroId == phongTroId && c.LoaiCongTo == "Điện" && c.ThangNam.Month == thangNam.Month && c.ThangNam.Year == thangNam.Year);
         var chiSoNuoc = await _context.ChiSoCongTos.FirstOrDefaultAsync(c => c.PhongTroId == phongTroId && c.LoaiCongTo == "Nước" && c.ThangNam.Month == thangNam.Month && c.ThangNam.Year == thangNam.Year);
 
-        if (chiSoDien == null || chiSoNuoc == null) return BadRequest(new { message = "Chưa có chỉ số Điện hoặc Nước." });
+        if (chiSoDien == null || chiSoNuoc == null) return BadRequest(new { message = "Chưa có chỉ số Điện hoặc Nước tháng này." });
 
-
-        // Lấy tất cả dịch vụ có thể áp dụng (Của Phòng OR Của Dãy OR Toàn hệ thống)
+        // 4. Lấy danh sách dịch vụ (Ưu tiên: Phòng > Dãy > Hệ thống)
         var rawServices = await _context.DichVus
             .Where(d => d.IsActive &&
                     (d.PhongTroId == phongTroId ||
-                        d.DayTroId == phongTro.DayTroId ||
-                        d.DayTroId == null))
+                     (d.DayTroId == phongTro.DayTroId && d.PhongTroId == null) ||
+                     (d.DayTroId == null && d.PhongTroId == null)))
             .ToListAsync();
 
-        // Lọc trùng  theo độ ưu tiên: Phòng > Dãy > Hệ thống
-        // Ví dụ: Hệ thống có "Gửi xe" 100k, nhưng Phòng này có cấu hình riêng "Gửi xe" 0đ (miễn phí) -> Lấy cái 0đ
+
+        // Lọc trùng tên dịch vụ và lấy cái có độ ưu tiên cao nhất
         var finalServices = rawServices
-            .GroupBy(d => d.TenDichVu.Trim().ToLower()) // Nhóm theo tên (không phân biệt hoa thường)
+            .GroupBy(d => d.TenDichVu.Trim().ToLower())
             .Select(g => g
                 .OrderByDescending(d => d.PhongTroId.HasValue) 
                 .ThenByDescending(d => d.DayTroId.HasValue)   
                 .First()) 
             .ToList();
 
-        // Các biến để lưu vào Database 
-        decimal tienDien = 0, tienNuoc = 0, tienInternet = 0, tienVeSinh = 0;
-        decimal tongTienDichVuKhac = 0; 
-
-        // Tạo StringBuilder để ghi chú tự động
+        decimal tienDien = 0, tienNuoc = 0, tienInternet = 0, tienVeSinh = 0, tienKhac = 0;
         var ghiChuBuilder = new System.Text.StringBuilder();
         ghiChuBuilder.Append($"Điện: {chiSoDien.SoTieuThu} số. Nước: {chiSoNuoc.SoTieuThu} khối. ");
 
-        // Duyệt qua từng dịch vụ để tính tiền
+        // 5. Tính tiền dựa trên Giá Mặc Định (Bỏ qua bậc thang)
         foreach (var dv in finalServices)
         {
-            string tenDv = dv.TenDichVu.Trim().ToLower();
+            string ten = dv.TenDichVu.Trim().ToLower();
             decimal thanhTien = 0;
 
-            if (tenDv == "điện")
+            if (ten == "điện")
             {
                 thanhTien = (decimal)chiSoDien.SoTieuThu * dv.GiaMacDinh;
                 tienDien = thanhTien;
             }
-            else if (tenDv == "nước")
+            else if (ten == "nước")
             {
                 thanhTien = (decimal)chiSoNuoc.SoTieuThu * dv.GiaMacDinh;
                 tienNuoc = thanhTien;
             }
             else
             {
-                // Các dịch vụ tính theo tháng (Internet, Rác, Gửi xe, Bảo vệ...)
+                // Các dịch vụ cố định như Internet, Rác...
                 thanhTien = dv.GiaMacDinh;
 
-                // Map vào các cột có sẵn trong DB
-                if (tenDv == "internet" || tenDv.Contains("mạng") || tenDv.Contains("wifi"))
-                {
-                    tienInternet = thanhTien;
-                }
-                else if (tenDv == "vệ sinh" || tenDv == "rác")
-                {
-                    tienVeSinh = thanhTien;
-                }
+                if (ten.Contains("internet") || ten.Contains("mạng")) tienInternet = thanhTien;
+                else if (ten.Contains("vệ sinh") || ten.Contains("rác")) tienVeSinh = thanhTien;
                 else
                 {
-                    // DỊCH VỤ KHÁC (Gửi xe, Thang máy...): Cộng vào tổng riêng
-                    tongTienDichVuKhac += thanhTien;
-
-                    // Ghi vào ghi chú để người dùng biết
+                    tienKhac += thanhTien;
                     ghiChuBuilder.Append($"{dv.TenDichVu}: {thanhTien:N0}. ");
                 }
             }
         }
 
-        // 5. Tính tổng tiền
-        decimal tienPhong = phongTro.GiaThue;
-
-        // Lấy công nợ cũ
+        // 6. Lấy công nợ cũ (Các hóa đơn tháng trước chưa trả)
         var congNoCu = await _context.HoaDons
             .Where(h => h.PhongTroId == phongTroId && h.TrangThai != "Đã thanh toán" && h.ThangNam < thangNam)
-            .SumAsync(h => h.TongTien); // Dùng Sum để chắc chắn không sót
+            .SumAsync(h => h.TongTien);
 
-        // TỔNG TIỀN = Tiền Phòng + Điện + Nước + Net + Rác + (Dịch vụ khác) + Công nợ
-        decimal tongTien = tienPhong + tienDien + tienNuoc + tienInternet + tienVeSinh + tongTienDichVuKhac + congNoCu;
+        // 7. Tổng cộng
+        decimal tongTien = phongTro.GiaThue + tienDien + tienNuoc + tienInternet + tienVeSinh + tienKhac + congNoCu;
 
         var hoaDon = new HoaDon
         {
             MaHoaDon = $"HD{DateTime.Now:yyyyMMddHHmmss}{phongTroId}",
             PhongTroId = phongTroId,
             ThangNam = thangNam,
-            TienPhong = tienPhong,
+            TienPhong = phongTro.GiaThue,
             TienDien = tienDien,
             TienNuoc = tienNuoc,
             TienInternet = tienInternet,
             TienVeSinh = tienVeSinh,
             CongNoThangTruoc = congNoCu,
-
-            // Dịch vụ khác đã được cộng vào đây
             TongTien = tongTien,
-
             TrangThai = "Chưa thanh toán",
             NgayTao = DateTime.Now,
-            GhiChu = ghiChuBuilder.ToString().Trim() // Ghi chú đã bao gồm chi tiết dịch vụ lạ
+            GhiChu = ghiChuBuilder.ToString().Trim()
         };
 
         _context.HoaDons.Add(hoaDon);
         await _context.SaveChangesAsync();
 
-        // Trả về DTO
         return CreatedAtAction(nameof(GetHoaDon), new { id = hoaDon.Id }, new HoaDonDTO
         {
             Id = hoaDon.Id,

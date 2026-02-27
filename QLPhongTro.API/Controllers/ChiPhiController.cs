@@ -56,6 +56,24 @@ namespace QLPhongTro.API.Controllers
             return Ok(new { message = "Thêm khoản chi thành công" });
         }
 
+        [HttpPut("{id}")]
+        public async Task<IActionResult> Update(int id, [FromBody] CreateChiPhiDTO dto)
+        {
+            var userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)!.Value);
+            var cp = await _context.ChiPhis.FirstOrDefaultAsync(c => c.Id == id && c.UserId == userId);
+            if (cp == null) return NotFound();
+
+            cp.TenChiPhi = dto.TenChiPhi;
+            cp.SoTien = dto.SoTien;
+            cp.LoaiChiPhi = dto.LoaiChiPhi;
+            cp.NgayChi = dto.NgayChi;
+            cp.GhiChu = dto.GhiChu;
+            cp.DayTroId = dto.DayTroId;
+
+            await _context.SaveChangesAsync();
+            return Ok(new { message = "Cập nhật thành công" });
+        }
+
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {
